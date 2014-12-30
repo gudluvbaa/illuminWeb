@@ -1,0 +1,116 @@
+<div class="popup-layout mail-popup col-lg-12" controller="MailController">
+	<tabset>
+	    <tab heading="{{today | date:'yyyy-MM-dd'}}">
+	    	<div class="add-mail-wrap mail-form-wrap col-lg-2" ng-controller="addMailController">
+		    	<form class="form-horizontal" name="mailForm" novalidate>
+					<div class="form-group">
+						<label for="mail-title" class="control-label">標題</label>
+						<input id="addMailTitle" class="form-control" name="title" ng-model="newMail.title" placeholder="Input a title for mail"/>
+					</div>
+					<div class="form-group">
+						<label for="mail-type" class="control-label">類別</label>
+						<select id="addMailType" class="form-control" ng-model="newMail.deliveryMethod" name="deliveryMethod" >
+							<option value="locker">寄放</option>
+	                        <option value="post">代寄</option>
+	                        <option value="passtoi">轉交</option>
+	                        <option value="passtoo">轉交(外)</option>
+	                        <option value="parcel">包裹</option>
+	                        <option value="certified">掛號</option>
+	                        <option value="other">其他</option>
+						</select> 
+					</div>
+					<!-- <input ng-model="newMail.dateReceive" value="1415721600000" style="display: none; " /> -->
+					<!-- <input id="addDateReceive" value="2014-11-20" style="display: none; " /> -->
+					<div class="form-group household-select">
+						<label for="mail-sender" class="control-label">寄件(放)者</label>
+						<select class="form-control" ng-model="defaultFromId" ng-options="fromitem.floorNum for fromitem in households">
+	                        <option value="">其他</option>
+	                        <input id="addSenderType" ng-value="{{defaultFromId.id}}" style="display: none; " />
+						</select>
+						<input id="addMailSender" class="form-control" type="text" name="from" ng-model="newMail.from" required/>
+					</div>
+					<div class="form-group household-select">
+						<label for="mail-sender" class="control-label">收件者</label>
+						<select class="form-control" ng-model="defaultToId" ng-options="toitem.floorNum for toitem in households">
+	                        <option value="">其他</option>
+	                        <input id="addReceiveType"  ng-value="{{defaultToId.id}}" style="display: none; " />
+						</select>
+						<input id="addMailRecipient" class="form-control" type="text" name="to" ng-model="newMail.to" required />
+					</div>
+					<button class="btn btn-default btn-primary pull-right" ng-click="mailPost(newMail, defaultFromId.id, defaultToId.id )" >Create</button>
+				</form> 
+			</div>
+			<div id="mailList" class="col-lg-10" ng-controller="updateMailController">
+				<div class="col-lg-12">
+					<input type="text" placeholder="Search..." ng-model="barCodeSearch" class="form-control" autofocus />
+				</div>
+				<div class="col-lg-12">
+					<div class="mail-list-wrap">
+						<table class="mail-list table table-hover-block">
+							<thead>        
+						        <tr>
+						            <th style="text-align: center; width: 5%">類別</th>
+						            <th style="text-align: center; width: 15%">簽收時間</th>
+						            <th style="text-align: center; width: 15%">標題</th>
+						            <th style="text-align: center; width: 10%">交件者</th>
+						            <th style="text-align: center; width: 10%">收件者</th>
+						            <th style="text-align: center; width: 15%">領取時間</th>
+						            <th style="text-align: center; width: 5%">領取</th>
+						            <th style="text-align: center; width: 10%">刪除</th>
+						        </tr>
+						    </thead>
+						    <tbody>
+						    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceive':true | filter:{complete: false} | filter:barCodeSearch">
+						    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+						    		<td style="text-align: center; width: 15%">{{item.dateReceive | date:'yyyy-MM-dd HH:mm'}}</td>
+						    		<td style="text-align: center; width: 15%">{{item.title}}</td>
+						    		<td style="text-align: center; width: 10%">{{item.from}}</td>
+						    		<td style="text-align: center; width: 10%">{{item.to}}</td>
+						    		<td style="text-align: center; width: 15%">{{item.dateReceive | date:'yyyy-MM-dd HH:mm'}}</td>
+						    		<td style="width: 5%"><input type="checkbox" value="{{item.id}}" ng-checked="selection.indexOf(item.id) > -1" ng-click="toggleSelection(item.id)"/></td> 
+						    		<td style="width: 10%"><button ng-click="deletemail(item.id)" class="btn btn-small btn-danger">刪除</button></td>
+						    	</tr>
+						    </tbody>
+						</table>
+					</div>
+					<div class="receiver-input-wrap">	
+						<div class="receiver-input-section">
+							領件者<input class="receiverInput" type="text" placeholder="Type name for collection" ng-model="receiver.name" style="border-radius: 4px;"/>
+							<button class="btn btn-small btn-danger" ng-click="updateMail(receiver.name)">更新</button>
+						</div>
+					</div>
+				</div>
+			</div>
+  		</tab>
+  		
+  		<tab heading="歷史資料">
+  			<div id="mailRecordList" class="mail-record-list-wrap col-lg-12">
+				<input type="text" placeholder="Search..." ng-model="mailSearch" class="form-control" autofocus />
+				<table class="mail-record-list table table-hover-block">
+					<thead>        
+				        <tr>
+				            <th style="text-align: center; width: 10%">類別</th>
+				            <th style="text-align: center; width: 15%">簽收時間</th>
+				            <th style="text-align: center; width: 15%">標題</th>
+				            <th style="text-align: center; width: 15%">交件者</th>
+				            <th style="text-align: center; width: 15%">收件者</th>
+				            <th style="text-align: center; width: 15%">領件者</th>
+				            <th style="text-align: center; width: 15%">領取時間</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:{complete: true} | filter:mailSearch" >
+				    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+				    		<td style="text-align: center;">{{item.dateReceive | date:'HH:mm'}}</td>
+				    		<td style="text-align: center;">{{item.title}}</td>
+				    		<td style="text-align: center;">{{item.from}}</td>
+				    		<td style="text-align: center;">{{item.to}}</td>
+				    		<td style="text-align: center;">{{item.receiver}}</td>
+				    		<td style="text-align: center;">{{item.dateReceived | date:'yyyy-MM-dd HH:mm'}}</td>
+				    	</tr>
+				    </tbody>
+				</table>
+			</div>
+  		</tab>
+  	</tabset>	
+</div>

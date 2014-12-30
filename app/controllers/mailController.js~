@@ -1,0 +1,125 @@
+(function() {
+	
+	
+	
+	function mailController ($scope, $http, $timeout) {
+		$scope.mails = [];
+   		$scope.today = new Date();
+   		$http.get(originname + '/households/building/1').success(function(household) {
+   			$scope.households = household;  
+   		});
+   		$http.get(originname + '/mails').success(function(data) {
+   			$scope.mails = data;
+   			console.log("mails okay");
+   			console.log($scope.mails);
+   		});
+   	   	
+   	    var checkPop = function () {
+   	   		console.log("this is time out check");
+   	   	}	
+		$timeout(checkPop, 500);
+   		
+	};
+
+    illuminApp.controller("mailController", mailController);
+	
+	function addMailController ($scope, $http) {
+		//$scope.backendUrl = originname;
+		$scope.mailPost = function(newMail, fromId, toId) {
+			console.log(newMail.title + ", from: " + fromId+ ", to: " +toId);
+            $http.post( originname + '/mail', {
+				title: newMail.title,
+				deliveryMethod: newMail.deliveryMethod,
+				from: newMail.from,
+				to: newMail.to
+            }, {
+            	headers: {
+                	'Content-Type': 'application/json'
+           		}
+            })
+			.success(function(data) {
+				console.log('Post succeeded');
+				console.log(data);
+				/* add relation to household start*/
+				$http.post( originname + '/household/' + fromId + '/mail/' + data.id, 
+				{
+	            	headers: {
+	                	'Content-Type': 'application/json'
+	           		}
+	            })
+				.success(function(Fdata) {
+					console.log('from relationship succeeded');
+					$http.post( originname + '/household/' + toId + '/mailto/' + data.id, 
+					{
+		            	headers: {
+		                	'Content-Type': 'application/json'
+		           		}
+		            })
+					.success(function(Tdata) {
+						console.log('to relationship succeeded');
+		            })
+					.error(function(Terr) {
+						console.log('to relationship failed');
+		            })
+	             })
+				.error(function(ferr) {
+					console.log('from relationship failed');
+	             })
+				/* add relation to household start*/
+				
+				//$scope.mails.push($scope.data);
+             })
+			.error(function(err) {
+				console.log('Post failed');
+				console.log(err);
+             })
+          };
+		
+	};
+	illuminApp.controller("addMailController", addMailController);
+	
+	function updateMailController ($scope, $http) {
+		$scope.selection=[];
+		$scope.toggleSelection = function toggleSelection(itemId) {
+			var idx = $scope.selection.indexOf(itemId);
+			if (idx > -1) {
+				$scope.selection.splice(idx, 1);
+				console.log($scope.selection);
+		    }
+		    else {
+		    	$scope.selection.push(itemId);
+				console.log($scope.selection);
+			}
+		};
+		$scope.updateMail = function(receiverInputName) {
+			for(var i = 0; i < $scope.selection.length; i++) {
+				console.log(receiverInputName+ ", " + $scope.selection[i]);
+				$http.put( originname + '/mail/' +  $scope.selection[i] + '/obtained', {
+					receiver: receiverInputName
+				},{
+	            	headers: {
+	                	'Content-Type': 'application/json'
+	               	}
+           		})
+           		.success(function(data) {
+					console.log('Update succeeded');
+					console.log(data);
+	             })
+				.error(function(err) {
+					console.log('Update failed');
+					console.log(err);
+	             })
+			};
+		};
+		$scope.deletemail = function(mailid) {
+        	alert("delete mail: " + mailid);
+        	$http.delete(originname + '/mail/' + mailid).success(function(data, status, headers, config) {
+        		console.log("success!");
+        		location.reload();
+        	});
+		};
+	};
+	illuminApp.controller("updateMailController", updateMailController);
+   //	listMailController
+})();
+

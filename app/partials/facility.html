@@ -1,0 +1,85 @@
+<div class="popup-layout facility-popup  col-lg-12" controller="ReservationController">
+	<tabset>
+	    <tab heading="公設預約">
+	    	<div class="col-lg-12">
+	    		<div class="reservation-list-table">
+					<table class="table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 10%">使用時間</th>
+					            <th style="text-align: center; width: 10%">預約時間</th>
+					            <th style="text-align: center; width: 10%">事由</th>
+					            <th style="text-align: center; width: 10%">詳細說明</th>
+					            <th style="text-align: center; width: 10%">地點</th>
+					            <th style="text-align: center; width: 10%">預約住戶</th>
+					        </tr>
+					    </thead>
+					    <tbody class="reservation-list" >
+					    	<tr class="reservationListItem" ng-repeat="item in reservations | orderBy:'id':true">
+					    		<td style="text-align: center;">{{item.appointmentDate | date:'yyyy-MM-dd hh:mm'}}</td>
+					    		<td style="text-align: center;">{{item.operationDate | date:'yyyy-MM-dd hh:mm'}}</td>
+					    		<td style="text-align: center;">{{item.reason}}</td>
+					    		<td style="text-align: center;">{{item.description}}</td>
+					    		<td style="text-align: center;">{{item.clubHouseDetail.name}}</td>
+					    		<td style="text-align: center;">{{item.houseHoldDetail.description}} {{item.houseHoldDetail.floor}}-{{item.houseHoldDetail.number}}</td>
+					    	</tr>
+					    </tbody>
+					</table>
+				</div>
+	    	</div>
+  		</tab>
+	    <tab heading="公設管理">
+	    	<!-- <div class="col-lg-2">
+	    		<form class="form-horizontal" name="clubhouseForm" novalidate>
+					<div class="form-group">
+						<label for="clubhouse-name" class="control-label">會館名稱</label>
+						<input class="form-control" type="text" name="name" ng-model="newClubhouse.name" />
+					</div>
+					<div class="form-group">
+						<label for="clubhouse-serviceContent" class="control-label">會館說明</label>
+						<textarea class="form-control" name="serviceContent" ng-model="newClubhouse.serviceContent" row="4"></textarea>
+					</div>
+					<div class="form-group">
+						<label for="clubhouse-image" class="control-label">會館照片</label>
+						<input type="file" file-input="files"/>
+					</div>
+					<div class="form-group">
+						<label for="clubhouse-phone" class="control-label">會館電話</label>
+						<input class="form-control" type="text" name="phone" ng-model="newClubhouse.phone" ng-pattern="/^[0-9]+$/"/>
+					</div>
+					<div class="form-group">
+						<label for="clubhouse-point" class="control-label">點數</label>
+						<input class="form-control" type="number" name="point" ng-model="newClubhouse.point" />
+					</div>
+					<button class="btn btn-default btn-primary pull-right" ng-click="addClubhouse(newClubhouse)" ng-disabled="createProcessing">新增</button>
+				</form> 
+	    	</div> -->
+	    	<div class="col-lg-12">
+	    		<div class="clubhouse-list-table">
+					<table class="table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 10%">會館</th>
+					            <th style="text-align: center; width: 10%">會館說明</th>
+					            <th style="text-align: center; width: 10%">會館圖片</th>
+					            <th style="text-align: center; width: 5%">聯絡電話</th>
+					            <th style="text-align: center; width: 5%">使用點數</th>
+					            <th style="text-align: center; width: 5%">變更</th>
+					        </tr>
+					    </thead>
+					    <tbody class="clubhouse-list" >
+					    	<tr class="clubhouseListItem" ng-repeat="item in clubhouses | orderBy:'id':true">
+					    		<td style="text-align: center;">{{item.name}}</td>
+					    		<td style="text-align: center;"><input class="form-control" type="text" ng-model="item.serviceContent" /></td>
+					    		<td style="text-align: center; height: 65px;"><img style="height: 100%;" ng-src="{{item.image}}"></td>
+					    		<td style="text-align: center;"><input class="form-control" type="text" ng-model="item.phone" /></td>
+					    		<td style="text-align: center;"><input class="form-control" type="text" ng-model="item.point" /></td>
+					    		<td style="text-align: center;"><button ng-click="updateClubhouse(item.id, item.serviceContent, item.phone, item.point)" class="btn btn-small btn-danger">更新</td>
+					    	</tr>
+					    </tbody>
+					</table>
+				</div>
+	    	</div>
+  		</tab>
+  	</tabset>
+</div>

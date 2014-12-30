@@ -1,0 +1,75 @@
+<div class="popup-layout fee-popup col-lg-12" controller="MaintenancefeeController">
+	<tabset>
+	    <tab heading="管理費用">
+	    	<div class="print-out-section pull-right">
+				<button id="printFee" class="btn btn-small btn-danger" ng-click="printFee()">Print me</button>
+				<a download="feedata.xls" class="btn btn-small btn-danger" href="#" onclick="return ExcellentExport.excel(this, 'printFeeTable', 'Sheet Name Here');">Excel</a>
+				<a download="feedata.csv" class="btn btn-small btn-danger" href="#" onclick="return ExcellentExport.csv(this, 'printFeeTable');">CSV</a>
+	    	</div>
+	    	<div>
+	    		<div>
+	    			<!-- <select id="feeYear" ng-model="feeYearfrom" class="form-control">
+	    				<option value="2014">2014</option>
+	    				<option value="2015">2015</option>
+	    				<option value="2016">2016</option>
+	    			</select>
+	    			<select id="feeMonth" ng-model="feeMonthfrom" class="form-control">
+	    				<option value="1">1</option>
+	    				<option value="2">2</option>
+	    				<option value="3">3</option>
+	    				<option value="4">4</option>
+	    				<option value="5">5</option>
+	    				<option value="6">6</option>
+	    				<option value="7">7</option>
+	    				<option value="8">8</option>
+	    				<option value="9">9</option>
+	    				<option value="10">10</option>
+	    				<option value="11">11</option>
+	    				<option value="12">12</option>
+	    			</select> -->
+	    			<!-- <input ng-model="fullMonth" />
+	    			<button class="btn btn-small btn-danger" ng-click="feeFilter(feeYearfrom, feeMonthfrom)">篩選</button> -->
+	    		</div>
+	    		<table class="maintenancefeeC-list table table-hover-block" id="printFeeTable">
+					<thead>        
+				        <tr>
+				            <th style="text-align: center; width: 5%">住戶</th>
+				            <th style="text-align: center; width: 5%">應繳</th>
+				            <th style="text-align: center; width: 5%">實繳</th>
+				            <th style="text-align: center; width: 5%">期限</th>
+				            <th style="text-align: center; width: 5%">實繳日期</th>
+				            <th style="text-align: center; width: 5%">憑證</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				    	<!-- <tr class="maintenancefeesItem" ng-repeat="item in feearray | orderBy:'dateReceived':true | filter:{maintenanceFeeDetails: '!!'}"> -->
+				    	<tr class="maintenancefeesItem" ng-repeat="item in feearray | filter:fullMonth">
+				    		<td style="text-align: center; width: 5%">{{item.floorNum}}</td>
+				    		<td style="text-align: center; width: 5%">{{item.feedetail.totalCost}}</td>
+				    		<td style="text-align: center; width: 5%">{{item.feedetail.paymentReceived}}</td>
+				    		<td style="text-align: center; width: 5%">{{item.feedetail.deadline | date:'yyyy-MM-dd'}}</span></td>
+				    		<td style="text-align: center; width: 5%"><span >{{item.feedetail.dateReceived | date:'yyyy-MM-dd'}}</span></td> 
+				    		<!-- <td style="text-align: center; width: 5%; height: 50px;" ng-repeat="feedetail in item.maintenanceFeeDetails" ng-mouseover="imageIn()" ng-mouseleave="imageOut()"> --></td>
+				    		<td style="text-align: center; width: 5%; height: 50px;" >
+				    			<img style="height: 100%;" ng-src="{{item.feedetail.imageDetail.url}}"/><p></p>
+				    			<!-- <div ng-show="feeDetail" class="animate-show fee-origin-img" style="border: 1px red solid;">
+									<img style="height: 100%;" src="{{feedetail.imageDetail.url}}" />
+								</div> -->
+				    		</td>
+				    		
+				    	</tr>
+				    </tbody>
+				</table>
+				<!-- <div class="col-lo-12" ng-repeat="item in maintenancefees | orderBy:'dateReceived':true | filter:{maintenanceFeeDetails: '!!'}">
+					<div class="col-lg-4">
+						<p>{{item.floor}} - {{item.number}}</p>
+				    	<p>{{item.pyeong}}</p>
+				    	<div ng-repeat="fee in item.maintenanceFeeDetails">
+				    		{{fee.imageDetail.url}}
+				    	</div>
+					</div>
+				</div> -->
+	    	</div>
+  		</tab>
+  	</tabset>
+</div>

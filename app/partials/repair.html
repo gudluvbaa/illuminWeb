@@ -1,0 +1,30 @@
+<div class="popup-layout fix-popup col-lg-12" controller="RepairController">
+	<tabset>
+	    <tab heading="修繕管理">
+	    	<div class="col-lg-12">
+	    		<div class="repair-list-table">
+					<table class="table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 10%">標題</th>
+					            <th style="text-align: center; width: 40%">詳細內容</th>
+					            <th style="text-align: center; width: 15%">位置</th>
+					            <th style="text-align: center; width: 15%">申請時間</th>
+					            <th style="text-align: center; width: 10%">是否完成</th>
+					            <th style="text-align: center; width: 10%">圖片</th>
+					    </thead>
+					    <tbody class="repair-list repair-list" >
+					    	<tr class="repairListItem" ng-repeat="item in repairs | orderBy:'notifyDate':true ">
+					    		<td style="text-align: left;">{{item.title}}</td>
+					    		<td style="text-align: left;">{{item.content}}</td>
+					    		<td style="text-align: left;">{{item.area}}</td>
+					    		<td style="text-align: center;"><span>{{item.notifyDate | date:'yyyy-MM-dd HH:mm'}}</span></td>
+					    		<td style="text-align: left;" class="repair-{{item.complete}}"></td>
+					    		<td style="text-align: center; height: 50px;"><img style="height: 100%;" ng-src="{{item.imageDetail.url}}" /></td>
+					    </tbody>
+					</table>
+				</div>
+	    	</div>
+  		</tab>
+  	</tabset>
+</div>

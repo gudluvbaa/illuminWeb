@@ -1,0 +1,207 @@
+<div class="popup-layout others-popup col-lg-12" controller="MorefunctionController">
+	<tabset>
+	    <tab heading="瓦斯抄表">
+	    	<div class="col-lg-12 input-search">
+	    		<!-- <select id="feeYear" ng-model="search1.gasrecordDetail.dateLong" class="form-control">
+    				<option value="2014">2014</option>
+    				<option value="2015">2015</option>
+    				<option value="2016">2016</option>
+    			</select>
+    			<select id="feeMonth" ng-model="search2.gasrecordDetail.dateLong" class="form-control">
+    				<option value="1">1</option>
+    				<option value="2">2</option>
+    				<option value="3">3</option>
+    				<option value="4">4</option>
+    				<option value="5">5</option>
+    				<option value="6">6</option>
+    				<option value="7">7</option>
+    				<option value="8">8</option>
+    				<option value="9">9</option>
+    				<option value="10">10</option>
+    				<option value="11">11</option>
+    				<option value="12">12</option>
+    			</select> -->
+    			<input class="form-control" ng-model="searchGas" placeholder="請輸入年-月(如：2015-01)"/>
+			</div>
+	    	<div class="print-out-section col-lg-12 pull-right" style="margin-top: 10px; margin-bottom: 10px;">
+				<button id="printGas" class="btn btn-small btn-danger" ng-click="printGas()">Print me</button>
+				<a download="gasdata.xls" class="btn btn-small btn-danger" href="#" onclick="return ExcellentExport.excel(this, 'printGasTable', 'Sheet Name Here');">Excel</a>
+				<a download="gasdata.csv" class="btn btn-small btn-danger" href="#" onclick="return ExcellentExport.csv(this, 'printGasTable');">CSV</a>
+	    	</div>
+	    	<div class="gasrecords-list-wrap col-lg-12">
+	    		<table class="gasrecords-list table table-hover-block" id="printGasTable">
+					<thead>        
+				        <tr>
+				            <th style="text-align: center; width: 5%">戶名</th>
+				            <th style="text-align: center; width: 5%">日期</th>
+				            <th style="text-align: center; width: 5%">度數</th>
+				            <th style="text-align: center; width: 5%">憑證</th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				    	<tr class="gasrecordItem" ng-repeat="item in gasrecords | orderBy:'dateLong':true | filter:searchGas">
+				    		<td style="text-align: center; width: 5%">{{item.floorNum}}</td>
+				    		<td style="text-align: center; width: 5%">{{item.gasrecordDetail.dateLong | date:'yyyy-MM-dd'}}</td>
+				    		<td style="text-align: center; width: 5%">{{item.gasrecordDetail.degree}}</td>
+				    		<td style="text-align: center; width: 5%; height: 50px;"><img style="height: 100%;" ng-src="{{item.gasrecordDetail.imageDetail.url}}" /></td>
+				    	</tr>
+				    </tbody>
+				</table>
+	    	</div>
+  		</tab>
+  		
+  		<!-- <tab heading="活動預約">
+  			<table class="maintenancefee-list table table-hover-block">
+				<thead>        
+			        <tr>
+			            <th style="text-align: center; width: 5%">類別</th>
+			        </tr>
+			    </thead>
+			    <tbody>
+			    	<tr class="maintenancefeesItem" ng-repeat="item in maintenancefees | orderBy:'dateReceived':true | filter:barCodeSearch">
+			    		<td style="text-align: center; width: 5%">{{item.id}}</td>
+			    	</tr>
+			    </tbody>
+			</table>
+  		</tab> -->
+  		
+	    <tab heading="新增活動">
+	    	<div class="col-lg-2">
+	    		<div class="add-activity-wrap activity-form-wrap">
+	    			<form class="form-horizontal">
+	    				<div class="form-group">
+							<label for="activity-title" class="control-label">標題</label>
+							<input class="form-control" name="title" ng-model="newActivity.title" placeholder="Input a title for activity"/>
+						</div>
+	    				<div class="form-group">
+							<label for="activity-room" class="control-label">教室</label>
+							<input class="form-control" name="room" ng-model="newActivity.room" placeholder="Input a room for activity"/>
+						</div>
+	    				<div class="form-group">
+							<label for="activity-time" class="control-label">時間</label>
+							<input class="form-control" name="time" ng-model="newActivity.time" placeholder="Input a time for activity"/>
+						</div>
+	    				<div class="form-group">
+							<label for="activity-detail" class="control-label">詳細說明</label>
+							<textarea class="form-control" rows="3" ng-model="newActivity.detail" placeholder="Input a detail for activity"></textarea>
+						</div>
+	    				<div class="form-group">
+							<label for="activity-title" class="control-label">價錢</label>
+							<input class="form-control" name="title" ng-model="newActivity.price" placeholder="Input a title for activity" />
+						</div>
+	    				<div class="form-group">
+							<label for="activity-nopLimit" class="control-label">人數上限</label>
+							<input class="form-control" name="nopLimit" ng-model="newActivity.nopLimit" placeholder="Input a nopLimit for activity"/>
+						</div>
+	    				<!-- <div class="form-group">
+							<label for="activity-nop" class="control-label">人數</label>
+							<input class="form-control" name="nop" ng-model="newActivity.nop" placeholder="Input a nop for activity"/>
+						</div> -->
+						<div class="form-group" ng-controller="activityImg">
+							<label for="activity-image" class="control-label">活動圖片</label>
+							<input type="file" file-input="files" />
+							<button class="btn btn-default btn-danger pull-right" ng-click="activityImgUpload()">新增照片</button>
+						</div>
+						<div class="pull-right">
+							<button class="btn btn-default btn-primary pull-right" ng-click="addActivity(newActivity)" style="margin-left: 5px;" >新增活動</button>
+							<!-- <button class="btn btn-default btn-primary pull-right" ng-click="addActivity()">add Simple Activity</button> -->
+						</div>
+	    			</form>
+	    		</div>
+	    	</div>
+	    	<div class="col-lg-10">
+	    		<div class="activity-list-table">
+					<table class="table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 10%">標題</th>
+					            <th style="text-align: center; width: 10%">地點</th>
+					            <th style="text-align: center; width: 10%">時間</th>
+					            <th style="text-align: center; width: 10%">價格</th>
+					            <th style="text-align: center; width: 10%">報名上限</th>
+					            <th style="text-align: center; width: 10%">目前報名人數</th>
+					        </tr>
+					    </thead>
+					    <tbody class="activity-list" >
+					    	<tr class="activityListItem" ng-repeat="item in activities | orderBy:'id':true">
+					    		<td style="text-align: left;">{{item.title}}</td>
+					    		<td style="text-align: left;">{{item.room}}</td>
+					    		<td style="text-align: left;">{{item.time}}</td>
+					    		<td style="text-align: center;">{{item.price}}</td>
+					    		<td style="text-align: center;">{{item.nopLimit}}</td>
+					    		<td style="text-align: center;">{{item.nop}}</td>
+					    	</tr>
+					    </tbody>
+					</table>
+				</div>
+	    	</div>
+  		</tab>
+  		<tab heading="活動管理" ng-controller="activityUserController">
+	    	<div class="col-lg-6">
+	    		<div class="activity-list-table">
+					<table class="table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 10%">標題</th>
+					            <th style="text-align: center; width: 10%">地點</th>
+					            <th style="text-align: center; width: 10%">時間</th>
+					        </tr>
+					    </thead>
+					    <tbody class="activity-list" >
+					    	<tr class="activityListItem" ng-repeat="item in activities | orderBy:'id':true" ng-click="getAllusers(item.id)">
+					    		<td style="text-align: left;">{{item.title}}</td>
+					    		<td style="text-align: left;">{{item.room}}</td>
+					    		<td style="text-align: left;">{{item.time}}</td>
+					    	</tr>
+					    </tbody>
+					</table>
+				</div>
+	    	</div>
+	    	<div class="col-lg-6">
+		    	<tabset>
+		  			<tab heading="未報到">
+		  				<div class="activity-user-list-table notarrive">
+							<table class="table table-hover-block">
+								<thead>        
+							        <tr>
+							            <th style="text-align: center; width: 10%">姓名</th>
+							            <th style="text-align: center; width: 10%">電話</th>
+							            <th style="text-align: center; width: 10%">User</th>
+							            <th style="text-align: center; width: 10%">報到</th>
+							        </tr>
+							    </thead>
+							    <tbody class="activity-user-list" ng-repeat="item in notarriveusers | orderBy:'id':true">
+							    	<tr id="activityUser{{item.id}}" class="activityUserListItem">
+							    		<td style="text-align: center;">{{item.name}}</td>
+							    		<td style="text-align: center;">{{item.phone}}</td>
+							    		<td style="text-align: left;">{{item.account}}</td>
+							            <td style="text-align: center;"><button ng-click="arriveUser(item.id)" class="btn btn-small btn-danger" ng-disabled="arriveProcessing">報到</button></td>
+							    	</tr>
+							    </tbody>
+							</table>
+						</div>
+		  			</tab>
+		  			<tab heading="已報到">
+		  				<div class="activity-user-list-table arrive">
+							<table class="table table-hover-block">
+								<thead>        
+							        <tr>
+							            <th style="text-align: center; width: 10%">姓名</th>
+							            <th style="text-align: center; width: 10%">電話</th>
+							            
+							        </tr>
+							    </thead>
+							    <tbody class="activity-user-list arrive-list-tbody" ng-model="activityUserarrive">
+							    	<tr class="activityUserListItem" ng-repeat="item in arriveusers | orderBy:'id':true">
+							    		<td style="text-align: center;">{{item.name}}</td>
+							    		<td style="text-align: center;">{{item.phone}}</td>
+							    	</tr>
+							    </tbody>
+							</table>
+						</div>	
+		  			</tab>
+		  		</tabset>
+	    	</dive>
+  		</tab>
+  	</tabset>
+</div>

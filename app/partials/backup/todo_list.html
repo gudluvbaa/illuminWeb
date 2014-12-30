@@ -1,0 +1,94 @@
+	<div class="col-lg-2">
+		<div class="todo-switch-wrap">
+			  <tabset>
+			    <tab heading="待完成">
+					<div class="undolist">
+						<!-- <button class="btn btn-primary" ng-click="todoCreate=!todoCreate">+</button> -->						
+						<div class="list-wrap">
+							<ul style=" padding-left: 0;">
+								<li ng-repeat="item in toDoLists | orderBy:'time' | filter:{done:'false'}" style="border: 1px #e5e5e5 solid; list-style: none;">
+									<span>{{ item.time | date:'HH:mm'}}</span> <br/>
+									<span>{{ item.title }}</span>
+									<span>{{ item.read }}</span>
+									<span>{{ item.done }}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</tab>
+			    <tab heading="歷史">
+					<div class="donelist">
+						<div class="list-wrap">
+							<ul style=" padding-left: 0;">
+								<li ng-repeat="item in toDoLists | orderBy:'time' | filter:{done:'true'}" style="border: 1px #e5e5e5 solid; list-style: none;">
+									<span>{{ item.time | date:'HH:mm'}}</span> <br/>
+									<span>{{ item.title }}</span>
+									<span>{{ item.read }}</span>
+									<span>{{ item.done }}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+			    </tab>
+			    <tab heading="新增">
+			    	<div class="todo-add">
+						<div style="margin: 5px" class="alert alert-danger" ng-show="add_error_text">{{add_error_text}}</div>
+						<h3> Add new to do item</h3>
+						<div class="add-todo-wrap">
+							<form>
+								<input type="text" placeholder="Title..." size="20" ng-model="new_toDoList.title"/>
+								<input type="text" placeholder="Time..." size="20" ng-model="new_toDoList.time"/>
+								<input type="text" value="false" size="20" ng-model="new_toDoList.read"/>
+								<input type="text" value="false" size="20" ng-model="new_toDoList.done"/>
+								<button ng-click="addToDoList(new_toDoList)" type="button" class="btn btn-success">Add</button>
+							</form>
+						</div>
+					</div>
+		   		</tab>
+			  </tabset>
+			<!-- <nav>
+		      <button class="btn btn-primary" ng-click="slide='undo'">未完成</button>
+		      <button class="btn btn-primary" ng-click="slide='done'">歷史</button>
+		 </nav> -->
+		</div>
+		<!-- <div ng-switch="slide" class="todo-list-wrap">
+			<div ng-switch-default class="undolist">
+				<button class="btn btn-primary" ng-click="todoCreate=!todoCreate">+</button>
+				<div ng-show="todoCreate" class="todo-add">
+					<div style="margin: 5px" class="alert alert-danger" ng-show="add_error_text">{{add_error_text}}</div>
+					<h3> Add new to do item</h3>
+					<div class="add-todo-wrap">
+						<form>
+							<input type="text" placeholder="Title..." size="20" ng-model="new_toDoList.title"/>
+							<input type="text" placeholder="Time..." size="20" ng-model="new_toDoList.time"/>
+							<input type="text" value="false" size="20" ng-model="new_toDoList.read"/>
+							<input type="text" value="false" size="20" ng-model="new_toDoList.done"/>
+							<button ng-click="addToDoList(new_toDoList)" type="button" class="btn btn-success">Add</button>
+						</form>
+					</div>
+				</div>
+				<div class="list-wrap">
+					<ul style=" padding-left: 0;">
+						<li ng-repeat="item in toDoLists | orderBy:'time' | filter:{done:'false'}" style="border: 1px #e5e5e5 solid; list-style: none;">
+							<span>{{ item.time | date:'HH:mm'}}</span> <br/>
+							<span>{{ item.title }}</span>
+							<span>{{ item.read }}</span>
+							<span>{{ item.done }}</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div ng-switch-when="done" class="donelist">
+				<div class="list-wrap">
+					<ul style=" padding-left: 0;">
+						<li ng-repeat="item in toDoLists | orderBy:'time' | filter:{done:'true'}" style="border: 1px #e5e5e5 solid; list-style: none;">
+							<span>{{ item.time | date:'HH:mm'}}</span> <br/>
+							<span>{{ item.title }}</span>
+							<span>{{ item.read }}</span>
+							<span>{{ item.done }}</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div> -->
+	</div>

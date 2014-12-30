@@ -1,0 +1,189 @@
+(function() {
+
+    function ToDoListController ($scope, todoProvider, $modal, $http) {
+		var currentTime = new Date();
+        $scope.new_toDoList = {};
+        $scope.add_error_text = '';
+        $scope.page_load_error = "";
+        $scope.toDoLists = [];
+        //$scope.toDoLists = todoProvider.getToDoLists();
+        
+        //var pushTodo = function () {
+    	todoProvider.getToDoLists(function (err, todolists) {
+            if (err) {
+                $scope.page_load_error = "Unexpected error loading todolists: " + e.message;
+                console.log("error");
+            } else {
+            	//$scope.sortedtoDoLists = todolists;
+                $scope.toDoLists = todolists;
+                console.log("ok");
+                console.log($scope.toDoLists);
+            }
+        });
+        //};   
+          //$timeout(pushTodo, 1000);
+	        
+        
+        $scope.changeRead = function (id) {
+        	$http.put( originname + '/todolist/' +  id + '/read', {
+			},{
+            	headers: {
+                	'Content-Type': 'application/json'
+               	}
+       		})
+       		.success(function(data) {
+				console.log('change to read succeeded');
+				console.log(data);
+            })
+			.error(function(err) {
+				console.log('change to read failed');
+				console.log(err);
+            })
+	    };
+        $scope.changeDone = function (id) {
+        	$http.put( originname + '/todolist/' +  id + '/complete', {
+			},{
+            	headers: {
+                	'Content-Type': 'application/json'
+               	}
+       		})
+       		.success(function(data) {
+				console.log('to do this complete succeeded');
+				console.log(data);
+            })
+			.error(function(err) {
+				console.log('to do this complete failed');
+				console.log(err);
+            })
+	    };	
+	    
+        
+        $scope.addToDoList = function (toDo_data) {
+        	todoProvider.addToDoList(toDo_data, function (err, results) {
+                if (err) {
+                    if (err.code == "missing_title")
+                        $scope.add_error_text = "Missing title";
+                    else if (err.code == "bad_date")
+                        $scope.add_error_text = "You must specify a date (yyyy-mm-dd:hh-mm)";
+                } else {
+                    // looks good!
+                    $scope.new_toDoList = {};
+                    $scope.add_error_text = '';
+                }
+
+            });
+        	/*try {
+        		todoProvider.addToDoList(toDo_data);
+        		$scope.new_toDoList = {};
+                $scope.add_error_text = '';
+        	} catch (e) {
+        		if(e.message == "missing_title")
+                $scope.add_error_text = "Missing title";
+        		else if (e.message == "bed_date")
+                $scope.add_error_text = "You must specify a valid date (yyyy/mm/dd)";
+        	}*/
+        };
+       	$scope.openMenuDialogMail = function () {
+       		//alert("openMenuDialogMail");
+       		var openMenuMailDialog = $modal.open({
+       			templateUrl: './app/partials/mail.html',
+			    controller: 'mailController',
+			    size: "lg",
+			    resolve: {
+			    }
+       		});
+       	};
+       	$scope.openMenuDialogGuest = function () {
+       		var openMenuGuestDialog = $modal.open({
+       			templateUrl: './app/partials/guest.html',
+			    controller: 'guestController',
+			    size: "lg",
+			    resolve: {
+			    	
+			    }
+       		});
+       	};
+       	$scope.openMenuDialogFix = function () {
+       		var openMenuFixDialog = $modal.open({
+       			templateUrl: './app/partials/fix.html',
+			    //controller: 'mailController',
+			    size: "lg",
+			    resolve: {
+			    	
+			    }
+       		});
+       	};
+       	$scope.openMenuDialogFacility = function () {
+       		var openMenuFacilityDialog = $modal.open({
+       			templateUrl: './app/partials/facility.html',
+			    //controller: 'mailController',
+			    size: "lg",
+			    resolve: {
+			    	
+			    }
+       		});
+       	};
+       	$scope.openMenuDialogFee = function () {
+       		var openMenuFeeDialog = $modal.open({
+       			templateUrl: './app/partials/fee.html',
+			    //controller: 'mailController',
+			    size: "lg",
+			    resolve: {
+			    	
+			    }
+       		});
+       	};
+       	$scope.openMenuDialogCorporation = function () {
+       		var openMenuCorporationDialog = $modal.open({
+       			templateUrl: './app/partials/corporation.html',
+			    //controller: 'mailController',
+			    size: "lg",
+			    resolve: {
+			    	
+			    }
+       		});
+       	};
+       	$scope.openMenuDialogSetting = function () {
+       		var openMenuSettingDialog = $modal.open({
+       			templateUrl: './app/partials/setting.html',
+			    //controller: 'mailController',
+			    size: "lg",
+			    resolve: {
+			    	
+			    }
+       		});
+       	};
+    
+    	/************datepicker****************/
+    	$scope.toggleMin = function() {
+			$scope.minDate = $scope.minDate ? null : new Date();
+		};
+		$scope.toggleMin();
+		
+		$scope.open = function($event) {
+			$event.preventDefault();
+		    $event.stopPropagation();
+		
+		    $scope.opened = true;
+		};
+		
+		$scope.dateOptions = {
+		    formatYear: 'yy',
+		    startingDay: 1
+		};
+		
+		$scope.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+		$scope.format = $scope.formats[0];
+		
+		
+		var dt = new Date();
+		var currentMonth =  dt.getMonth() + 1;
+		//$scope.pickday = dt.getFullYear() + '-' + currentMonth + '-' + dt.getDay();
+		$scope.hstep = 1;
+		$scope.mstep = 1;
+		/************datepicker end****************/
+    };
+
+    illuminApp.controller("ToDoListController", ToDoListController);
+
+})();

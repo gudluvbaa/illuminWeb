@@ -1,0 +1,334 @@
+<html ng-app="illuminWebApp">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/bootstrap.css">
+  <link rel="stylesheet" href="./lib/fullcalendar/fullcalendar.css">
+  <link rel="stylesheet" href="./lib/fullcalendar/fullcalendar.print.css" media='print'>
+  <link rel="stylesheet" href="./css/jquery-ui.css">
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/homeStyles.css">
+  <link rel="stylesheet" href="./css/mailStyles.css">
+  <link rel="stylesheet" href="./css/guestStyles.css">
+  <link rel="stylesheet" href="./css/repairStyles.css">
+  <link rel="stylesheet" href="./css/moreStyle.css">
+  <script type='text/javascript' src="./lib/angular/angular.min.js"></script>
+  <script type='text/javascript' src="./lib/angular/angular-route.min.js"></script>
+  <script type='text/javascript' src="./lib/angular/angular-animate.min.js"></script>
+  <script type='text/javascript' src="./lib/ui-bootstrap-tpls-0.12.0.js"></script>
+  <script type='text/javascript' src="./lib/jquery-2.0.1.js"></script>
+  <script type='text/javascript' src="./lib/bootstrap.min.js"></script>
+  <script type='text/javascript' src="./lib/jquery-ui.js"></script>
+  <script type='text/javascript' src="./lib/fullcalendar/lib/moment.js"></script>
+  <script type='text/javascript' src="./lib/fullcalendar/fullcalendar.js"></script>
+  <!-- <script type='text/javascript' src="./lib/calendar.js"></script>
+   <script type='text/javascript' src="./lib/fullcalendar.js"></script>
+  <script type='text/javascript' src="./lib/gcal.js"></script> -->
+  <script type='text/javascript' src="./lib/modernizr.js"></script>
+  <script type='text/javascript' src="./lib/excellentexport.js"></script>
+  <script type='text/javascript' src="./js/calendar.js"></script>
+</head>
+
+<body>
+	
+	<div class="sidebar">
+		<div class="sidebar-toggle"></div>
+			<div class="sidebar-content">
+				<p>login panel</p>
+			</div>
+	</div>
+	<div id="content" class="col-lg-12" ng-controller="ToDoListController">
+		<div>
+			<div class="col-lg-3">
+				<div class="todo-switch-wrap">
+					<tabset>
+					    <tab heading="待完成">
+							<div class="undolist todolist">
+								<!-- <button class="btn btn-primary" ng-click="todoCreate=!todoCreate">+</button> -->						
+								<div class="current-list-wrap list-wrap">
+									<ul style=" padding-left: 0;">
+										<li class="col-lg-12" ng-repeat="item in toDoLists | validDate | orderBy:'processDate' | filter:{complete:'false'}" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" ng-animate=" 'animate' ">
+											<span class="col-lg-12">{{ item.processDate | date:'yyyy-MM-dd HH:mm'}}</span> <br/>
+											<span class="todo-list-title col-lg-10">{{ item.title }}</span>
+											<span class="todo-list-read-{{item.read}} col-lg-1" ng-click="changeRead(item.id)">re</span>
+											<span class="todo-list-done-{{item.complete}} col-lg-1" ng-click="changeDone(item.id)">do</span>
+											<div ng-show="todoDetail" class="animate-show todo-detail">
+												<span>{{ item.title }}</span><br/>
+												<span>{{ item.processDate | date:'yyyy-MM-dd HH:mm' }}</span><br/>
+												<span>{{ item.objectDetail.area }}</span><br/>
+												<!-- <span>{{ item.objectDetail.id }}</span> -->
+											</div>
+										</li>
+									</ul>
+								</div>
+								<div class="past-list-wrap list-wrap">
+									<ul style=" padding-left: 0;">
+										<li class="col-lg-12" ng-repeat="item in toDoLists | validDatePast | orderBy:'processDate' | filter:{complete:'false'}" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()">
+											<span class="col-lg-12">{{ item.processDate | date:'yyyy-MM-dd HH:mm'}}</span> <br/>
+											<span class="todo-list-title col-lg-10">{{ item.title }}</span>
+											<span class="todo-list-read-{{item.read}} col-lg-1" ng-click="changeRead(item.id)">re</span>
+											<span class="todo-list-done-{{item.complete}} col-lg-1" ng-click="changeDone(item.id)">do</span>
+											<div ng-show="todoDetail" class="animate-show todo-detail">
+												<span>{{ item.title }}</span><br/>
+												<span>{{ item.processDate | date:'yyyy-MM-dd HH:mm' }}</span><br/>
+												<span>{{ item.objectDetail.area }}</span><br/>
+												<!-- <span>{{ item.objectDetail.id }}</span> -->
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</tab>
+					    <tab class="todo-history" heading="歷史">
+							<div class="donelist todolist">
+								<div class="list-wrap">
+									<ul style=" padding-left: 0;">
+										<li ng-repeat="item in toDoLists | orderBy:'processDate' | filter:{complete:'true'}">
+											<span>{{ item.processDate | date:'yyyy-MM-dd HH:mm'}}</span> <br/>
+											<span>{{ item.title }}</span>
+										</li>
+									</ul>
+								</div>
+							</div>
+					    </tab>
+					    <tab heading="新增">
+					    	<div class="todo-add">
+								<div style="margin: 5px" class="alert alert-danger" ng-show="add_error_text">{{add_error_text}}</div>
+								<div class="add-todo-wrap" ng-controller="DateController">
+									<form class="form-horizontal" novalidate>
+							    		<div class="form-group">
+											<label for="todo-title" class="control-label">內容</label>
+											<input id="todoTitle" class="form-control" type="text" placeholder="Content..." ng-model="new_toDoList.title"/>
+										</div>
+							    		<div class="form-group">
+											<label for="todo-time" class="control-label">預計時間</label>
+											<!-- <input id="todoTime" class="form-control" type="text" placeholder="2014-12-31:23-59" ng-model="new_toDoList.processDateFormat"/> -->
+											<div class="datepicker row">
+										        <div class="col-md-12">
+										            <p class="input-group">
+										              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="new_toDoList.pickday" is-open="opened" min-date="minDate" max-date="'2020-12-31'" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+										              <span class="input-group-btn">
+										                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+										              </span>
+										            </p>
+										        </div>
+										    </div>
+										    <div class="timepicker">
+										    	<timepicker ng-model="new_toDoList.picktime" ng-change="changed()" hour-step="hstep" minute-step="mstep"></timepicker>
+										    </div>
+										</div>
+										<button ng-click="addToDoList(new_toDoList, new_toDoList.pickday, new_toDoList.picktime)" type="button" class="btn btn-primary pull-right" ng-disabled="isProcessing">新增</button>
+									</form>
+								</div>
+								
+							</div>
+				   		</tab>
+					  </tabset>
+				</div>
+			</div>
+		</div>
+		<div>	
+			<div class="col-lg-8">
+				<!-- <div class="col-lg-12 user-search-bar"><input type="text" name="txt" class="form-control" ng-change="openMenuDialogMail()" ng-model="userValue" placeholder="Search User..."  autofocus></div> -->
+				<div class="col-lg-12 user-search-bar"><input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearch(this.value)" placeholder="Search User..."  autofocus></div>
+				<div id="calendar"></div>
+				<div id="fullCalModal" class="modal fade">
+				    <div class="modal-dialog">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+				                <h4 id="modalTitle" class="modal-title"></h4>
+				            </div>
+				            <div id="modalBody" class="modal-body"></div>
+				            <div class="modal-footer">
+				                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+			</div>
+			<div id="dialog" title="Basic dialog">
+				<div id="tabs">
+					<ul>
+					    <li><a href="#tabs-1">郵件列表</a></li>
+					    <li><a href="#tabs-2">郵件管理</a></li>
+				  	</ul>
+					<div id="tabs-1">
+					    <div class="popup-content">
+							<label class="control-label">住戶：</label>
+							<label id="userTitle" class="control-label"></label>
+							<label class="control-label">共<span id="userAmountMail" class="user-amount-mail">0</span>信件</label>
+							<div class="mail-list-search">
+								<input id="searchMailCode" type="text" placeholder="信件流水編號.." style="color: #000;"/>
+								<button type="button" class="btn btn-primary" onclick="searchMailBtn()">搜尋</button>
+							</div>
+							<div class="mail-list-table">
+								<table class="mail-list table table-hover-block">
+									<thead>        
+								        <tr>
+								            <th style="text-align: center; width: 20%">郵件編號</th>
+								            <th style="text-align: center; width: 5%">類別</th>
+								            <th style="text-align: center; width: 15%">寄件者</th>
+								            <th style="text-align: center; width: 10%">收件者</th>
+								            <th style="text-align: center; width: 10%">備註</th>
+								            <th style="text-align: center; width: 5%">領取</th>
+								        </tr>
+								    </thead>
+								    <tbody class="user-mail-list">
+								    </tbody>
+								</table>
+							</div>
+						</div>
+						<div class="mail-receiver-section"></div>
+					</div>
+					<div id="tabs-2">
+					  <div class="popup-content">
+							<label class="control-label">住戶：</label>
+							<label id="mailManagerHouseId" class="control-label" style="display:none;"></label>
+							<label id="mailManagerTitle" class="control-label"></label>
+							<label class="control-label"> 共<span id="addUserMail" class="user-amount-mail">0</span>信件</label>
+							
+
+							<input onclick="MailPost()" type="image" src="./img2/Email-icon.png" alt="Add Mail" width="48" height="48" style="float:right">
+							<input onclick="Add()" type="image" src="./img2/Actions-contact-new-icon.png" alt="Add Mail" width="48" height="48" style="float:right">
+							<!--<button onclick="MailPost()" style="color:#000000;float:right">確定送出</button>-->							
+							<!--<button onclick="Add()" style="color:#000000;float:right">新增</button>-->
+							<table id="mailReceiverTable" class="mail-list table table-hover-block">
+								<thead>        
+							        <tr>
+							            <th id="stampNumber" style="text-align: center; width: 10%">郵件編號</th>
+							            <th style="text-align: center; width: 10%">類別</th>
+							            <th style="text-align: center; width: 5%">寄件人</th>
+							            <th style="text-align: center; width: 5%">收件人</th>
+								    <th style="text-align: center; width: 10%">備註</th>
+								    <th style="text-align: center; width: 10%"></th>
+							        </tr>
+								<!--<tr>
+								    <td><input id="stamp_number" name="stamp_number" style="color:#000000"></td>
+								    <td>
+									<select id="stamp_mailDeliveryMethod" class="form-control" name="deliveryMethod" >
+										<option value="locker">寄放</option>
+										<option value="post">代寄</option>
+										<option value="passtoi">轉交</option>
+										<option value="passtoo">轉交(外)</option>
+										<option value="parcel">包裹</option>
+										<option value="certified">掛號</option>
+										<option value="other">其他</option>
+									</select> 
+								    </td>
+								    <td><input id="stamp_from" type="text" id="stamp_from" style="color:#000000"></td>
+								    <td><input id="stamp_to" type="text" id="stamp_to" style="color:#000000"></td>
+								    <td><img src='img2/Math-plus-icon.png' class='btnSave' onclick='Save()'><img src='img2/Math-minus-icon.png' class='btnDelete' onclick='Delete()'></td>
+								</tr>-->
+							    </thead>
+							    <tbody id="mailManagerTBody">
+							    </tbody>
+							</table>
+						</div>						
+					    <!--<div>
+					    	<form class="form-horizontal" name="mailForm" novalidate>
+								<div class="form-group">
+									<label for="deliveryMethod" class="control-label">類別</label>
+									<select id="mailDeliveryMethod" class="form-control" name="deliveryMethod" >
+										<option value="locker">寄放</option>
+				                        <option value="post">代寄</option>
+				                        <option value="passtoi">轉交</option>
+				                        <option value="passtoo">轉交(外)</option>
+				                        <option value="parcel">包裹</option>
+				                        <option value="certified">掛號</option>
+				                        <option value="other">其他</option>
+									</select> 
+								</div>
+								<div class="form-group">
+									<label for="mailNumber" class="control-label">信件流水號</label>
+									<input id="mailMailNumber" class="form-control" type="text" name="mailNumber"/>
+								</div>
+								<div class="form-group household-select">
+									<label for="floor" class="control-label">寄件(放)者</label>
+									<select id="mailfloor" class="form-control" name="floor" >
+										<option value="">-- 樓 --</option>
+				                        <option value="2">2</option>
+				                        <option value="3">3</option>
+				                        <option value="4">4</option>
+				                        <option value="5">5</option>
+				                        <option value="6">6</option>
+				                        <option value="7">7</option>
+									</select>
+									<select class="form-control">
+										<option value="">-- 號 --</option>
+									</select>
+									<input id="mailFrom" class="form-control" type="text" name="from" required/>
+								</div>
+								<div class="form-group household-select">
+									<label for="to" class="control-label">收件者</label>
+									<input id="mailTo" class="form-control" type="text" name="to" required />
+								</div>
+								<div class="form-group">
+									<label for="title" class="control-label">備註</label>
+									<input id="mailTitle" class="form-control" name="title" placeholder="Input a title for mail"/>
+								</div>
+								<div class="create-mail-btn"></div>
+							</form> 
+					    </div>
+					</div>-->
+				</div>
+			</div>
+		</div>
+		</div>
+		<div>
+			<div class="col-lg-1">
+				<div class="tabbable tabs-left sidebar-menu">
+			    	<!-- <ul class="nav" ng-controller="MenuInfoController"> -->
+			    	<ul class="nav" >
+			    		<!-- <div ng-repeat="newmails in mailfiltered = (mails | filter: {complete:'false'})" style="display: none;"></div> -->
+			    		<!-- <div ng-repeat="newmails in mailTotal = (mails | filter: {complete:'false'})" style="display: none;"></div>
+			    		<div ng-repeat="newguests in guestfiltered = (guests | filter: {arrive:'true'} | filter: {exit:'false'})" style="display: none;"></div> -->
+			    		<!-- <div ng-repeat="newguests in guestfiltered = (guests | filter: {arrive:'true'} | filter: {exit:'false'})" style="display: none;"></div> -->
+			        	<li><a ng-click="openMenuDialogAnnouncement()"><img alt="publication" src="./img/public.png" style="height: 100%;"/><span class="menu-info"></span></a></li>
+			        	<li><a ng-click="openMenuDialogMail()"><span class="menu-info badge"><!-- {{mailfiltered.length}} --></span><img alt="mail" src="./img/mail.png" style="height: 100%;"/></a></li>
+			       		<li><a ng-click="openMenuDialogGuest()"><span class="menu-info badge"><!-- {{guestfiltered.length}} --></span><img alt="guest" src="./img/visit.png" style="height: 100%;"/></a></li>
+			       		<li><a ng-click="openMenuDialogRepair()"><img alt="fix" src="./img/fix.png" style="height: 100%;"/><span class="menu-info"></span></a></li>
+			       		<li><a ng-click="openMenuDialogFacility()"><img alt="facility" src="./img/fac.png" style="height: 100%;"/><span class="menu-info"></span></a></li>
+			       		<li><a ng-click="openMenuDialogFee()"><img alt="fee" src="./img/fee.png" style="height: 100%;"/><span class="menu-info"></span></a></li>
+			       		<li><a ng-click="openMenuDialogCorporation()"><img alt="corporation" src="./img/worker.png" style="height: 100%;"/><span class="menu-info"></span></a></li>
+			       		<li><a ng-click="openMenuDialogSetting()"><img alt="setting" src="./img/setting.png" style="height: 100%;"/><span class="menu-info"></span></a></li>
+			       		<li><a ng-click="openMenuDialogMore()"><img alt="others" src="./img/more02.png" style="height: 100%;"/></a></li>
+			   		</ul>
+			   	</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<script src="./lib/jSignature/jSignature.js"></script>
+	<script src="./lib/jSignature/plugins/jSignature.CompressorBase30.js"></script>
+	<script src="./lib/jSignature/plugins/jSignature.CompressorSVG.js"></script>
+	<script src="./lib/jSignature/plugins/jSignature.UndoButton.js"></script> 
+	<script src="./lib/jSignature/plugins/signhere/jSignature.SignHere.js"></script> 	
+	
+	<script type='text/javascript' src="app/app.js"></script>
+	<script type='text/javascript' src="app/controllers/todolistcontroller.js"></script>
+	<script type='text/javascript' src="app/services/todoservice.js"></script>
+	<script type='text/javascript' src="app/controllers/announcementController.js"></script>
+	<script type='text/javascript' src="app/services/announcementservice.js"></script>
+	<script type='text/javascript' src="app/controllers/mailController.js"></script>
+	<script type='text/javascript' src="app/services/mailservice.js"></script>
+	<script type='text/javascript' src="app/controllers/guestController.js"></script>
+	<script type='text/javascript' src="app/services/guestservice.js"></script>
+	<script type='text/javascript' src="app/controllers/repairController.js"></script>
+	<script type='text/javascript' src="app/services/repairservice.js"></script>
+	<script type='text/javascript' src="app/controllers/reservationController.js"></script>
+	<script type='text/javascript' src="app/services/reservationservice.js"></script>
+	<script type='text/javascript' src="app/controllers/maintenancefeeController.js"></script>
+	<script type='text/javascript' src="app/controllers/morefunctionController.js"></script>
+	<script type='text/javascript' src="app/services/moreservice.js"></script>
+ 	<script type='text/javascript' src="js/sidebar.js"></script>
+ 	<script type='text/javascript' src="./js/mailReceiver.js"></script>
+ 	<script type='text/javascript' src="./js/mailpopup.js"></script>
+ 	<!-- <script type='text/javascript' src="js/scrolling.js"></script> -->
+
+</body>
+</html>
+
+
+

@@ -1,0 +1,85 @@
+<div ng-controller="ToDoListController">
+	<div class="col-lg-2">
+		<div class="todo-switch-wrap">
+			<tabset>
+			    <tab heading="待完成">
+					<div class="undolist todolist">
+						<!-- <button class="btn btn-primary" ng-click="todoCreate=!todoCreate">+</button> -->						
+						<div class="current-list-wrap list-wrap">
+							<ul style=" padding-left: 0;">
+								<li class="col-lg-12" ng-repeat="item in toDoLists | validDate | orderBy:'processDate' | filter:{complete:'false'}">
+									<span class="col-lg-12">{{ item.processDate | date:'yyyy-MM-dd HH:mm'}}</span> <br/>
+									<span class="todo-list-title col-lg-10">{{ item.title }}</span>
+									<span class="todo-list-read-{{item.read}} col-lg-1" ng-click="changeRead(item.id)">re</span>
+									<span class="todo-list-done-{{item.complete}} col-lg-1" ng-click="changeDone(item.id)">do</span>
+								</li>
+							</ul>
+						</div>
+						<div class="past-list-wrap list-wrap">
+							<ul style=" padding-left: 0;">
+								<li class="col-lg-12" ng-repeat="item in toDoLists | validDatePast | orderBy:'processDate' | filter:{complete:'false'}">
+									<span class="col-lg-12">{{ item.processDate | date:'yyyy-MM-dd HH:mm'}}</span> <br/>
+									<span class="todo-list-title col-lg-10">{{ item.title }}</span>
+									<span class="todo-list-read-{{item.read}} col-lg-1" ng-click="changeRead(item.id)">re</span>
+									<span class="todo-list-done-{{item.complete}} col-lg-1" ng-click="changeDone(item.id)">do</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</tab>
+			    <tab class="todo-history" heading="歷史">
+					<div class="donelist todolist">
+						<div class="list-wrap">
+							<ul style=" padding-left: 0;">
+								<li ng-repeat="item in toDoLists | orderBy:'processDate' | filter:{complete:'true'}">
+									<span>{{ item.processDate | date:'yyyy-MM-dd HH:mm'}}</span> <br/>
+									<span>{{ item.title }}</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+			    </tab>
+			    <tab heading="新增">
+			    	<div class="todo-add">
+						<div style="margin: 5px" class="alert alert-danger" ng-show="add_error_text">{{add_error_text}}</div>
+						<div class="add-todo-wrap">
+							<form class="form-horizontal" novalidate>
+					    		<div class="form-group">
+									<label for="todo-title" class="control-label">內容</label>
+									<input id="todoTitle" class="form-control" type="text" placeholder="Content..." ng-model="new_toDoList.title"/>
+								</div>
+					    		<div class="form-group">
+									<label for="todo-time" class="control-label">預計時間</label>
+									<input id="todoTime" class="form-control" type="text" placeholder="2014-12-31:23-59" ng-model="new_toDoList.processDateFormat"/>
+								</div>
+								<button ng-click="addToDoList(new_toDoList)" type="button" class="btn btn-primary pull-right">新增</button>
+							</form>
+						</div>
+						
+					</div>
+		   		</tab>
+			  </tabset>
+		</div>
+	</div>
+</div>
+
+<div>	
+	<div class="col-lg-9">
+		<div id="calendar"></div>
+	</div>
+</div>
+<div>
+	<div class="col-lg-1">
+		<div class="tabbable tabs-left sidebar-menu">
+	    	<ul class="nav">
+	        	<li><a ng-click="openMenuDialogMail()"><img alt="mail" src="./img/mail.png" style="height: 100%;"/></a></li>
+	       		<li><a ng-click="openMenuDialogGuest()"><img alt="guest" src="./img/visit.png" style="height: 100%;"/></a></li>
+	       		<li><a ng-click="openMenuDialogFix()"><img alt="fix" src="./img/fix.png" style="height: 100%;"/></a></li>
+	       		<li><a ng-click="openMenuDialogFacility()"><img alt="facility" src="./img/fac.png" style="height: 100%;"/></a></li>
+	       		<li><a ng-click="openMenuDialogFee()"><img alt="fee" src="./img/fee.png" style="height: 100%;"/></a></li>
+	       		<li><a ng-click="openMenuDialogCorporation()"><img alt="corporation" src="./img/worker.png" style="height: 100%;"/></a></li>
+	       		<li><a ng-click="openMenuDialogSetting()"><img alt="setting" src="./img/setting.png" style="height: 100%;"/></a></li>
+	   		</ul>
+	   	</div>
+	</div>
+</div>

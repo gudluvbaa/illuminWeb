@@ -1,0 +1,152 @@
+<div class="popup-layout announce-popup col-lg-12" controller="AnnouncementController">
+	<tabset>
+  		<tab heading="公告管理">
+  			<div class="col-lg-2">
+	    		<div class="add-bulletin-wrap bulletin-form-wrap">
+	    			<form class="form-horizontal">
+	    				<div class="form-group">
+							<label for="bulletin-title" class="control-label">標題</label>
+							<input class="form-control" name="title" ng-model="newBulletin.title" placeholder="標題..."/>
+						</div>
+	    				<div class="form-group">
+							<label for="bulletin-detail" class="control-label">詳細說明</label>
+							<textarea class="form-control" rows="3" ng-model="newBulletin.detail" placeholder="說明..."></textarea>
+						</div>
+	    				<!-- <div class="form-group">
+							<label for="bulletin-type" class="control-label">類型</label>
+							<select class="form-control" ng-model="newBulletin.image" name="image" >
+								<option value="notify_notify_icon">公告</option>
+								<option value="notify_event_icon">活動</option>
+								<option value="notify_shop_icon">團購</option>
+								<option value="notify_reservation_icon">預約</option>
+							</select>
+						</div>-->
+	    				<!-- <div class="form-group" ng-controller="myCtrl">
+							<label for="bulletin-image" class="control-label">公告圖片</label>
+							<input id="bulletinPic" type="file" file-model="myFile" title="add picture" />
+							<button class="btn btn-default btn-lg" ng-click="uploadFile()"></button>
+						</div> -->
+						<div class="form-group" ng-controller="uploader">
+							<label for="bulletin-image" class="control-label">公告圖片</label>
+							<input type="file" file-input="files" />
+							<button class="btn btn-default btn-danger pull-right" ng-click="upload()">新增照片</button>
+						</div>
+						<div class="pull-right">
+							<button class="btn btn-default btn-primary" ng-click="addBulletin(newBulletin)" style="margin-left: 5px;" ng-disabled="isProcessing">新增公告</button>
+							<!-- <button class="btn btn-default btn-primary" ng-click="addBulletin()" >add Simple Bulletin</button> -->
+							<!-- <button class="btn btn-default btn-primary" ng-click="showImageid()" >show</button>--> 
+						</div>
+	    			</form>
+	    		</div>
+	    	</div>
+	    	<div class="col-lg-10">
+	    		<div class="bulletin-list-table">
+					<table class="table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 20%">標題</th>
+					            <th style="text-align: center; width: 70%">詳細內容</th>
+					            <th style="text-align: center; width: 10%">圖片</th>
+					    </thead>
+					    <tbody class="bulletin-list bulletin-list" >
+					    	<tr class="bulletinListItem" ng-repeat="item in bulletins | orderBy:'id':true ">
+					    		<td style="text-align: left;">{{item.title}}</td>
+					    		<td style="text-align: left;">{{item.detail}}</td>
+					    		<td style="text-align: left; height: 50px;" ng-repeat="images in item.imageDetails"><img style="height: 100%;" ng-src="{{images.url}}" /></td>
+					    </tbody>
+					</table>
+				</div>
+	    	</div>
+  		</tab>
+  		<tab heading="私訊管理">
+  			<div class="col-lg-2">
+	    		<div class="add-bulletin-wrap bulletin-form-wrap">
+	    			<form class="form-horizontal">
+	    				<div class="form-group">
+		    				<label for="mail-sender" class="control-label">住戶</label>
+							<select class="form-control" name="building" ng-model="buildingId" ng-options="buildItem.name for buildItem in buildings | orderBy:'name':false " ng-change="getHousehold(buildingId.id)">
+								<option value="">-- 大樓 --</option>
+		                        <input value="{{buildingId.id}}" style="display:none;" />
+							</select>
+							<!-- <input ng-show="buildingId=='0'" type="text" placeholder="111111">
+							<input ng-show="buildingId=='1'" type="text" placeholder="222222"> -->
+							<select class="form-control" ng-model="newPrivateBulletin.number" name="number">
+								<option value="">-- 號 --</option>
+		                        <option value="1">1</option>
+		                        <option value="2">2</option>
+		                        <option value="3">3</option>
+		                        <option value="4">4</option>
+		                        <option value="5">5</option>
+		                        <!-- <option value="5">5</option>
+		                        <option value="6">6</option>
+		                        <option value="7">7</option>
+		                        <option value="8">8</option>
+		                        <option value="9">9</option>
+		                        <option value="10">10</option>
+		                        <option value="11">11</option>
+		                        <option value="12">12</option>
+		                        <option value="13">13</option>
+		                        <option value="14">14</option> -->
+							</select>
+							<!-- <select class="form-control" ng-model="newPrivateBulletin.floor" name="floor" ng-show="buildingId=='2'">
+								<option value="">-- 樓 --</option>
+		                        <option value="1">1</option>
+		                        <option value="2">2</option>
+		                        <option value="3">3</option>
+		                        <option value="4">4</option>
+		                        <option value="5">5</option>
+		                        <option value="6">6</option>
+		                        <option value="7">7</option>
+		                        <option value="8">8</option>
+		                        <option value="9">9</option>
+		                        <option value="10">10</option>
+		                        <option value="11">11</option>
+							</select> -->
+							<select class="form-control" ng-model="householdId" ng-options="houseitem.floor for houseitem in households | filter: {number: newPrivateBulletin.number} | orderBy:'number':false " ng-hide="newPrivateBulletin.number==''">
+								<option value="">-- 樓 --</option>
+	                       		<input value="{{householdId.id}}" style="display:none;" />
+							</select>
+	    				</div>
+	    				<div class="form-group">
+							<label for="bulletin-title" class="control-label">標題</label>
+							<input class="form-control" name="title" ng-model="newPrivateBulletin.title" placeholder="標題..."/>
+						</div>
+	    				<div class="form-group">
+							<label for="bulletin-detail" class="control-label">內容</label>
+							<textarea class="form-control" rows="3" ng-model="newPrivateBulletin.detail" placeholder="內容..."></textarea>
+						</div>
+						<div class="form-group" ng-controller="uploader">
+							<label for="bulletin-image" class="control-label">公告圖片</label>
+							<input type="file" file-input="files" />
+							<button class="btn btn-default btn-danger pull-right" ng-click="upload()">新增照片</button>
+						</div>
+						<div class="pull-right">
+							<button class="btn btn-default btn-primary" ng-click="addPrivateBulletin(newPrivateBulletin, householdId.id)" style="margin-left: 5px;" ng-disabled="isProcessing">新增私訊</button>
+						</div>
+	    			</form>
+	    		</div>
+	    	</div>
+	    	<div class="col-lg-10">
+	    		<div class="bulletin-list-table">
+					<table class="table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 20%">住戶</th>
+					            <th style="text-align: center; width: 20%">標題</th>
+					            <th style="text-align: center; width: 60%">詳細內容</th>
+					            <th style="text-align: center; width: 10%">圖片</th>
+					    </thead>
+					    <tbody class="bulletin-list private-bulletin-list" >
+					    	<tr class="bulletinListItem" ng-repeat="item in privateBulletins | orderBy:'bulletins.id':true ">
+					    		<td style="text-align: left;">{{item.description}} {{item.floorNum}}</td>
+					    		<td style="text-align: left;">{{item.bulletins.title}}</td>
+					    		<td style="text-align: left;">{{item.bulletins.detail}}</td>
+					    		<td style="text-align: left; height: 50px;" ng-repeat="images in item.bulletins.imageDetails"><img style="height: 100%;" ng-src="{{images.url}}" /></td>
+					    	</tr>
+					    </tbody>
+					</table>
+				</div>
+	    	</div>
+  		</tab>
+  	</tabset>
+</div>

@@ -1,0 +1,240 @@
+<div class="popup-layout guest-popup col-lg-12" controller="GuestController">
+	<tabset>
+	    <tab>
+	    	<tab-heading><span>{{today | date:'yyyy-MM-dd'}}</span></tab-heading>
+	    	<!-- 	    	<div class="add-guest-wrap guest-form-wrap col-lg-2" ng-controller="addGuestController"> -->
+				<div class="add-guest-wrap guest-form-wrap col-lg-4">
+		    	<form class="form-horizontal" name="guestForm" novalidate>
+		    		<div class="col-lg-6">
+		    			<div class="form-group">
+							<label for="guest-cardNumber-title" class="control-label">訪客卡號</label>
+							<input class="form-control" name="cardNumber" ng-model="newGuest.cardNumber" placeholder="訪客卡.."/>
+						</div>
+			    		<div class="form-group">
+				    		<label for="guest-host-id" class="control-label guest-household">住戶</label>
+							<!-- <select class="form-control" ng-model="defaultHostId" ng-options="toitem.floorNum for toitem in households">
+		                        <input id="addGuestHostId"  ng-value="{{defaultHostId.id}}" style="display: none; " />
+							</select> -->
+							<select class="form-control" name="building" ng-model="buildingId" ng-options="buildItem.name for buildItem in buildings | orderBy:'name':false " ng-change="getHousehold(buildingId.id)">
+								<option value="">-- 大樓 --</option>
+		                        <input value="{{buildingId.id}}" style="display: none;" />
+							</select>
+							<select class="form-control select-form" ng-model="newGuest.numberHost" name="number" >
+								<option value="">-- 樓 --</option>
+		                        <option value="1">1</option>
+		                        <option value="2">2</option>
+		                        <option value="3">3</option>
+		                        <option value="4">4</option>
+		                        <option value="5">5</option>
+							</select>
+							<select class="form-control select-form" ng-model="defaultHostId" ng-options="hostitem.floor for hostitem in households | filter: {number: newGuest.numberHost} | orderBy:'floor':false " ng-hide="newGuest.numberHost==''">
+								<option value="">-- 號 --</option>
+		                        <input id="addSenderType" value="{{defaultHostId.id}}" style="display: none; " />
+							</select>
+			    		</div>
+			    		<div class="form-group">
+							<label for="guest-name-title" class="control-label">訪客姓名</label>
+							<input id="addGuestName" class="form-control" name="name" ng-model="newGuest.name" placeholder="Input name for guest"/>
+						</div>
+			    		<div class="form-group">
+							<label for="guest-reason-title" class="control-label">拜訪事由</label>
+							<textarea id="addGuestReason" class="form-control" name="reason" ng-model="newGuest.reason" rows="1" placeholder="Input reason for visit"></textarea>
+						</div>
+			    		<div class="form-group" ng-controller="GuestDateController">
+							<label for="guest-date-title" class="control-label">拜訪時間</label>
+							<div class="datepicker row">
+						        <div class="col-md-12">
+						            <p class="input-group">
+						              <input type="text" class="form-control" datepicker-popup="{{format}}" ng-model="newGuest.pickday" is-open="opened" min-date="minDate" max-date="'2020-12-31'" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+						              <span class="input-group-btn">
+						                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+						              </span>
+						            </p>
+						        </div>
+						    </div>
+						    <div class="timepicker">
+						    	<timepicker ng-model="newGuest.picktime" ng-change="changed()" hour-step="hstep" minute-step="mstep"></timepicker>
+						    </div>
+						</div>
+		    		</div>
+		    		<div class="col-lg-6">
+		    			<div class="form-group">
+							<label for="guest-idNumber-title" class="control-label">身份字號</label>
+							<input id="addGuestIdentity" class="form-control" name="idNumber" ng-model="newGuest.idNumber" placeholder="Input ID number of guest"/>
+						</div>
+			    		<div class="form-group">
+							<label for="guest-phone-title" class="control-label">聯絡電話</label>
+							<input id="addGuestPhone" class="form-control" name="phone" ng-model="newGuest.phone" placeholder="Input phone number of guest"/>
+						</div>
+			    		<div class="form-group">
+			    			<div class="control-left pull-left">
+			    				<label for="guest-gender-title" class="control-label">性別</label>
+								<select id="addGuestGender" class="form-control" ng-model="newGuest.gender">
+		        					<option value="male">男</option>
+		        					<option value="female">女</option>
+		        				</select>
+			    			</div>
+			    			<!-- <div class="control-right pull-right">
+								<label for="guest-parkSpace-title" class="control-label">停車位</label>
+								<input id="addGuestParkSpace" class="form-control" name="parkSpace" ng-model="newGuest.parkSpace" placeholder="Input parkSpace for guest"/>
+			    			</div> -->
+						</div>
+						<div class="form-group" ng-controller="guestImg">
+							<label for="guest-image" class="control-label">訪客圖片</label>
+							<input type="file" file-input="files" />
+							<button class="btn btn-default btn-danger pull-right" ng-click="guestImgUpload()">新增照片</button>
+						</div>
+			    		<div class="form-group">
+							<label for="guest-worker-title" class="control-label">廠商</label>
+							<input id="addGuestWorker" type="checkbox" name="worker" ng-model="newGuest.worker"/>
+							<label for="guest-arrive-title" class="control-label">已到達</label>
+							<input id="addGuestArrive" type="checkbox" name="arrive" ng-model="newGuest.arrive"/>
+						</div>
+		    		</div>	
+		    		<div class="col-lg-12">
+		    			<button class="btn btn-default btn-primary pull-right" ng-click="addGuest(newGuest, defaultHostId.id, newGuest.pickday, newGuest.picktime)" ng-disabled="createProcessing">新增</button>
+		    		</div>
+				</form>
+			</div> 
+			<div id="guestList" class="col-lg-8" ng-controller="updateGuestController">
+				<div class="col-lg-12">
+					<input type="text" placeholder="Search..." ng-model="guestSearch" class="form-control" autofocus />
+				</div>
+				<div class="col-lg-12">
+					<div class="guest-wrap">
+						<div ng-repeat="reserveGuest in reserveGuests = (guests | filter: {arrive:'false'} | filter: {exit:'false'})" style="display: none;"></div>
+						<div ng-repeat="arriveGuest in arrivedGuests = (guests | filter: {arrive:'true'} | filter: {exit:'false'})" style="display: none;"></div>
+						<tabset>
+							<tab>
+								<tab-heading><span>未抵達訪客</span>&nbsp;&nbsp;<span class="badge">{{reserveGuests.length}}</span></tab-heading>
+	   							<div class="guest-list-wrap un-arrive">
+									<!-- <label class="control-label">未抵達訪客&nbsp;&nbsp;<span class="badge">{{reserveGuests.length}}</span></label>-->
+									<div class="guest-list-table">
+										<table class="guest-list table table-hover-block">
+											<thead>        
+										        <tr>
+										            <th style="text-align: center; width: 10%">住戶</th>
+										            <th style="text-align: center; width: 10%">訪客</th>
+										            <th style="text-align: center; width: 5%">性別</th>
+										            <th style="text-align: center; width: 10%">拜訪日期</th>
+										            <th style="text-align: center; width: 10%">事由</th>
+										            <!-- <th style="text-align: center; width: 10%">身份證字號</th>
+										            <th style="text-align: center; width: 10%">電話</th> -->
+										            <!-- <th style="text-align: center; width: 5%">預約停車</th> -->
+										            <th style="text-align: center; width: 5%">廠商</th>
+										            <th style="text-align: center; width: 10%">訪客卡</th>
+										            <th style="text-align: center; width: 5%">抵達</th>
+										            <th style="text-align: center; width: 5%">刪除</th>
+										        </tr>
+										    </thead>
+										    <tbody class="guest-list" >
+										    	<tr id="guest{{item.id}}" class="guestListItem" ng-repeat="item in guests | orderBy:'visitDate':false | filter:guestSearch | filter:{arrive: false} | filter:{exit: false}">
+										    		<td style="text-align: center;">{{item.houseHoldDetail.floor}} - {{item.houseHoldDetail.number}}</td>
+										    		<td style="text-align: center;">{{item.name}}</td>
+										    		<td style="text-align: center;">{{item.gender}}</td>
+										    		<td style="text-align: center;"><span>{{item.visitDate | date:'yyyy-MM-dd'}}</span><br/><span>{{item.visitDate | date:'HH:mm'}}</span></td>
+										    		<td style="text-align: center;">{{item.reason}}</td>
+										    		<!-- <td style="text-align: center;">{{item.idNumber}}</td>
+										    		<td style="text-align: center;">{{item.phone}}</td> -->
+										    		<!-- <td style="text-align: center;">{{item.parkSpace}}</td> -->
+										    		<td style="text-align: center;">{{item.worker}}</td>
+										    		<td style="text-align: center;"><input class="form-control" name="phone" ng-model="guestCardid" placeholder="Input card number.."/></td>
+										    		<td style="text-align: center;"><button ng-click="arriveGuest(item.id,item.name,item.reason,item.gender,item.idNumber,item.phone,item.parkSpace,guestCardid)" class="btn btn-small btn-danger" ng-disabled="arriveProcessing">抵達</button></td>
+										    		<td><button ng-click="deleteGuest(item.id)" class="btn btn-small btn-danger" ng-disabled="deleteProcessing">刪除</button></td>
+										    		<!--<input type="checkbox" value="{{item.arrive}}"/>
+										    			<input type="checkbox" value="{{item.exit}}"/>
+										    			<input type="checkbox" value="{{item.worker}}"/> -->
+										    	</tr>
+										    </tbody>
+										</table>
+									</div>
+								</div>
+							</tab>
+	   						<tab>
+								<tab-heading><span>已抵達訪客</span>&nbsp;&nbsp;<span class="badge">{{arrivedGuests.length}}</span></tab-heading>
+	   							<div class="guest-list-wrap arrive">
+					    			<!-- <div ng-repeat="arriveGuest in arrivedGuests = (guests | filter: {arrive:'true'} | filter: {exit:'false'})" style="display: none;"></div> -->
+									<!-- <label class="control-label">已抵達訪客&nbsp;&nbsp;<span class="badge">{{arrivedGuests.length}}</span></label> -->
+									<div class="guest-list-table">
+										<table class="guest-list table table-hover-block">
+											<thead>        
+										        <tr>
+										            <th style="text-align: center; width: 10%">住戶</th>
+										            <th style="text-align: center; width: 10%">訪客</th>
+										            <th style="text-align: center; width: 5%">性別</th>
+										            <th style="text-align: center; width: 10%">抵達時間</th>
+										            <!--  <th style="text-align: center; width: 10%">事由</th>
+										            <th style="text-align: center; width: 10%">身份證字號</th> -->
+										            <th style="text-align: center; width: 10%">電話</th>
+										            <!-- <th style="text-align: center; width: 5%">預約停車</th> -->
+										            <th style="text-align: center; width: 10%">訪客卡</th>
+										            <th style="text-align: center; width: 5%">廠商</th>
+										            <th style="text-align: center; width: 5%">離開</th>
+										            <!-- <th style="text-align: center; width: 5%">刪除</th> -->
+										        </tr>
+										    </thead>
+										    <tbody class="guest-list" >
+										    	<tr id="guestArrive{{item.id}}" class="guestListItem" ng-repeat="item in arriveGuests | orderBy:'visitDate':false | filter:guestSearch | filter:{arrive: true} | filter:{exit: false}">
+										    		<td style="text-align: center;">{{item.houseHoldDetail.floor}} - {{item.houseHoldDetail.number}}</td>
+										    		<td style="text-align: center;">{{item.name}}</td>
+										    		<td style="text-align: center;">{{item.gender}}</td>
+										    		<td style="text-align: center;"><span>{{item.arriveDate | date:'yyyy-MM-dd'}}</span><br/><span>{{item.arriveDate | date:'HH:mm'}}</span></td>
+										    		<!-- <td style="text-align: center;">{{item.reason}}</td>
+										    		<td style="text-align: center;">{{item.idNumber}}</td>-->
+										    		<td style="text-align: center;">{{item.phone}}</td>
+										    		<!-- <td style="text-align: center;">{{item.parkSpace}}</td> -->
+										    		<td style="text-align: center;">{{item.cardNumber}}</td>
+										    		<td style="text-align: center;">{{item.worker}}</td>
+										    		<td style="text-align: center;"><button ng-click="exitGuest(item.id,item.name,item.reason,item.gender,item.idNumber,item.phone,item.parkSpace,item.arrive)" class="btn btn-small btn-danger" ng-disabled="leaveProcessing">離開</button></td>
+										    		<!--<td><button ng-click="deleteGuest(item.id)" class="btn btn-small btn-danger">刪除</button></td> -->
+										    	</tr>
+										    </tbody>
+										</table>
+									</div>
+								</div>
+	   						</tab>
+						<tabset>
+							
+								
+					</div>
+					<!-- <div class="guest-update-wrap">	
+						<section class="guest-update-section">
+							<button class="btn btn-small btn-danger pull-right" ng-click="updateMail(receiver.name)">更新</button>
+						</section>
+					</div>	 -->
+				</div>
+			</div>
+  		</tab>
+  		<tab heading="歷史資料">
+  			<div id="guestHistoryList" class="col-lg-12" ng-controller="updateGuestController">
+				<input type="text" placeholder="Search..." ng-model="guestSearch" class="form-control" autofocus />
+				<table class="guest-list table table-hover-block">
+					<thead>        
+				        <tr>
+				            <th style="text-align: center; width: 10%">住戶</th>
+				            <th style="text-align: center; width: 10%">訪客</th>
+				            <th style="text-align: center; width: 10%">性別</th>
+				            <th style="text-align: center; width: 10%">拜訪日期</th>
+				            <th style="text-align: center; width: 10%">事由</th>
+				            <th style="text-align: center; width: 10%">身份證字號</th>
+				            <th style="text-align: center; width: 10%">電話</th>
+				            <!-- <th style="text-align: center; width: 5%">預約停車</th> -->
+				        </tr>
+				    </thead>
+				    <tbody class="guest-list" >
+				    	<tr class="guestListItem" ng-repeat="item in arriveGuests | orderBy:'visitDate':true | filter:guestSearch | filter:{exit: true}">
+				    		<td style="text-align: center;">{{item.houseHoldDetail.floor}} - {{item.houseHoldDetail.number}}</td>
+				    		<td style="text-align: center;">{{item.name}}</td>
+				    		<td style="text-align: center;">{{item.gender}}</td>
+				    		<td style="text-align: center;">{{item.visitDate | date:'yyyy-MM-dd HH:mm'}}</td>
+				    		<td style="text-align: center;">{{item.reason}}</td>
+				    		<td style="text-align: center;">{{item.idNumber}}</td>
+				    		<td style="text-align: center;">{{item.phone}}</td>
+				    		<!-- <td style="text-align: center;">{{item.parkSpace}}</td> -->
+				    	</tr>
+				    </tbody>
+				</table>
+			</div>
+  		</tab>
+  	</tabset>
+</div>

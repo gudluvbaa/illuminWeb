@@ -1,0 +1,154 @@
+(function() {
+
+	function guestController ($scope, $http) {
+   		$scope.today = new Date();
+   		$http.get(originname + '/households/building/1').success(function(household) {
+   			$scope.households = household;  
+   		});
+   		$http.get(originname + '/guest/building/1').success(function(data) {
+   			$scope.guests = data;
+   		});
+   		$scope.arriveGuest = function (id,name,reason,gender,idNumber,phone,parkSpace) {
+   			alert(id+","+ name+","+ reason+","+ gender +","+ idNumber+","+ phone+","+ parkSpace);
+   			$http.put( originname + '/guest/' + id, {
+				name: name,
+				reason: reason,
+				gender: gender,
+				idNumber: idNumber,
+				phone: phone,
+				parkSpace: parkSpace,
+				arrive: "true"
+			},{
+            	headers: {
+                	'Content-Type': 'application/json'
+               	}
+       		})
+       		.success(function(data) {
+				console.log('Guest Update succeeded');
+				console.log(data);
+             })
+			.error(function(err) {
+				console.log('Guest Update failed');
+				console.log(err);
+            })
+   		};
+   		$scope.exitGuest = function (id,name,reason,gender,idNumber,phone,parkSpace,arrive) {
+   			alert(id+","+ name+","+ reason+","+ gender +","+ idNumber+","+ phone+","+ parkSpace);
+   			$http.put( originname + '/guest/' + id, {
+				name: name,
+				reason: reason,
+				gender: gender,
+				idNumber: idNumber,
+				phone: phone,
+				parkSpace: parkSpace,
+				arrive: arrive,
+				exit: "true"
+			},{
+            	headers: {
+                	'Content-Type': 'application/json'
+               	}
+       		})
+       		.success(function(data) {
+				console.log('Guest Update succeeded');
+				console.log(data);
+             })
+			.error(function(err) {
+				console.log('Guest Update failed');
+				console.log(err);
+            })
+   		};
+   		$scope.deleteGuest = function (gid) {
+   			alert("delete guest: " + gid);
+        	$http.delete(originname + '/guest/' + gid).success(function(data, status, headers, config) {
+        		console.log("delete id: " + gid + " success!");
+        		location.reload();
+        	});
+   		}
+   		
+	};
+
+    illuminApp.controller("guestController", guestController);
+    
+    function addGuestController ($scope, $http) {
+		
+		$scope.toggleMin = function() {
+			$scope.minDate = $scope.minDate ? null : new Date();
+		};
+		$scope.toggleMin();
+		
+		$scope.open = function($event) {
+			$event.preventDefault();
+		    $event.stopPropagation();
+		
+		    $scope.opened = true;
+		};
+		
+		$scope.dateOptions = {
+		    formatYear: 'yy',
+		    startingDay: 1
+		};
+		
+		$scope.formats = ['yyyy-MM-dd', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+		$scope.format = $scope.formats[0];
+		
+		
+		var dt = new Date();
+		var currentMonth =  dt.getMonth() + 1;
+		//$scope.pickday = dt.getFullYear() + '-' + currentMonth + '-' + dt.getDay();
+		$scope.pickday = new Date();
+		$scope.picktime = new Date();
+		$scope.hstep = 1;
+		$scope.mstep = 1;
+		
+		$scope.guestPost = function(newGuest, hostId, datepick, timepick) {
+			var day = datepick.getDay();
+			var month = datepick.getMonth() + 1;
+			var year = datepick.getFullYear();
+			var hours = timepick.getHours();
+			var minutes = timepick.getMinutes();
+			var datepicker = year + '-' + month + '-' + day + ':' + hours + '-' + minutes;
+			console.log("date picker date: " + datepicker + ", gender: " + newGuest.gender);
+			
+			$http.post( originname + '/guest', {
+				name: newGuest.name,
+				reason: newGuest.reason,
+				visitDateFormat: datepicker,
+				gender: newGuest.gender,
+				idNumber: newGuest.idNumber,
+				phone: newGuest.phone,
+				parkSpace: newGuest.parkSpace,
+				arrive: newGuest.arrive,
+				exit: "false",
+				worker: newGuest.worker
+            }, {
+            	headers: {
+                	'Content-Type': 'application/json'
+           		}
+            })
+			.success(function(data) {
+				console.log('add guest succeeded');
+				console.log(data);
+				$http.post( originname + '/household/' + hostId + '/guest/' + data.id, 
+				{
+	            	headers: {
+	                	'Content-Type': 'application/json'
+	           		}
+	            })
+				.success(function(Tdata) {
+					console.log('guest relationship succeeded');
+					//guestController();
+	             })
+				.error(function(Terr) {
+					console.log('guest relationship failed');
+	             })
+             })
+			.error(function(err) {
+				console.log('add guest failed');
+				console.log(err);
+             })
+          };
+		
+	};
+	illuminApp.controller("addGuestController", addGuestController);
+
+})();
