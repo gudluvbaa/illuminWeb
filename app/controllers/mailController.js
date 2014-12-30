@@ -31,14 +31,14 @@
    		});
    		
    		$scope.getHousehold = function (id) {
-   			alert(id);
+   			//alert(id);
    			$http.get(originname + '/households/building/'+id).success(function(household) {
 	   			$scope.households = household;  
 	   		});
    		};
    		
    		$scope.getHouseTohold = function (id) {
-   			alert(id);
+   			//alert(id);
    			$http.get(originname + '/households/building/'+id).success(function(household) {
 	   			$scope.householdsTo = household;  
 	   		});
@@ -148,7 +148,7 @@
 			};
 		};
 		$scope.deletemail = function(mailid) {
-        	alert("delete mail: " + mailid);
+        	//alert("delete mail: " + mailid);
         	$http.delete(originname + '/mail/' + mailid).success(function(data, status, headers, config) {
         		console.log("success!");
         		alert("Mails have been removed.");
