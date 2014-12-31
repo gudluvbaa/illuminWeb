@@ -360,3 +360,95 @@ function getUserMailInMailMng(val){
         }
     });
 }
+
+
+/********************領件**********************/
+function userSearchInMailMngCollect(val) {
+    $("#searchUserMailResult").css("display", "block");
+    getUserMailInMailMngCollect(val);
+	selectUser = val;
+};
+
+function getUserMailInMailMngCollect(val){
+	 $.ajax({
+        type:'GET',
+        url: originname+"/mails/household/barcode/" + val + "/notobtain",
+        //headers: { 'userid': window.localStorage.getItem("LoginId"), 'usertoken':  window.localStorage.getItem("LoginToken") },
+        //data:"stampid="+stampid,
+        success:function(data){
+	       	$("#userTitle").html(data.floor + " - " + data.number);
+			$("#mailManagerHouseId").html(data.id);//Mail Manager HouseId
+			$("#mailManagerTitle").html(data.floor + " - " + data.number);//Mail Manager Title
+        	$("#userAmountMail").html(data.mailDetails.length);
+        	console.log("ajax success");
+        	console.log(data);
+        	$(".user-mail-list").html("");
+        	$(".mail-receiver-section").html("");
+        	for(var i = 0 ; i < data.mailDetails.length ; i++){
+        		//$(".user-mail-list").append(data.floor+', '+data.floor);
+        		$(".user-mail-list").append("<tr class='mail "+ data.mailDetails[i].mailNumber +"'><td style='text-align: center; width: 10%'>" + data.mailDetails[i].mailNumber + "</td><td class='sender-type-" + data.mailDetails[i].deliveryMethod +"' style='text-align: center; width: 5%'></td><td style='text-align: center; width: 5%'>" + data.mailDetails[i].from
+        		 + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].to + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].title + "</td><td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + data.mailDetails[i].id + "'</td></tr>");
+        	}
+        	$(".mail-receiver-section").append("領件者<input id='mailReceiver' type='text' placeholder='Type name for collection' style='border-radius: 4px;'/><button id='mailSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + val + ")'>領取</button><div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");
+        	$(".create-mail-btn").append("<button class='btn btn-default btn-primary pull-right' onclick='createMail(" + data.id + ")'>Create</button>");
+
+			// This is the part where jSignature is initialized.
+			
+			//var $sigdiv = $("#signature").jSignature({'UndoButton':false})
+			$sigdiv_windows = $("#signature").jSignature({'UndoButton':false})
+
+			// All the code below is just code driving the demo. 					
+			var  $tools = $('#tools')
+			, $extraarea = $('#displayarea')
+			, pubsubprefix = 'jSignature.demo.'
+			
+			// var export_plugins = $sigdiv.jSignature('listPlugins','export')
+			// , chops = ['<span><b>Extract signature data as: </b></span><select>','<option value="">(select export format)</option>']
+			// , name
+			// for(var i in export_plugins){
+			// 	if (export_plugins.hasOwnProperty(i)){
+			// 		name = export_plugins[i]
+			// 		chops.push('<option value="' + name + '">' + name + '</option>')
+			// 	}
+			// }
+			// chops.push('</select><span><b> or: </b></span>')
+			
+			// $(chops.join('')).bind('change', function(e){
+			// 	if (e.target.value !== ''){
+			// 		var data = $sigdiv.jSignature('getData', e.target.value)
+			// 		$.publish(pubsubprefix + 'formatchanged')
+			// 		if (typeof data === 'string'){
+			// 			$('textarea', $tools).val(data)
+			// 		} else if($.isArray(data) && data.length === 2){
+			// 			$('textarea', $tools).val(data.join(','))
+			// 			$.publish(pubsubprefix + data[0], data);
+			// 		} else {
+			// 			try {
+			// 				$('textarea', $tools).val(JSON.stringify(data))
+			// 			} catch (ex) {
+			// 				$('textarea', $tools).val('Not sure how to stringify this, likely binary, format.')
+			// 			}
+			// 		}
+			// 	}
+			// }).appendTo($tools)
+			
+			$sigdiv_windows.bind('change', function(e) {
+				$("#mailSumbit").css("display","block");
+				$("#mailSumbit").css("float","right");
+			});
+			
+			$('<input type="button" value="清除" style="color:#000000; float:right">').bind('click', function(e){
+				$sigdiv_windows.jSignature('reset')
+				$("#mailSumbit").css("display","none");
+				$("#mailSumbit").css("float","right");
+			}).appendTo($sigdiv_windows)
+			
+			// $('<div><textarea style="width:100%;height:7em;"></textarea></div>').appendTo($tools)
+						
+
+
+        },
+        error: function(data){
+        }
+    });
+}
