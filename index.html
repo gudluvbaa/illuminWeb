@@ -130,7 +130,7 @@
 		<div>	
 			<div class="col-lg-8">
 				<!-- <div class="col-lg-12 user-search-bar"><input type="text" name="txt" class="form-control" ng-change="openMenuDialogMail()" ng-model="userValue" placeholder="Search User..."  autofocus></div> -->
-				<div class="col-lg-12 user-search-bar"><input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearch(this.value)" placeholder="Search User..."  autofocus></div>
+				<!-- <div class="col-lg-12 user-search-bar"><input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearch(this.value)" placeholder="Search User..."  autofocus></div> -->
 				<div id="calendar"></div>
 				<div id="fullCalModal" class="modal fade">
 				    <div class="modal-dialog">
@@ -147,7 +147,7 @@
 				    </div>
 				</div>
 			</div>
-			<div id="dialog" title="Basic dialog">
+			<!-- <div id="dialog" title="Basic dialog">
 				<div id="tabs">
 					<ul>
 					    <li><a href="#tabs-1">郵件列表</a></li>
@@ -191,8 +191,7 @@
 
 							<input onclick="MailPost()" type="image" src="./img2/Email-icon.png" alt="Add Mail" width="48" height="48" style="float:right">
 							<input onclick="Add()" type="image" src="./img2/Actions-contact-new-icon.png" alt="Add Mail" width="48" height="48" style="float:right">
-							<!--<button onclick="MailPost()" style="color:#000000;float:right">確定送出</button>-->							
-							<!--<button onclick="Add()" style="color:#000000;float:right">新增</button>-->
+
 							<table id="mailReceiverTable" class="mail-list table table-hover-block">
 								<thead>        
 							        <tr>
@@ -203,77 +202,15 @@
 								    <th style="text-align: center; width: 10%">備註</th>
 								    <th style="text-align: center; width: 10%"></th>
 							        </tr>
-								<!--<tr>
-								    <td><input id="stamp_number" name="stamp_number" style="color:#000000"></td>
-								    <td>
-									<select id="stamp_mailDeliveryMethod" class="form-control" name="deliveryMethod" >
-										<option value="locker">寄放</option>
-										<option value="post">代寄</option>
-										<option value="passtoi">轉交</option>
-										<option value="passtoo">轉交(外)</option>
-										<option value="parcel">包裹</option>
-										<option value="certified">掛號</option>
-										<option value="other">其他</option>
-									</select> 
-								    </td>
-								    <td><input id="stamp_from" type="text" id="stamp_from" style="color:#000000"></td>
-								    <td><input id="stamp_to" type="text" id="stamp_to" style="color:#000000"></td>
-								    <td><img src='img2/Math-plus-icon.png' class='btnSave' onclick='Save()'><img src='img2/Math-minus-icon.png' class='btnDelete' onclick='Delete()'></td>
-								</tr>-->
+
 							    </thead>
 							    <tbody id="mailManagerTBody">
 							    </tbody>
 							</table>
-						</div>						
-					    <!--<div>
-					    	<form class="form-horizontal" name="mailForm" novalidate>
-								<div class="form-group">
-									<label for="deliveryMethod" class="control-label">類別</label>
-									<select id="mailDeliveryMethod" class="form-control" name="deliveryMethod" >
-										<option value="locker">寄放</option>
-				                        <option value="post">代寄</option>
-				                        <option value="passtoi">轉交</option>
-				                        <option value="passtoo">轉交(外)</option>
-				                        <option value="parcel">包裹</option>
-				                        <option value="certified">掛號</option>
-				                        <option value="other">其他</option>
-									</select> 
-								</div>
-								<div class="form-group">
-									<label for="mailNumber" class="control-label">信件流水號</label>
-									<input id="mailMailNumber" class="form-control" type="text" name="mailNumber"/>
-								</div>
-								<div class="form-group household-select">
-									<label for="floor" class="control-label">寄件(放)者</label>
-									<select id="mailfloor" class="form-control" name="floor" >
-										<option value="">-- 樓 --</option>
-				                        <option value="2">2</option>
-				                        <option value="3">3</option>
-				                        <option value="4">4</option>
-				                        <option value="5">5</option>
-				                        <option value="6">6</option>
-				                        <option value="7">7</option>
-									</select>
-									<select class="form-control">
-										<option value="">-- 號 --</option>
-									</select>
-									<input id="mailFrom" class="form-control" type="text" name="from" required/>
-								</div>
-								<div class="form-group household-select">
-									<label for="to" class="control-label">收件者</label>
-									<input id="mailTo" class="form-control" type="text" name="to" required />
-								</div>
-								<div class="form-group">
-									<label for="title" class="control-label">備註</label>
-									<input id="mailTitle" class="form-control" name="title" placeholder="Input a title for mail"/>
-								</div>
-								<div class="create-mail-btn"></div>
-							</form> 
-					    </div>
-					</div>-->
+						</div>	
+					</div>
 				</div>
-			</div>
-		</div>
+			</div>-->
 		</div>
 		<div>
 			<div class="col-lg-1">

@@ -29,7 +29,7 @@
   		</tab>
 	    <tab heading="領件">
 	    	<div class="col-lg-12 user-search-bar">
-	    		<input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearchInMailMngCollect(this.value)" placeholder="Search User..."  autofocus>
+	    		<input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearchInMailListMng(this.value)" placeholder="Search User..."  autofocus>
 	    	</div>
 	    	<div id="searchUserMailResult" style="display:none">
 	    		<div class="mail-collect-content">
@@ -61,37 +61,115 @@
 	    	</div>
   		</tab>
   		<tab heading="退件">
-  			
+    		<div class="mail-return-collect-content">
+				<div class="mail-list-search">
+					<div class="col-lg-11">
+						<input id="searchReturnMailCode" class="form-control" type="text" placeholder="信件流水編號.." style="color: #000;"/>
+					</div>
+					<div class="col-lg-1">
+					<button type="button" class="btn btn-primary" onclick="searchReturnMailBtn()">搜尋</button>
+					</div>
+				</div>
+				<div class="return-mail-user-info">
+					<label class="control-label">住戶：</label>
+					<label id="retuenUserTitle" class="control-label"></label>
+				</div>
+				<div class="mail-return-list-table">
+					<table class="mail-return-list table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 20%">郵件編號</th>
+					            <th style="text-align: center; width: 5%">類別</th>
+					            <th style="text-align: center; width: 15%">寄件者</th>
+					            <th style="text-align: center; width: 10%">收件者</th>
+					            <th style="text-align: center; width: 10%">備註</th>
+					            <th style="text-align: center; width: 5%">退件</th>
+					        </tr>
+					    </thead>
+					    <tbody class="user-mail-return-list">
+					    </tbody>
+					</table>
+				</div>
+			</div>
+			<div class="mail-return-section"></div>
   		</tab>
   		<tab heading="查件">
-  			<div id="mailRecordList" class="mail-record-list-wrap col-lg-12">
-				<input type="text" placeholder="Search..." ng-model="mailSearch" class="form-control" autofocus />
-				<table class="mail-record-list table table-hover-block">
-					<thead>        
-				        <tr>
-				            <th style="text-align: center; width: 10%">類別</th>
-				            <th style="text-align: center; width: 15%">收件時間</th>
-				            <th style="text-align: center; width: 15%">交件者</th>
-				            <th style="text-align: center; width: 15%">收件者</th>
-				            <th style="text-align: center; width: 15%">領件者</th>
-				            <th style="text-align: center; width: 15%">領取時間</th>
-				            <th style="text-align: center; width: 15%">標題</th>
-				            <th style="text-align: center; width: 15%">圖片</th>
-				        </tr>
-				    </thead>
-				    <tbody>
-				    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:{complete: true} | filter:mailSearch" >
-				    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
-				    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
-				    		<td style="text-align: center;">{{item.from}}</td>
-				    		<td style="text-align: center;">{{item.to}}</td>
-				    		<td style="text-align: center;">{{item.receiver}}</td>
-				    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
-				    		<td style="text-align: center;">{{item.title}}</td>
-						    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
-				    	</tr>
-				    </tbody>
-				</table>
+  			<div id="mailRecordList" class="col-lg-12">
+  				<div class="col-lg-2">
+  					<select class="form-control" ng-model="mailCollectType">
+						<option value="all">--</option>
+						<option value="collected">已領件</option>
+						<option value="receive">未領件</option>
+						<option value="return">退件</option>
+		    		</select>
+  				</div>
+  				<div class="col-lg-10">
+  					<input type="text" placeholder="Search..." ng-model="mailSearch" class="form-control" autofocus />
+  				</div>
+  				<div class="mail-record-list-wrap col-lg-12">
+					<table class="mail-record-list table table-hover-block">
+						<thead>        
+					        <tr>
+					            <th style="text-align: center; width: 10%">類別</th>
+					            <th style="text-align: center; width: 15%">收件時間</th>
+					            <th style="text-align: center; width: 15%">交件者</th>
+					            <th style="text-align: center; width: 15%">收件者</th>
+					            <!-- <th style="text-align: center; width: 15%">領件者</th> -->
+					            <th style="text-align: center; width: 15%">領取時間</th>
+					            <th style="text-align: center; width: 15%">標題</th>
+					            <th style="text-align: center; width: 15%">圖片</th>
+					        </tr>
+					    </thead>
+					    <tbody ng-show="mailCollectType=='all'">
+					    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:mailSearch" >
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<td style="text-align: center;">{{item.to}}</td>
+					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.title}}</td>
+							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+					    	</tr>
+					    </tbody>
+					    <tbody ng-show="mailCollectType=='collected'">
+					    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:{complete: true} | filter:mailSearch" >
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<td style="text-align: center;">{{item.to}}</td>
+					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.title}}</td>
+							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+					    	</tr>
+					    </tbody>
+					    <tbody ng-show="mailCollectType=='receive'">
+					    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:{complete: false} | filter:{returnMail: false} | filter:mailSearch" >
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<td style="text-align: center;">{{item.to}}</td>
+					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.title}}</td>
+							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+					    	</tr>
+					    </tbody>
+					    <tbody ng-show="mailCollectType=='return'">
+					    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:{returnMail: true} | filter:mailSearch" >
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<td style="text-align: center;">{{item.to}}</td>
+					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td style="text-align: center;">{{item.title}}</td>
+							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+					    	</tr>
+					    </tbody>
+					</table>
+  				</div>
 			</div>
   		</tab>
   	</tabset>	

@@ -20,11 +20,12 @@ table.mail-record-list {
 	width: 100%;
 	margin-top: 10px;
 }
-#mailRecordList.col-lg-12 input {
-	width: 100%;
+#mailRecordList.col-lg-12 input, #mailRecordList.col-lg-12 select {
 	margin-top: 10px;
 }
+
 .mail-record-list-wrap {
+	margin-top: 10px;
 	height: 680px;
 	overflow: auto;
 }
@@ -38,6 +39,20 @@ div.receiver-input-section {
 }
 .receiver-input-wrap input {
 	color: #555555;
+}
+#searchUserMailResult .mail-collect-content .mail-list-table {
+	border: 1px red solid;
+	height: 300px;
+	overflow: auto
+}
+.mail-return-collect-content .mail-list-search{
+	margin-top: 10px;
+} 
+.mail-return-collect-content .mail-return-list-table{
+	margin-top: 10px;
+	border: 1px red solid;
+	height: 300px;
+	overflow: auto
 }
 /***************from type icon******************/
 .sender-type-locker {

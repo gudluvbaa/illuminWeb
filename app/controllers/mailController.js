@@ -1,6 +1,7 @@
 (function() {
 	
 	function MailController ($scope, mailProvider, $modal, $http, $timeout) {
+		$scope.mailCollectType = 'all';
 		$scope.newMail = {};
 		$scope.receiver = {};
 		$scope.mails = [];
