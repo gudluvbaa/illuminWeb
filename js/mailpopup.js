@@ -97,16 +97,18 @@ function getUserMail(val){
         	for(var i = 0 ; i < data.mailDetails.length ; i++){
         		//$(".user-mail-list").append(data.floor+', '+data.floor);
         		$(".user-mail-list").append("<tr class='mail "+ data.mailDetails[i].mailNumber +"'><td style='text-align: center; width: 10%'>" + data.mailDetails[i].mailNumber + "</td><td class='sender-type-" + data.mailDetails[i].deliveryMethod +"' style='text-align: center; width: 5%'></td><td style='text-align: center; width: 5%'>" + data.mailDetails[i].from
-        		 + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].to + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].title + "</td><td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + data.mailDetails[i].id + "'</td></tr>");
+        		 + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].to + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].title + "</td>"
+        		 + "<td style='text-align: center; width: 10%'>" + data.mailDetails[i].complete + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].returnMail + "</td>"
+        		 + "<td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + data.mailDetails[i].id + "'</td></tr>");
         	}
-        	$(".mail-receiver-section").append("<div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");
+        	$(".mail-receiver-section").append("<button id='mailSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + val + ")'>領取</button><div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");
         	/*$(".mail-receiver-section").append("領件者<input id='mailReceiver' type='text' placeholder='Type name for collection' style='border-radius: 4px;'/><button id='mailSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + val + ")'>領取</button><div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");*/
         	/*$(".create-mail-btn").append("<button class='btn btn-default btn-primary pull-right' onclick='createMail(" + data.id + ")'>Create</button>");*/
 
 			// This is the part where jSignature is initialized.
 			
 			//var $sigdiv = $("#signature").jSignature({'UndoButton':false})
-			$sigdiv_windows = $("#signature").jSignature({'UndoButton':false})
+			$sigdiv_windows = $("#signature").jSignature({'UndoButton':false, height:330})
 
 			// All the code below is just code driving the demo. 					
 			var  $tools = $('#tools')
@@ -148,7 +150,7 @@ function getUserMail(val){
 				$("#mailSumbit").css("float","right");
 			});
 			
-			$('<input type="button" value="清除" style="color:#000000; float:right">').bind('click', function(e){
+			$('<input class="btn btn-small btn-primary" type="button" value="清除" style="float:right">').bind('click', function(e){
 				$sigdiv_windows.jSignature('reset')
 				$("#mailSumbit").css("display","none");
 				$("#mailSumbit").css("float","right");
@@ -165,6 +167,7 @@ function getUserMail(val){
 }
 
 function mailReceiverSubmit(userid) {
+	$('#mailSumbit').attr('disabled','disabled');
 	var mailArray=[];
 	var receiver = $('#mailReceiver').val();
 		$('.user-collected:checked').each(function() {
@@ -212,17 +215,17 @@ function updateUserCollected(mailArray, receiver, userid, signature_img) {
 		fd.append( 'receiver', receiver );
 		fd.append( 'image', canvas );
 
-		 $.ajax({
-		   url: originname+'/mails/obtained',
-		   //url: 'http://192.168.0.109:8080/HouseManager/mails/obtained',
-		   data: fd,
-		   processData: false,
-		   contentType: false,
-		   type: 'POST',
-		   success: function(data){		    
-		     alert("信件領取成功");
-		   }
-		 });
+		$.ajax({
+			url: originname+'/mails/obtained',
+			data: fd,
+			processData: false,
+		   	contentType: false,
+		   	type: 'POST',
+		  	success: function(data){		    
+				console.log("信件領取成功");
+		    	getUserMail(userid);
+			}
+		});
 
 	/*for(var i = 0 ; i < mailArray.length ; i++){
 		console.log(mailArray[i]+", "+receiver+", "+userid);
@@ -369,11 +372,14 @@ function userSearchInMailListMng(val) {
 	selectUser = val;
 };
 /************************退件***************************/
-function searchReturnMailBtn() {
+function searchReturnMailBtn(val) {
+    $("#searchReturnMailResult").css("display", "block");
 	$(".user-mail-return-list").html('');
-	var returnBarcode = $('#searchReturnMailCode').val();
+	$(".mail-return-section").html('');
+	var returnBarcode = val;
 	console.log(returnBarcode);
-	var searchRetuenMailArray = [];
+	var searchReturnMailArray = [];
+	var searchReturnMailItem;
 	$.ajax({
         type:'GET',
         url: originname+"/mails",
@@ -381,25 +387,96 @@ function searchReturnMailBtn() {
         	console.log("data is okay!");
         	console.log(data);
         	for(var i = 0 ; i < data.length; i++){
-        		if (data[i].mailNumber == returnBarcode ) {
-        			$("#retuenUserTitle").html(data[i].toHouseHold.floor + " - " + data[i].toHouseHold.number);
-        			console.log(data[i].toHouseHold.floor + " - " + data[i].toHouseHold.number);
-        			searchRetuenMailArray.push(data[i]);
-        			$(".user-mail-return-list").append("<tr class='retuenMail "+ data[i].mailNumber +"'><td style='text-align: center; width: 10%'>" + data[i].mailNumber + "</td><td class='sender-type-" + data[i].deliveryMethod +"' style='text-align: center; width: 5%'></td><td style='text-align: center; width: 5%'>" + data[i].from
-        		 + "</td><td style='text-align: center; width: 10%'>" + data[i].to + "</td><td style='text-align: center; width: 10%'>" + data[i].title + "</td><td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + data[i].id + "'</td></tr>");
+        		if (data[i].complete === false && data[i].returnMail === false) {
+        			console.log(data[i]);
+        			if (data[i].mailNumber == returnBarcode ) {
+	        			$("#returnUserTitle").html(data[i].toHouseHold.floor + " - " + data[i].toHouseHold.number);
+	        			console.log(data[i].toHouseHold.floor + " - " + data[i].toHouseHold.number);
+	        			searchReturnMailArray.push(data[i]);
+	        			searchReturnMailItem = data[i];
+	        			$(".user-mail-return-list").append("<tr class='returnMail "+ data[i].mailNumber +"'><td style='text-align: center; width: 10%'>" + data[i].mailNumber + "</td><td class='sender-type-" + data[i].deliveryMethod +"' style='text-align: center; width: 5%'></td><td style='text-align: center; width: 5%'>" + data[i].from
+	        		 + "</td><td style='text-align: center; width: 10%'>" + data[i].to + "</td><td style='text-align: center; width: 10%'>" + data[i].title + "</td><td style='text-align: center; width: 10%'><input class='user-return-collected' type='checkbox' value='" + data[i].id + "'</td></tr>");
+	        		}
+	        		console.log(searchReturnMailArray);
+	        		appendSearchReturnMailList (searchReturnMailArray);        	
         		}
-        		console.log(searchRetuenMailArray);
-        		appendSearchRetuenMailList (searchRetuenMailArray);
         	}
+        	console.log("this is mail and id : ");
+        	console.log(searchReturnMailItem.toHouseHold.id);
+        	$(".mail-return-section").append("<button id='mailReturnSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReturnSubmit(" + searchReturnMailItem.toHouseHold.id + ")'>退件</button><div id='content'><div id='returnsignatureparent'><div id='returnsignature'></div>	</div><div id='tools'></div></div>");
+        	$sigdiv_windows = $("#returnsignature").jSignature({'UndoButton':false, height:330})
+
+			// All the code below is just code driving the demo. 					
+			var  $tools = $('#returntools')
+			, $extraarea = $('#returndisplayarea')
+			, pubsubprefix = 'jSignature.demo.'
+			
+			$sigdiv_windows.bind('change', function(e) {
+				$("#mailReturnSumbit").css("display","block");
+				$("#mailReturnSumbit").css("float","right");
+			});
+			
+			$('<input class="btn btn-small btn-primary" type="button" value="清除" style="float:right">').bind('click', function(e){
+				$sigdiv_windows.jSignature('reset')
+				$("#mailReturnSumbit").css("display","none");
+				$("#mailReturnSumbit").css("float","right");
+			}).appendTo($sigdiv_windows)
         },
         error: function(data){
         }
     });
 }
-function appendSearchRetuenMailList (searchRetuenMailArray) {
+function mailReturnSubmit(uid) {
+	var returnMailId = $('.user-return-collected:checked').val();
+	//alert(returnMailId);
+	var datapair = $sigdiv_windows.jSignature("getData", "svgbase64");
+	var signature_img = new Image();
+	signature_img.src = "data:" + datapair[0] + "," + datapair[1];
+	updateUserCollectedReturn(returnMailId, signature_img, uid);
+	$('#mailReturnSumbit').attr('disabled','disabled');
+}
+function updateUserCollectedReturn (returnMailId, signature_img, uid) {
+	var canvas = $(".jSignature").get(0).toDataURL("image/png");
+	var fd = new FormData();    
+	fd.append( 'image', canvas );
+	
+	console.log(canvas);
+	$.ajax({
+		url: originname+'/household/'+ uid + '/mailto/' + returnMailId,
+		data: fd,
+	  	processData: false,
+	   	contentType: false,
+	   	type: 'DELETE',
+	   	success: function(data){		    
+			console.log("relation 信件退件成功");
+			$.ajax({
+			   	url: originname+'/mail/' + returnMailId + '/return',
+			   	data: fd,
+			   	processData: false,
+			   	contentType: false,
+			   	type: 'POST',
+			   	success: function(data){		    
+			   		alert("信件退件成功");
+		   			$("#returnUserTitle").html("");
+		   			$(".user-mail-return-list").remove();
+		   			$(".mail-return-section").remove();
+			   	},
+			   	error: function(data){		    
+			    	alert("信件退件失敗");
+			   	}
+			});
+	   },
+	   error: function(data){		    
+	     	console.log("relation 信件退件失敗");
+	   }
+	});
+};
+
+function appendSearchReturnMailList (searchReturnMailArray) {
 	$('#searchReturnMailCode').val('');
-	$(".retuenMail").css("background-color","transparent");
-	for(var i = 0 ; i < searchRetuenMailArray.length ; i++){
-		$(".retuenMail."+searchRetuenMailArray[i].mailNumber+" input[type=checkbox]").prop("checked", true);
+	$(".returnMail").css("background-color","transparent");
+	for(var i = 0 ; i < searchReturnMailArray.length ; i++){
+		$(".returnMail."+searchReturnMailArray[i].mailNumber).css("background-color","#d9534f");
+		$(".returnMail."+searchReturnMailArray[i].mailNumber+" input[type=checkbox]").prop("checked", true);
 	}
 }

@@ -144,6 +144,9 @@ function AddInMailMng(){
 }; 
 
 function MailPostInMailMng(){
+	$('#addmailweap').prop('disabled', true);
+	$('#addmailweap').css('opacity','0.4');
+	opacity: 0.5;
 	var titleList = [];
 	var deliveryMethodList = [];
 	var fromList = [];
@@ -199,7 +202,11 @@ function MailPostInMailMng(){
 		  type: 'POST',
 		  success: function(data){
 		    $("#mailReceiverTable tbody tr").remove();
+		    $("#userSearchBar").val('');
 		    alert("信件建檔完畢");
+		    
+			$('#addmailweap').prop('disabled', false);
+			$('#addmailweap').css('opacity','1');
 		  }
 		});
 	    	
