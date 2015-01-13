@@ -1,5 +1,4 @@
-	
-	var $sigdiv_windows;
+var $sigdiv_windows;
 
 $(function() {
 	$( "#tabs" ).tabs();

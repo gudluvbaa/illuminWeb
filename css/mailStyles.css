@@ -99,3 +99,8 @@ div.receiver-input-section {
 	background-repeat: no-repeat;
 	background-position: center;
 }
+/*****************************/
+.user-search-bar input#userSearchBar {
+	font-size: 3em;
+	height: 100px;
+}
