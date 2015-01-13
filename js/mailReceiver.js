@@ -166,16 +166,21 @@ function MailPostInMailMng(){
 	    console.log(formUser);
 	    console.log(psText);
 	    
+	    //alert("deliveryMethod" + deliveryMethod);
 	    if(mailNumber != undefined && deliveryMethod != undefined && toUser != undefined && formUser != undefined && psText != undefined){    	
 		mailNumberList.push(mailNumber);		
 //		deliveryMethodList.push(deliveryMethod);
 		switch(deliveryMethod){
 			case '包裹':
-				deliveryMethodList.push('parcel');		
+				deliveryMethodList.push('parcel');	
+			break;	
 			case '掛號':
 				deliveryMethodList.push('certified');
+			break;	
 			case '其他':
 				deliveryMethodList.push('other');
+			break;	
+			
 		}
 		toList.push(toUser);
 		fromList.push(formUser);
@@ -184,14 +189,17 @@ function MailPostInMailMng(){
 		
 	   
 	 });
-
-	if(mailNumberList.length != 0 && deliveryMethodList.length != 0 && toList.length != 0 && fromList.length != 0 && titleList.length != 0){				
+	console.log("deliveryMethodList");
+	console.log(deliveryMethodList);
+	console.log(mailNumberList);
+	
+	if(mailNumberList.length != 0 && deliveryMethodList.length != 0 ){				
 		var fd = new FormData();    
-			fd.append( 'title', titleList );
-			fd.append( 'deliveryMethod', deliveryMethodList );
-			fd.append( 'from', fromList );
-			fd.append( 'to', toList );
-			fd.append( 'mailNumber', mailNumberList );
+			//fd.append( 'title', titleList );
+			fd.append( 'deliveryMethod', 'parcel' );
+			//fd.append( 'from', fromList );
+			//fd.append( 'to', toList );
+			fd.append( 'mailNumber', 'jfoiwejf555' );
 			fd.append( 'houseid', $('#mailtoHouseId').html());
 
 		$.ajax({
@@ -209,8 +217,9 @@ function MailPostInMailMng(){
 			$('#addmailweap').css('opacity','1');
 		  }
 		});
+
 	    	
-	    }else{
+	}else{
 		    	alert("表格沒填完")
 	}
 
