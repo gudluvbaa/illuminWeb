@@ -76,6 +76,7 @@ function userSearch(val) {
     $(".create-mail-btn").html("");
 	$("#userSearchBar").val("");
 	selectUser = val;
+	
 };
 
 function getUserMail(val){
@@ -326,6 +327,8 @@ function userSearchInMailMng(val) {
     $("#searchResult").css("display", "block");
     getUserMailInMailMng(val);
 	selectUser = val;
+    $(".user-search-bar").css( "display", "none" );
+    // alert("wejoif");
 };
 
 function getUserMailInMailMng(val){
