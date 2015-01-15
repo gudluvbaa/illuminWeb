@@ -40,11 +40,12 @@
 					<label class="control-label">住戶：</label>
 					<label id="userTitle" class="control-label"></label>
 					<label class="control-label">共<span id="userAmountMail" class="user-amount-mail">0</span>信件</label>
+					<input id="addmailcollectweap" onclick="mailListCollectInMailMng()" type="image" src="./img2/Email-icon.png" alt="Add Mail" width="auto" height="75" style="float:right">
 					<div class="mail-list-search">
 						<input id="searchMailCode" type="text" class="form-control" onchange="selectMailCollect(this.value)" placeholder="信件流水編號.."  autofocus/>
 						<!-- <button type="button" class="btn btn-primary" onclick="searchMailBtn()">搜尋</button> -->
 					</div>
-					<div class="col-lg-12 create-field">
+					<div class="col-lg-12 add-collect-field">
 						<div class="col-lg-6 left-mail-field">
 							<div class="mail-list-table">
 								<table class="mail-list table table-hover-block">
@@ -69,9 +70,7 @@
 							<table class="col-lg-12">
 								<thead>
 									<tr>
-										<th class="col-lg-3">類別</th>
-										<th class="col-lg-6">信件編號</th>
-										<th class="col-lg-3">領取</th>
+										<th>信件編號</th>
 									</tr>
 								</thead>
 								<tbody id="collectMailList">
@@ -81,7 +80,7 @@
 					</div>
 						
 				</div>
-				<!-- <div class="mail-receiver-section"></div> -->
+				<div class="mail-receiver-section" style="display: none;"></div>
 	    	</div>
   		</tab>
   		<tab heading="退件">

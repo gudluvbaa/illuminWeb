@@ -277,19 +277,19 @@ var selectNewMailBarcode;
 function searchMailTypeCodeInput(val) {
 	var method;
 	var methodFormat;
-	if (val === "073239993" || val === "073239994" || val === "073239995" ){
+	if (val === "775975465" || val === "51732505" || val === "198825586" ){
 		switch (val) {
-			case '073239993' :
+			case '775975465' :
 				method = "parcel";	
 				methodFormat = "包裹";
 				toaddmailbarcode(method, methodFormat);	
 				break;
-			case '073239994' :
+			case '51732505' :
 				method = "certified";	
 				methodFormat = "掛號";
 				toaddmailbarcode(method, methodFormat);	
 				break;
-			case '073239995' :
+			case '198825586' :
 				method = "other";	
 				methodFormat = "其他";
 				toaddmailbarcode(method, methodFormat);	
@@ -307,12 +307,17 @@ function toaddmailbarcode(method, methodFormat) {
     "<span>郵件類別: </span><span>" + methodFormat + "</span></p></div>"+
     "<labe>郵件編號</label><input id='poststamp_number' type='text'/ style='color:#000000' class='form-control' onchange='togetmailbarcode(this.value)' placeholder='請輸入郵件編號...'/>");
 	console.log("step2: " + method);
-	
+	$("#searchMailTypeCode").blur();
+	$("#poststamp_number").focus();
 }
 function prestagemailmethod() {
 	$(".left-mail-field div.add-mail-type-setion").css("display", "block");
 	$(".left-mail-field div.add-mail-number-setion").html("");
 	$("#searchMailTypeCode").val("");
+	
+	$("#searchMailTypeCode").focus();
+	$("#poststamp_number").blur();
+	$("#userSearchBarInput").blur();
 }
 function togetmailbarcode(val) {
 	selectNewHouseid = $('#mailtoHouseId').html();
@@ -341,6 +346,8 @@ function togetmailbarcode(val) {
 	$(".left-mail-field div.add-mail-type-setion").val("0");
 	$("#searchMailTypeCode").val("");
 	countMailAddAmount();
+	$("#searchMailTypeCode").focus();
+	$("#poststamp_number").blur();
 }
 function countMailAddAmount(){
 	$("#mailquantity").html($('.left-mail-table table tbody tr').length);
