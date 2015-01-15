@@ -237,8 +237,8 @@ li.todo-history.active{
 	background-color: #d9534f;
 	color: #ffffff;
 	padding: 5px 10px;
-	margin-left: 3px;
-	margin-right: 3px;
+	margin-left: 10px;
+	margin-right: 10px;
 }
 .popup-content .table.mail-list {
 	color: #fff;

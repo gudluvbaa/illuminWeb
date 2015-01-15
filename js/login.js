@@ -5,8 +5,12 @@ var keyStr = "ABCDEFGHIJKLMNOP" +
              "=";
 function userlogin() {
 	//alert ("user login");
-	var userID = "user1:1234";	
+	
+	var id = $('#userLoginId').val();
+	var pw = $('#userLoginPassword').val();
+	var userID = id + ":" + pw;	
 	encode64(userID);
+	console.log("userid------> "+ userID);
 }
 
 function encode64(userID) {
@@ -50,7 +54,7 @@ function encode64(userID) {
 function getUserToken (output) {
 	$.ajaxSetup({
 		beforeSend: function (xhr){
-	        xhr.setRequestHeader("Authorization",  "Basic dXNlcjE6MTIzNA==");
+	        xhr.setRequestHeader("Authorization",  "Basic " + output);
 	   }
 	});
 	var fd = new FormData();    
@@ -61,7 +65,7 @@ function getUserToken (output) {
 			fd.append( 'client_secret', '1234' );
 			fd.append( 'client_id', 'user1' );
 	$.ajax({
-        url: originname + "/oauth/token",
+        url: originname + "/login/getToken",
 		data: fd,
 		processData: false,
 		contentType: false,
@@ -70,6 +74,10 @@ function getUserToken (output) {
         {
         	console.log("success...");
 			console.log(data);
+			var obj = jQuery.parseJSON( data );
+			console.log(obj);
+			console.log("access_token: " + obj.access_token);
+			window.localStorage.setItem("Authorization", obj.access_token);
         },
         error: function(error)
         {
@@ -77,6 +85,14 @@ function getUserToken (output) {
 			console.log(error);
         }
   	});
+}
+function getAuthorization () {
+	alert(window.localStorage.getItem("Authorization"));
+}
+/*function getAuthorization() {
+	alert(window.localStorage.getItem("Authorization"));
+}*/
+
 	/*$.ajaxSetup({
 		beforeSend: function (xhr){
 	        xhr.setRequestHeader("Authorization",  "bearer aa8fa09d-bfb5-4fee-8e32-b29a945493ee");
@@ -101,5 +117,3 @@ function getUserToken (output) {
 			console.log("error!!!!!!");
         }
    });*/
-
-}

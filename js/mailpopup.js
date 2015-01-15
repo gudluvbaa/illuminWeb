@@ -339,10 +339,12 @@ function getUserMailInMailMng(val){
         type:'GET',
         url: originname+"/mails/household/barcode/" + val + "/notobtain",
         success:function(data){
+        	$(".left-mail-field").html("");
 	       	$("#housefloornumber").html(data.floor + " - " + data.number);
         	$("#mailtoHouseId").html(data.id);
-        	$(".left-mail-field").append("<div class='add-mail-type-setion'><select id='poststamp_mailDeliveryMethod'/ class='form-control'/ name='deliveryMethod' onchange='toaddmailbarcode(this.value)'><option value='0'>郵件類型</option><option value='parcel'>包裹</option><option value='certified'>掛號</option><option value='other'>其他</option></select></div>");
-			
+        	$(".left-mail-field").append("<div class='add-mail-type-setion' style='display: block;' ><labe>郵件類型</label><input id='searchMailTypeCode' type='text' name='txt' class='form-control' onchange='searchMailTypeCodeInput(this.value)' placeholder='請輸入郵件類別...'  autofocus />" +
+        	//"<select id='poststamp_mailDeliveryMethod'/ class='form-control'/ name='deliveryMethod' onchange='toaddmailbarcode(this.value)'><option value='0'>郵件類型</option><option value='parcel'>包裹</option><option value='certified'>掛號</option><option value='other'>其他</option></select>
+        	"</div><div class='add-mail-number-setion'></div>");	
         },
         error: function(data){
         }
@@ -356,8 +358,9 @@ function userSearchInMailListMng(val) {
     getUserMail(val);
 	selectUser = val;
 };
+
 /************************退件***************************/
-function searchReturnMailBtn(val) {
+function searchReturnMailInput(val) {
     $("#searchReturnMailResult").css("display", "block");
 	$(".user-mail-return-list").html('');
 	$(".mail-return-section").html('');
@@ -472,4 +475,5 @@ function prestagefinduser() {
 	$("#userSearchResult").css("display", "none");
 	$(".left-mail-field").html("");
 	$("#userSearchBar").val("");
+	$("#addMailList").html("");
 }

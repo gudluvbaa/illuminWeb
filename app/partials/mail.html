@@ -1,15 +1,15 @@
 <div class="popup-layout mail-popup col-lg-12" controller="MailController">
 	<tabset>
 		<tab heading="收件">
-			<div class="col-lg-12 user-search-bar"><input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearchInMailMng(this.value)" placeholder="請輸入住戶編號..."  autofocus /></div>
+			<div class="col-lg-12 user-search-bar"><input id="userSearchBarInput" type="text" name="txt" class="form-control" onchange="userSearchInMailMng(this.value)" placeholder="請輸入住戶編號..." autofocus/></div>
 			<div id="userSearchResult" style="display:none">
 				<div class="popup-content">
-					<input class="control-label" onclick="prestagefinduser()" type="image" src="./img2/pre.png" alt="Add Mail" width="auto" height="75"/>
+					<input class="control-label" onclick="prestagefinduser()" type="image" src="./img2/pre2.png" alt="Add Mail" width="auto" height="75"/>
 					<label class="control-label">住戶：</label>
 					<span id="mailtoHouseId" class="control-label" style="display:none;"></span>
 					<span id="housefloornumber" class="control-label"></span>
 					<label class="control-label"> 共<span id="mailquantity" class="user-amount-mail">0</span>信件</label>
-					<input id="addmailweapbtn" onclick="MailListPostInMailMng()" type="image" src="./img2/Email-icon.png" alt="Add Mail" width="auto" height="75" style="float:right">
+					<input id="addmailweapbtn" onclick="mailListPostInMailMng()" type="image" src="./img2/Email-icon.png" alt="Add Mail" width="auto" height="75" style="float:right">
 					<div class="col-lg-12 create-field">
 						<div class="col-lg-6 left-mail-field">
 							
@@ -95,7 +95,7 @@
   		</tab>
   		<tab heading="退件">
 			<div class="mail-list-search col-lg-12">
-				<input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailBtn(this.value)" placeholder="請輸入郵件編號..."  autofocus>
+				<input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailInput(this.value)" placeholder="請輸入郵件編號..."  autofocus>
 				<!-- <div class="col-lg-11">
 					<input id="searchReturnMailCode" class="form-control" type="text" placeholder="信件流水編號.." style="color: #000;"/>
 				</div>

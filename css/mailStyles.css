@@ -104,6 +104,10 @@ div.receiver-input-section {
 	font-size: 3em;
 	height: 85px;
 }
+#searchMailTypeCode {
+	font-size: 1em;
+	height: 85px;
+}
 #userSearchBar {
 	font-size: 3em;
 	height: 85px;
@@ -120,9 +124,6 @@ div.receiver-input-section {
 }
 .create-field {
 	margin-top: 10px;
-}
-.col-lg-6.left-mail-field {
-	border: 1px red solid;
 }
 .col-lg-6.left-mail-table {
 	border: 1px #5e5e5e solid;
