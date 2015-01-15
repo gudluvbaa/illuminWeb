@@ -41,7 +41,7 @@ div.receiver-input-section {
 	color: #555555;
 }
 #searchUserMailResult .mail-collect-content .mail-list-table {
-	height: 300px;
+	height: 550px;
 	overflow: auto
 }
 .mail-return-list-table{
@@ -104,7 +104,7 @@ div.receiver-input-section {
 	font-size: 3em;
 	height: 85px;
 }
-#searchMailTypeCode {
+#searchMailTypeCode, #searchMailCode {
 	font-size: 1em;
 	height: 85px;
 }
@@ -113,6 +113,9 @@ div.receiver-input-section {
 	height: 85px;
 }
 #userSearchResult  {
+	font-size: 3em;
+}
+#searchUserMailResult  {
 	font-size: 3em;
 }
 .left-mail-field .add-mail-type-setion select, .left-mail-field .add-mail-number-setion input{
@@ -127,6 +130,8 @@ div.receiver-input-section {
 }
 .col-lg-6.left-mail-table {
 	border: 1px #5e5e5e solid;
+	height: 550px;
+	overflow: auto;
 }
 .col-lg-6.left-mail-table tbody tr:nth-child(odd){
 	background-color: rgba(255, 255, 255, 0.1);

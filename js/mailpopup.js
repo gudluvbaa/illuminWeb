@@ -273,9 +273,30 @@ function createMail(uid) {
 	});*/
 }
 
+function selectMailCollect(val){
+	var barcode = val;
+	console.log(barcode+". " + selectUser);
+	var searchMailArray = [];
+	$.ajax({
+        type:'GET',
+        url: originname+"/mails/household/barcode/" + selectUser + "/notobtain",
+        success:function(data){
+        	console.log("data is okay!");
+        		console.log(data);
+        	for(var i = 0 ; i < data.mailDetails.length; i++){
+        		if (data.mailDetails[i].mailNumber == barcode ) {
+        			searchMailArray.push(data.mailDetails[i]);
+        		}
+        		console.log(searchMailArray);
+        	}
+        	appendSearchMailList(searchMailArray);
+        },
+        error: function(data){
+        }
+    });
+}
 
-
-function searchMailBtn() {
+/*function searchMailBtn() {
 	var barcode = $('#searchMailCode').val();
 	console.log(barcode+". " + selectUser);
 	var searchMailArray = [];
@@ -292,21 +313,21 @@ function searchMailBtn() {
         			searchMailArray.push(data.mailDetails[i]);
         		}
         		console.log(searchMailArray);
-        		/*$('#searchMailCode').val('');
-				$(".user-mail-list").html("");
-				$(".mail-receiver-section").html("");*/
-				/*for(var i = 0 ; i < searchMailArray.length ; i++){
-					$(".user-mail-list").append("<tr><td style='text-align: center; width: 10%'>" + searchMailArray[i].mailNumber + "</td><td class='sender-type-" + searchMailArray[i].deliveryMethod +"' style='text-align: center; width: 5%'></td><td style='text-align: center; width: 5%'>" + searchMailArray[i].from
-					 + "</td><td style='text-align: center; width: 10%'>" + searchMailArray[i].to + "</td><td style='text-align: center; width: 10%'>" + searchMailArray[i].title + "</td><td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + searchMailArray[i].id + "'</td></tr>");
-				}
-				$(".mail-receiver-section").append("領件者<input id='mailReceiver' type='text' placeholder='Type name for collection' style='border-radius: 4px;'/><button class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + selectUser + ")'>更新</button>");*/
+        		///$('#searchMailCode').val('');
+				//$(".user-mail-list").html("");
+				//$(".mail-receiver-section").html("");
+				//for(var i = 0 ; i < searchMailArray.length ; i++){
+				//	$(".user-mail-list").append("<tr><td style='text-align: center; width: 10%'>" + searchMailArray[i].mailNumber + "</td><td class='sender-type-" + searchMailArray[i].deliveryMethod +"' style='text-align: center; width: 5%'></td><td style='text-align: center; width: 5%'>" + searchMailArray[i].from
+				//	 + "</td><td style='text-align: center; width: 10%'>" + searchMailArray[i].to + "</td><td style='text-align: center; width: 10%'>" + searchMailArray[i].title + "</td><td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + searchMailArray[i].id + "'</td></tr>");
+				//}
+				//$(".mail-receiver-section").append("領件者<input id='mailReceiver' type='text' placeholder='Type name for collection' style='border-radius: 4px;'/><button class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + selectUser + ")'>更新</button>");
         	}
         	appendSearchMailList(searchMailArray);
         },
         error: function(data){
         }
     });
-}
+}*/
 function appendSearchMailList (searchMailArray) {
 	$('#searchMailCode').val('');
 	$(".mail").css("background-color","transparent");
@@ -351,13 +372,48 @@ function getUserMailInMailMng(val){
     });
 }
 
+
+/*************************mail managment******************************/
 /************************領件***************************/
 function userSearchInMailListMng(val) {
     $("#searchUserMailResult").css("display", "block");
     $(".user-search-bar #userCollectSearchBar").css("display", "none");
-    getUserMail(val);
+    //getUserMail(val);
+    getSelectUserMails(val);
 	selectUser = val;
 };
+function getSelectUserMails(val){
+	$.ajax({
+		type:'GET',
+        url: originname+"/mails/household/barcode/" + val + "/notobtain",
+        success:function(data){
+        	$("#userTitle").html(data.floor + " - " + data.number);
+			$("#mailManagerHouseId").html(data.id);//Mail Manager HouseId
+			$("#mailManagerTitle").html(data.floor + " - " + data.number);//Mail Manager Title
+        	$("#userAmountMail").html(data.mailDetails.length);
+        	console.log("ajax success");
+        	console.log(data);
+        	$(".user-mail-list").html("");
+        	$(".mail-receiver-section").html("");
+        	for(var i = 0 ; i < data.mailDetails.length ; i++){
+        		$(".user-mail-list").append("<tr class='mail "+ data.mailDetails[i].mailNumber +"'><td style='text-align: center; width: 10%'>" + data.mailDetails[i].mailNumber + "</td><td class='sender-type-" + data.mailDetails[i].deliveryMethod +"' style='text-align: center; width: 5%'></td>"
+        		// + "<td style='text-align: center; width: 5%'>" + data.mailDetails[i].from
+        		// + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].to + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].title + "</td>"
+        		// + "<td style='text-align: center; width: 10%'>" + data.mailDetails[i].complete + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].returnMail + "</td>"
+        		+ "<td class='collectMailList" + data.mailDetails[i].id + "' style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + data.mailDetails[i].id + "' onchange='selectCollectMail(" + data.mailDetails[i].id + ")'/></td></tr>");
+        	}
+        }
+	});
+}
+
+function selectCollectMail(val) {
+	if($('.collectMailList' + val + ' .user-collected').prop('checked')) {
+	    alert(val);
+	} else {
+	    alert("0000");
+	}
+}
+
 
 /************************退件***************************/
 function searchReturnMailInput(val) {

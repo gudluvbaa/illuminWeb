@@ -299,22 +299,6 @@ function searchMailTypeCodeInput(val) {
 		alert("請輸入正確郵件類別");
 		$("#searchMailTypeCode").val("");
 	}
-	/*if (val === "073239993") {
-		//alert("包裹: " + val);
-		$("#poststamp_mailDeliveryMethod").val("parcel");
-		method = "parcel";
-		toaddmailbarcode(method);
-	} if (val === "073239994") {
-		//alert("掛號: " + val);
-		$("#poststamp_mailDeliveryMethod").val("certified");
-		method = "certified";
-		toaddmailbarcode(method);
-	} if (val === "073239995") {
-		//alert("其他: " + val);
-		$("#poststamp_mailDeliveryMethod").val("other");
-		method = "other";
-		toaddmailbarcode(method);
-	} */
 }
 function toaddmailbarcode(method, methodFormat) {
 	selectNewMailMethod = method;
