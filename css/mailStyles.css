@@ -100,7 +100,36 @@ div.receiver-input-section {
 	background-position: center;
 }
 /*****************************/
-.user-search-bar input#userSearchBar {
+#userSearchBarInput, #userCollectSearchBar {
 	font-size: 3em;
-	height: 100px;
+	height: 85px;
+}
+#userSearchBar {
+	font-size: 3em;
+	height: 85px;
+}
+#userSearchResult  {
+	font-size: 3em;
+}
+.left-mail-field .add-mail-type-setion select, .left-mail-field .add-mail-number-setion input{
+	font-size: 1em;
+	height: 85px;	
+}
+.left-mail-table table{
+	font-size: 1em;
+}
+.create-field {
+	margin-top: 10px;
+}
+.col-lg-6.left-mail-field {
+	border: 1px red solid;
+}
+.col-lg-6.left-mail-table {
+	border: 1px #5e5e5e solid;
+}
+.col-lg-6.left-mail-table tbody tr:nth-child(odd){
+	background-color: rgba(255, 255, 255, 0.1);
+}
+img.btnDelete {
+	height: 50px;
 }

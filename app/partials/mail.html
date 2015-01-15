@@ -1,27 +1,32 @@
 <div class="popup-layout mail-popup col-lg-12" controller="MailController">
 	<tabset>
 		<tab heading="收件">
-			<div class="col-lg-12 user-search-bar"><input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearchInMailMng(this.value)" placeholder="Search User..."  autofocus /></div>
-			<div id="searchResult" style="display:none">
+			<div class="col-lg-12 user-search-bar"><input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearchInMailMng(this.value)" placeholder="請輸入住戶編號..."  autofocus /></div>
+			<div id="userSearchResult" style="display:none">
 				<div class="popup-content">
-					<div class="col-lg-12">
-						<label class="control-label">住戶：</label>
-						<span id="mailtoHouseId" class="control-label" style="display:none;"></span>
-						<span id="housefloornumber" class="control-label"></span>
-						<label class="control-label"> 共<span id="mailquantity" class="user-amount-mail">0</span>信件</label>
-					</div>
-					<div class="col-lg-12">
-						<div class="col-lg-6 mail-field" style="border: 1px red solid; height: 400px;">
-							<label class="control-label">信件類別：</label>
-							<div>
-								<select id="stamp_mailDeliveryMethod" class="form-control" name="deliveryMethod" >
-									<option value="parcel">包裹</option>
-									<option value="certified">掛號</option>
-									<option value="other">其他</option>
-								</select>
-							</div>
+					<input class="control-label" onclick="prestagefinduser()" type="image" src="./img2/pre.png" alt="Add Mail" width="auto" height="75"/>
+					<label class="control-label">住戶：</label>
+					<span id="mailtoHouseId" class="control-label" style="display:none;"></span>
+					<span id="housefloornumber" class="control-label"></span>
+					<label class="control-label"> 共<span id="mailquantity" class="user-amount-mail">0</span>信件</label>
+					<input id="addmailweapbtn" onclick="MailListPostInMailMng()" type="image" src="./img2/Email-icon.png" alt="Add Mail" width="auto" height="75" style="float:right">
+					<div class="col-lg-12 create-field">
+						<div class="col-lg-6 left-mail-field">
+							
 						</div>
-						<div class="col-lg-6">right</div>
+						<div class="col-lg-6 left-mail-table">
+							<table class="col-lg-12">
+								<thead>
+									<tr>
+										<th class="col-lg-3">類別</th>
+										<th class="col-lg-6">信件編號</th>
+										<th class="col-lg-3">取消</th>
+									</tr>
+								</thead>
+								<tbody id="addMailList">
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>					
@@ -55,7 +60,7 @@
   		</tab> -->
 	    <tab heading="領件">
 	    	<div class="col-lg-12 user-search-bar">
-	    		<input id="userSearchBar" type="text" name="txt" class="form-control" onchange="userSearchInMailListMng(this.value)" placeholder="Search User..."  autofocus>
+	    		<input id="userCollectSearchBar" type="text" name="txt" class="form-control" onchange="userSearchInMailListMng(this.value)" placeholder="請輸入住戶編號..."  autofocus>
 	    	</div>
 	    	<div id="searchUserMailResult" style="display:none">
 	    		<div class="mail-collect-content">
@@ -90,7 +95,7 @@
   		</tab>
   		<tab heading="退件">
 			<div class="mail-list-search col-lg-12">
-				<input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailBtn(this.value)" placeholder="搜尋"  autofocus>
+				<input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailBtn(this.value)" placeholder="請輸入郵件編號..."  autofocus>
 				<!-- <div class="col-lg-11">
 					<input id="searchReturnMailCode" class="form-control" type="text" placeholder="信件流水編號.." style="color: #000;"/>
 				</div>
@@ -133,20 +138,20 @@
 		    		</select>
   				</div>
   				<div class="col-lg-10">
-  					<input type="text" placeholder="Search..." ng-model="mailSearch" class="form-control" autofocus />
+  					<input type="text" placeholder="請輸入關鍵字......" ng-model="mailSearch" class="form-control" autofocus />
   				</div>
   				<div class="mail-record-list-wrap col-lg-12">
 					<table class="mail-record-list table table-hover-block">
 						<thead>        
 					        <tr>
 					            <th style="text-align: center; width: 5%">類別</th>
-					            <th style="text-align: center; width: 10%">barcode</th>
+					            <th style="text-align: center; width: 10%">郵件編號</th>
 					            <th style="text-align: center; width: 15%">收件時間</th>
-					            <th style="text-align: center; width: 15%">交件者</th>
+					            <!-- <th style="text-align: center; width: 15%">交件者</th>
 					            <th style="text-align: center; width: 15%">收件者</th>
-					            <!-- <th style="text-align: center; width: 15%">領件者</th> -->
+					            <th style="text-align: center; width: 15%">領件者</th> -->
 					            <th style="text-align: center; width: 15%">領件時間</th>
-					            <th style="text-align: center; width: 15%">標題</th>
+					            <!-- <th style="text-align: center; width: 15%">標題</th> -->
 					            <th style="text-align: center; width: 15%">領件/退件簽名</th>
 					        </tr>
 					    </thead>
@@ -155,11 +160,11 @@
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<!-- <td style="text-align: center;">{{item.from}}</td>
 					    		<td style="text-align: center;">{{item.to}}</td>
-					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.title}}</td>
+					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 					    	</tr>
 					    </tbody>
@@ -168,11 +173,11 @@
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<!-- <td style="text-align: center;">{{item.from}}</td>
 					    		<td style="text-align: center;">{{item.to}}</td>
-					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.title}}</td>
+					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 					    	</tr>
 					    </tbody>
@@ -181,11 +186,11 @@
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<!-- <td style="text-align: center;">{{item.from}}</td>
 					    		<td style="text-align: center;">{{item.to}}</td>
-					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.title}}</td>
+					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 					    	</tr>
 					    </tbody>
@@ -194,11 +199,11 @@
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.from}}</td>
+					    		<!-- <td style="text-align: center;">{{item.from}}</td>
 					    		<td style="text-align: center;">{{item.to}}</td>
-					    		<!-- <td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
-					    		<td style="text-align: center;">{{item.title}}</td>
+					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 					    	</tr>
 					    </tbody>

@@ -146,7 +146,6 @@ function AddInMailMng(){
 function MailPostInMailMng(){
 	$('#addmailweap').prop('disabled', true);
 	$('#addmailweap').css('opacity','0.4');
-	opacity: 0.5;
 	var titleList = [];
 	var deliveryMethodList = [];
 	var fromList = [];
@@ -234,7 +233,8 @@ function MailPostInMailMng(){
 function DeleteInMailMng(){ 
 	var par = $(this).parent().parent(); 
 	par.remove(); 
-	CountMailTableInMailMng();
+	// CountMailTableInMailMng();
+	countMailAddAmount();
 }; 
 
 function SaveInMailMng(){ 
@@ -269,3 +269,124 @@ function CountMailTableInMailMng(){
 	//minute one cause title name
 	$("#mailquantity").html($('#mailReceiverTable tr').length-2);
 }
+
+/*************************divid several section***************************/
+var selectNewHouseid;
+var selectNewMailMethod;
+var selectNewMailBarcode;
+function toaddmailbarcode(val) {
+	selectNewMailMethod = val;
+	$(".left-mail-field div.add-mail-type-setion").css("display", "none");
+    $(".left-mail-field").append("<div class='add-mail-number-setion'><input id='poststamp_number' type='text'/ style='color:#000000' class='form-control' onchange='togetmailbarcode(this.value)' /></div>");
+	console.log("step2");
+}
+function togetmailbarcode(val) {
+	selectNewHouseid = $('#mailtoHouseId').html();
+	selectNewMailBarcode = val;
+	var methodFormat;
+	$(".left-mail-field div.add-mail-number-setion").css("display", "none");
+	$(".left-mail-field").append("<div>" + selectNewHouseid + "</div><div>" + selectNewMailMethod + "</div><div>" + selectNewMailBarcode + "</div>");
+	switch (selectNewMailMethod) {
+		case 'parcel' :
+			methodFormat = "包裹";		
+			break;
+		case 'certified' :
+			methodFormat = "掛號";
+			break;
+		case 'other' :
+			methodFormat = "其他";
+			break;
+	}
+	$("#addMailList").append("<tr>"+ 
+		"<td class='col-lg-3' id='addstamp_mailDeliveryMethod'>"+ methodFormat +"</td>"+ 
+		"<td class='col-lg-6' id='addstamp_number'>"+ selectNewMailBarcode +"</td>"+  
+		"<td class='col-lg-3' ><img src='img2/Email-Delete-icon.png' class='btnDelete'/></td>"+ 
+		"</tr>");
+	$(".btnDelete").bind("click", DeleteInMailMng);
+	$(".left-mail-field div.add-mail-type-setion").css("display", "block");
+	$(".left-mail-field div.add-mail-type-setion").val("0");
+	countMailAddAmount();
+}
+function countMailAddAmount(){
+	$("#mailquantity").html($('.left-mail-table table tbody tr').length);
+	var amount = $('.left-mail-table table tbody tr').length;
+	if (amount > 0 ) {
+		$('#addmailweapbtn').prop('disabled', false);
+		$('#addmailweapbtn').css('opacity','1');
+	} else {
+		$('#addmailweapbtn').prop('disabled', true);
+		$('#addmailweapbtn').css('opacity','0.4');
+	}
+}
+function MailListPostInMailMng(){
+	$('#addmailweapbtn').prop('disabled', true);
+	$('#addmailweapbtn').css('opacity','0.4');
+	
+	var deliveryMethodList = [];
+	var mailNumberList = [];
+	
+	$('#addMailList tr').each(function() {
+		var mailNumber = $(this).find("#addstamp_number").html();
+	    var deliveryMethod = $(this).find("#addstamp_mailDeliveryMethod").html(); 
+	    console.log(mailNumber);
+	    console.log(deliveryMethod);
+	    mailNumberList.push(mailNumber);
+	    switch(deliveryMethod){
+			case '包裹':
+				deliveryMethodList.push('parcel');	
+			break;	
+			case '掛號':
+				deliveryMethodList.push('certified');
+			break;	
+			case '其他':
+				deliveryMethodList.push('other');
+			break;	
+			
+		}
+		console.log(deliveryMethodList);
+		console.log(mailNumberList);
+		// todoclearupcreatesection();
+	});
+	/*if(mailNumberList.length != 0 && deliveryMethodList.length != 0 ){	
+		$.ajaxSetup({
+			beforeSend: function (xhr){
+		        xhr.setRequestHeader("Authorization",  "bearer aa8fa09d-bfb5-4fee-8e32-b29a945493ee");
+		    }
+		});			
+		var fd = new FormData();    
+			fd.append( 'deliveryMethod', 'parcel' );
+			fd.append( 'mailNumber', 'jfoiwejf555' );
+			fd.append( 'houseid', $('#mailtoHouseId').html());
+
+		$.ajax({
+		  url: originname+'/mails',
+		  data: fd,
+		  processData: false,
+		  contentType: false,
+		  type: 'POST',
+		  success: function(data){
+		    $("#mailReceiverTable tbody tr").remove();
+		    $("#userSearchBar").val('');
+		    alert("信件建檔完畢");
+		    
+			$('#addmailweap').prop('disabled', false);
+			$('#addmailweap').css('opacity','1');
+		  }
+		});
+
+	    	
+	}else{
+		    	alert("表格沒填完")
+	}*/
+}
+function todoclearupcreatesection() {
+    $(".user-search-bar #userSearchBarInput").css("display", "block");
+	$("#userSearchBarInput").val("");
+	$("#userSearchResult").css("display", "none");
+	$(".left-mail-field").html("");
+	$("#addMailList").html("<span>0</span>");
+	$("#mailquantity").html("");
+	$('#addmailweapbtn').prop('disabled', false);
+	$('#addmailweapbtn').css('opacity','1');
+}
+

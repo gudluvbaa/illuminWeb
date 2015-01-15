@@ -1,4 +1,5 @@
-var $sigdiv_windows;
+	
+	var $sigdiv_windows;
 
 $(function() {
 	$( "#tabs" ).tabs();
@@ -66,7 +67,7 @@ $(function() {
 
 });
 var selectUser;
-
+/***************front-part*******************/
 function userSearch(val) {
     //alert("The input value has changed. The new value is: " + val);
     $( "#dialog" ).dialog( "open" );
@@ -75,10 +76,9 @@ function userSearch(val) {
     //getUserName(val);
     $(".create-mail-btn").html("");
 	$("#userSearchBar").val("");
+	$("#userSearchBarInput").val("");
 	selectUser = val;
-	
 };
-
 function getUserMail(val){
     $.ajax({
         type:'GET',
@@ -325,10 +325,13 @@ function appendSearchMailList (searchMailArray) {
 
 function userSearchInMailMng(val) {
     $("#searchResult").css("display", "block");
+    $("#userSearchResult").css("display", "block");
+    $(".user-search-bar #userSearchBarInput").css("display", "none");
+	$('#addmailweapbtn').prop('disabled', true);
+	$('#addmailweapbtn').css('opacity','0.4');
     getUserMailInMailMng(val);
 	selectUser = val;
-    $(".user-search-bar").css( "display", "none" );
-    // alert("wejoif");
+	console.log("step1");
 };
 
 function getUserMailInMailMng(val){
@@ -338,29 +341,8 @@ function getUserMailInMailMng(val){
         success:function(data){
 	       	$("#housefloornumber").html(data.floor + " - " + data.number);
         	$("#mailtoHouseId").html(data.id);
-        	/*$(".user-mail-list").html("");
-        	$(".mail-receiver-section").html("");
-        	$(".mail-receiver-section").append("領件者<input id='mailReceiver' type='text' placeholder='Type name for collection' style='border-radius: 4px;'/><button id='mailSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + val + ")'>領取</button><div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");
-        	$(".create-mail-btn").append("<button class='btn btn-default btn-primary pull-right' onclick='createMail(" + data.id + ")'>Create</button>");
-
-			$sigdiv_windows = $("#signature").jSignature({'UndoButton':false})
-		
-			var  $tools = $('#tools')
-			, $extraarea = $('#displayarea')
-			, pubsubprefix = 'jSignature.demo.'
+        	$(".left-mail-field").append("<div class='add-mail-type-setion'><select id='poststamp_mailDeliveryMethod'/ class='form-control'/ name='deliveryMethod' onchange='toaddmailbarcode(this.value)'><option value='0'>郵件類型</option><option value='parcel'>包裹</option><option value='certified'>掛號</option><option value='other'>其他</option></select></div>");
 			
-			
-			$sigdiv_windows.bind('change', function(e) {
-				$("#mailSumbit").css("display","block");
-				$("#mailSumbit").css("float","right");
-			});
-			
-			$('<input type="button" value="清除" style="color:#000000; float:right">').bind('click', function(e){
-				$sigdiv_windows.jSignature('reset')
-				$("#mailSumbit").css("display","none");
-				$("#mailSumbit").css("float","right");
-			}).appendTo($sigdiv_windows)*/
-
         },
         error: function(data){
         }
@@ -370,6 +352,7 @@ function getUserMailInMailMng(val){
 /************************領件***************************/
 function userSearchInMailListMng(val) {
     $("#searchUserMailResult").css("display", "block");
+    $(".user-search-bar #userCollectSearchBar").css("display", "none");
     getUserMail(val);
 	selectUser = val;
 };
@@ -481,4 +464,12 @@ function appendSearchReturnMailList (searchReturnMailArray) {
 		$(".returnMail."+searchReturnMailArray[i].mailNumber).css("background-color","#d9534f");
 		$(".returnMail."+searchReturnMailArray[i].mailNumber+" input[type=checkbox]").prop("checked", true);
 	}
+}
+
+function prestagefinduser() {
+	$(".user-search-bar #userSearchBarInput").css("display", "block");
+	$("#userSearchBarInput").val("");
+	$("#userSearchResult").css("display", "none");
+	$(".left-mail-field").html("");
+	$("#userSearchBar").val("");
 }
