@@ -188,8 +188,8 @@
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 							    <td style="text-align: center; width: 15%;">
 							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
-							    		<button class="btn btn-primary false">退件</button>
-							    		<button class="btn btn-primary true">取消退件</button>
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)">取消退件</button>
 							    	</div>
 							    </td>
 					    	</tr>
@@ -209,8 +209,8 @@
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 							    <td style="text-align: center; width: 15%;">
 							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
-							    		<button class="btn btn-primary false">退件</button>
-							    		<button class="btn btn-primary true">取消退件</button>
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)">取消退件</button>
 							    	</div>
 							    </td>
 					    	</tr>
@@ -230,8 +230,8 @@
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 							    <td style="text-align: center; width: 15%;">
 							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
-							    		<button class="btn btn-primary false">退件</button>
-							    		<button class="btn btn-primary true">取消退件</button>
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)">取消退件</button>
 							    	</div>
 							    </td>
 					    	</tr>

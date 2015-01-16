@@ -368,6 +368,9 @@ function userSearchInMailMng(val) {
 	$('#addmailweapbtn').css('opacity','0.4');
 	$('#mailquantity').html('0');
 	
+	$('#housefloornumber').html("");
+	$('#mailtoHouseId').html("");
+	
     getUserMailInMailMng(val);
 	selectUser = val;
 	console.log("step1");
