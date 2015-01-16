@@ -366,6 +366,8 @@ function userSearchInMailMng(val) {
     $(".user-search-bar #userSearchBarInput").css("display", "none");
 	$('#addmailweapbtn').prop('disabled', true);
 	$('#addmailweapbtn').css('opacity','0.4');
+	$('#mailquantity').html('0');
+	
     getUserMailInMailMng(val);
 	selectUser = val;
 	console.log("step1");
@@ -398,10 +400,23 @@ function getUserMailInMailMng(val){
 /*************************mail managment******************************/
 /************************領件***************************/
 var collecthid;
+var houseNo;
 function userSearchInMailListMng(val) {
+	$(".mail-list-search2").css("display", "block");
+	$(".add-collect-field").css("display", "block");
+	$(".mail-collect-content").css("display", "block");
+	
     $("#searchUserMailResult").css("display", "block");
     $(".user-search-bar #userCollectSearchBar").css("display", "none");
-    //getUserMail(val);
+    $(".collection-mail-header").css("display", "block");
+	$('#addmailcollectweapBtn').prop('disabled', true);
+	$('#addmailcollectweapBtn').css('opacity','0.4');
+	
+    $("#userTitle").html("");
+	$("#mailManagerHouseId").html("");
+	$("#mailManagerTitle").html("");
+	$("#userAmountMail").html("");
+
     getSelectUserMails(val);
 	selectUser = val;
 };
@@ -420,6 +435,7 @@ function getSelectUserMails(val){
 			$("#mailManagerTitle").html(data.floor + " - " + data.number);//Mail Manager Title
         	$("#userAmountMail").html(data.mailDetails.length);
         	collecthid = data.id;
+        	houseNo = data.floor + " - " + data.number;
         	console.log("ajax success");
         	console.log(data);
         	$(".user-mail-list").html("");
@@ -438,16 +454,34 @@ function getSelectUserMails(val){
 
 function selectCollectMailCheck(val, mailnumber) {
 	if($('.collectMailList' + val + ' .user-collected').prop('checked')) {
-		$('#collectMailList').append("<tr id='collectId"+ val +"'><td id='addcollect_id'>" + val + "</td><td>" + mailnumber + "</td></tr>");   
+		$('#collectMailList').append("<tr id='collectId"+ val +"'>"
+		+ "<td id='addcollect_id' style='display: none'>" + val + "</td>"
+		+ "<td id='addcollect_mailNo'>" + mailnumber + "</td></tr>");  
+		countCollectMails ();
 	} else {
 	    $('#collectId' + val).remove(); 
+	    countCollectMails ();
+	}
+}
+function countCollectMails () {
+	//$("#mailquantity").html($('.left-collect-table table tbody#collectMailList tr').length);
+	var mailAmount = $('.left-collect-table table tbody#collectMailList tr').length;
+	if (mailAmount > 0 ) {
+		$('#addmailcollectweapBtn').prop('disabled', false);
+		$('#addmailcollectweapBtn').css('opacity','1');
+	} else {
+		$('#addmailcollectweapBtn').prop('disabled', true);
+		$('#addmailcollectweapBtn').css('opacity','0.4');
 	}
 }
 var collectNumberList = [];
+var collectMailNumberList = [];
 function mailListCollectInMailMng () {
 	$('#collectMailList tr').each(function() {
-		var mailNumber = $(this).find("#addcollect_id").html();
-		collectNumberList.push(mailNumber);
+		var mailId = $(this).find("#addcollect_id").html();
+		var mailNumber = $(this).find("#addcollect_mailNo").html();
+		collectNumberList.push(mailId);
+		collectMailNumberList.push(mailNumber);
 		console.log(collectNumberList, collecthid);
 	});
 	if(collectNumberList.length != 0){	
@@ -459,8 +493,9 @@ function mailListCollectInMailMng () {
 function getSignature (collecthid){
 	console.log("collectNumberList+collecthid");
 	console.log(collectNumberList+ ", "+collecthid);
-	$(".mail-list-search").css("display", "none");
+	$(".mail-list-search2").css("display", "none");
 	$(".add-collect-field").css("display", "none");
+	$(".mail-collect-content").css("display", "none");
 	$(".mail-receiver-section").css("display", "block");
 	$(".mail-receiver-section").append("<button id='mailSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReceiverCollectSubmit(" + collecthid + ")'>領取</button><div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");
 
@@ -486,31 +521,55 @@ function getSignature (collecthid){
 function mailReceiverCollectSubmit(userid) {
 	$('#mailSumbit').attr('disabled','disabled');
 	
+	$(".mail-collect-confirm").css("display", "block");
+	$(".mail-collect-confirm").html("");
 	var datapair = $sigdiv_windows.jSignature("getData", "svgbase64") 
 	var signature_img = new Image();
 	signature_img.src = "data:" + datapair[0] + "," + datapair[1]	
 
 	checkCollectedInfo(userid, signature_img);
 	console.log(userid + ", " + datapair);
-	
+	$(".mail-collect-confirm").css("display", "block");
 	
 };
 function checkCollectedInfo(userid, signature_img) {
 	var canvas = $(".jSignature").get(0).toDataURL("image/png");
 	
 	$(".mail-receiver-section").css("display","none");
-	$("#searchUserMailResult").append("<div class='check-mail-lst-table'><table><thead><tr><th>信件編號</th></tr></thead><tbody id='check_mail_list'></tbody></table><div><img src='" + canvas + "'></div></div>"
-	+ "<button id='mailCheckSubBtn' class='btn btn-small btn-danger' onclick='mailUpdateCollectedBtn(" + collecthid +")'>領取</button>");
+	$("#searchUserMailResult .mail-collect-confirm").append("<div class='col-lg-12 mail-collect-confirm-wrap'><h4>" + houseNo + " 郵件 共 <span id='amountColMails'></span> 件</h4><div class='col-lg-6 check-mail-list-table'><table><thead><tr><th>信件編號</th></tr></thead><tbody id='check_mail_list'></tbody></table></div><div class='col-lg-6 check-signature-img'><h4>簽名</h4><img src='" + canvas + "'/></div></div>"
+	+ "<button id='mailCheckSubBtn' class='btn btn-small btn-primary pull-right' onclick='mailUpdateCollectedBtn(" + collecthid +")'>確定</button>"
+	+ "<button id='mailCheckCancelBtn' class='btn btn-small btn-danger pull-right' onclick='mailCancelCollectedBtn()'>取消</button>");
 	
-    for(var i = 0 ; i < collectNumberList.length ; i++){
-		$("#check_mail_list").append("<tr><td>" + collectNumberList[i] + "</td></tr>");
-    }
+	getConfirmMailListTablt ();
+    
 	console.log(canvas);
+}
+function getConfirmMailListTablt () {
+	
+	$('#mailCheckSubBtn').prop('disabled', false);
+	$('#mailCheckSubBtn').css('opacity','1');
+	$('#mailCheckCancelBtn').prop('disabled', false);
+	$('#mailCheckCancelBtn').css('opacity','1');
+	
+	$(".check_mail_list").html("");
+	for(var i = 0 ; i < collectNumberList.length ; i++){
+		$("#check_mail_list").append("<tr><td>" + collectMailNumberList[i] + "</td></tr>");
+		countColMailsAmout ();
+    }
+}
+function countColMailsAmout () {
+	$("#amountColMails").html("");
+	var mailColAmount = $('#check_mail_list tr').length;
+	$("#amountColMails").html(mailColAmount);
 }
 
 function mailUpdateCollectedBtn(hid) {
 	var canvas = $(".jSignature").get(0).toDataURL("image/png");
 	console.log(hid+", "+ collectNumberList);
+	$('#mailCheckSubBtn').prop('disabled', true);
+	$('#mailCheckSubBtn').css('opacity','0.4');
+	$('#mailCheckCancelBtn').prop('disabled', true);
+	$('#mailCheckCancelBtn').css('opacity','0.4');
 	var fd = new FormData();    
 		fd.append( 'mailid', collectNumberList );
 		fd.append( 'receiver', hid );
@@ -527,12 +586,17 @@ function mailUpdateCollectedBtn(hid) {
 		   	contentType: false,
 		   	type: 'POST',
 		  	success: function(data){		    
-				console.log("信件領取成功");
+				alert("信件領取成功");
+				mailCancelCollectedBtn();
 			}
 		});
 
 };
-
+function mailCancelCollectedBtn() {
+	collectNumberList = [];
+	$(".mail-collect-confirm").css("display", "none");
+	prestagefinduserCol();
+}
 /************************退件***************************/
 function searchReturnMailInput(val) {
     $("#searchReturnMailResult").css("display", "block");
@@ -654,5 +718,17 @@ function prestagefinduser() {
 	$("#searchMailTypeCode").blur();
 	$("#poststamp_number").blur();
 	$("#userSearchBarInput").focus();
+	
+}
+
+function prestagefinduserCol() {
+	$(".user-search-bar #userCollectSearchBar").css("display", "block");
+	$("#userCollectSearchBar").val("");
+	$("#searchUserMailResult").css("display", "none");
+	$(".user-mail-list").html("");
+	$("#collectMailList").html("");
+	
+	// $("#searchMailCode").blur();
+	$("#userCollectSearchBar").focus();
 	
 }
