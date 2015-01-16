@@ -267,7 +267,7 @@ function SaveInMailMng(){
 
 function CountMailTableInMailMng(){
 	//minute one cause title name
-	$("#mailquantity").html($('#mailReceiverTable tr').length-2);
+	//$("#mailquantity").html($('#mailReceiverTable tr').length-2);
 }
 
 /*************************divid several section***************************/
@@ -324,7 +324,7 @@ function togetmailbarcode(val) {
 	selectNewMailBarcode = val;
 	var methodFormat;
 	$(".left-mail-field div.add-mail-number-setion").html("");
-	$(".left-mail-field").append("<div>" + selectNewHouseid + "</div><div>" + selectNewMailMethod + "</div><div>" + selectNewMailBarcode + "</div>");
+	//$(".left-mail-field").append("<div>" + selectNewHouseid + "</div><div>" + selectNewMailMethod + "</div><div>" + selectNewMailBarcode + "</div>");
 	switch (selectNewMailMethod) {
 		case 'parcel' :
 			methodFormat = "包裹";		
@@ -350,8 +350,9 @@ function togetmailbarcode(val) {
 	$("#poststamp_number").blur();
 }
 function countMailAddAmount(){
+	var amount;
 	$("#mailquantity").html($('.left-mail-table table tbody tr').length);
-	var amount = $('.left-mail-table table tbody tr').length;
+	amount = $('.left-mail-table table tbody tr').length;
 	if (amount > 0 ) {
 		$('#addmailweapbtn').prop('disabled', false);
 		$('#addmailweapbtn').css('opacity','1');
@@ -359,6 +360,7 @@ function countMailAddAmount(){
 		$('#addmailweapbtn').prop('disabled', true);
 		$('#addmailweapbtn').css('opacity','0.4');
 	}
+	console.log("amount======> " + amount);
 }
 function mailListPostInMailMng(){
 	$('#addmailweapbtn').prop('disabled', true);

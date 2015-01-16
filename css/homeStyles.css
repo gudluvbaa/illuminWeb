@@ -231,7 +231,7 @@ li.todo-history.active{
 .mail-list-table {
 	height: 560px;
 	overflow: auto;
-	margin-top: 10px;
+	/*margin-top: 10px;*/
 }
 .user-amount-mail {
 	background-color: #d9534f;

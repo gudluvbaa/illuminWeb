@@ -4,7 +4,7 @@
 }
 table.mail-list {
 	border: 1px #5e5e5e solid;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 	font-size: 21px;
 }
 table.mail-record-list {
@@ -122,8 +122,22 @@ div.receiver-input-section {
 	font-size: 1em;
 	height: 85px;	
 }
-.left-mail-table table{
+.left-mail-table table, .left-collect-table table{
 	font-size: 1em;
+}
+.check-mail-list-table table{
+	font-size: 1em;
+	width: 100%;
+}
+.left-collect-table {
+	border: 1px #5e5e5e solid;
+	height: 550px;
+	overflow: auto;
+}
+.check-mail-list-table {
+	border: 1px #5e5e5e solid;
+	height: 550px;
+	overflow: auto;
 }
 .create-field {
 	margin-top: 10px;
@@ -136,6 +150,27 @@ div.receiver-input-section {
 .col-lg-6.left-mail-table tbody tr:nth-child(odd){
 	background-color: rgba(255, 255, 255, 0.1);
 }
+.col-lg-6.check-mail-list-table tbody tr:nth-child(odd){
+	background-color: rgba(255, 255, 255, 0.1);
+}
+.col-lg-6.left-collect-table tbody tr:nth-child(odd){
+	background-color: rgba(255, 255, 255, 0.1);
+}
 img.btnDelete {
 	height: 50px;
+}
+.add-collect-fields {
+	margin-top: 10px;
+}
+.add-collect-field {
+	margin-top: 10px;
+}
+.check-signature-img img {
+	width: 100%;
+}
+#mailCheckSubBtn {
+	margin-left: 20px;
+}
+.mail-collect-confirm-wrap h4 {
+	font-size: 1em;
 }
