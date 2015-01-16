@@ -99,6 +99,43 @@
                 }	
    			});
    		};
+   		
+   		$scope.returnMailBtn = function (itemId) {
+			$('.mail-complete-btn-false').prop('disabled', true);
+			$('.mail-complete-btn-false').css('opacity','0.4');
+   			console.log("returnMailBtn " + itemId);
+   			$http.put( originname + '/mail/' +  itemId + '/return', {
+            	headers: {
+                	'Content-Type': 'application/json'
+               	}
+       		})
+       		.success(function(data) {
+				console.log(data);
+				alert("退件成功");
+				newMailList();
+             })
+			.error(function(err) {
+				console.log(err);
+             })
+   		};
+   		$scope.cancelReturnMailBtn = function (itemId) {
+			$('.mail-complete-btn-false').prop('disabled', true);
+			$('.mail-complete-btn-false').css('opacity','0.4');
+   			console.log("cancelReturnMailBtn " + itemId);
+   			$http.put( originname + '/mail/' +  itemId + '/return/cancel', {
+            	headers: {
+                	'Content-Type': 'application/json'
+               	}
+       		})
+       		.success(function(data) {
+				console.log(data);
+				alert("退件取消");
+				newMailList();
+             })
+			.error(function(err) {
+				console.log(err);
+             })
+   		};
 	};
 
     illuminApp.controller("MailController", MailController);

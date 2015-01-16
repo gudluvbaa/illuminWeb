@@ -141,8 +141,11 @@
 					            <th style="text-align: center; width: 15%">收件者</th>
 					            <th style="text-align: center; width: 15%">領件者</th> -->
 					            <th style="text-align: center; width: 15%">領件時間</th>
+					            <th style="text-align: center; width: 5%">已領件</th>
+					            <th style="text-align: center; width: 5%">已退件</th>
 					            <!-- <th style="text-align: center; width: 15%">標題</th> -->
 					            <th style="text-align: center; width: 15%">領件/退件簽名</th>
+					            <th style="text-align: center; width: 10%">退件</th>
 					        </tr>
 					    </thead>
 					    <tbody ng-show="mailCollectType=='all'">
@@ -154,8 +157,16 @@
 					    		<td style="text-align: center;">{{item.to}}</td>
 					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td class="mail-complete-{{item.complete}}" style="text-align: center;">{{item.complete}}</td>
+					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td>
 					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+							    <td style="text-align: center; width: 15%;">
+							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)">取消退件</button>
+							    	</div>
+							    </td>
 					    	</tr>
 					    </tbody>
 					    <tbody ng-show="mailCollectType=='collected'">
@@ -167,8 +178,16 @@
 					    		<td style="text-align: center;">{{item.to}}</td>
 					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td class="mail-complete-{{item.complete}}" style="text-align: center;">{{item.complete}}</td>
+					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td>
 					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+							    <td style="text-align: center; width: 15%;">
+							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
+							    		<button class="btn btn-primary false">退件</button>
+							    		<button class="btn btn-primary true">取消退件</button>
+							    	</div>
+							    </td>
 					    	</tr>
 					    </tbody>
 					    <tbody ng-show="mailCollectType=='receive'">
@@ -180,8 +199,16 @@
 					    		<td style="text-align: center;">{{item.to}}</td>
 					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td class="mail-complete-{{item.complete}}" style="text-align: center;">{{item.complete}}</td>
+					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td>
 					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+							    <td style="text-align: center; width: 15%;">
+							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
+							    		<button class="btn btn-primary false">退件</button>
+							    		<button class="btn btn-primary true">取消退件</button>
+							    	</div>
+							    </td>
 					    	</tr>
 					    </tbody>
 					    <tbody ng-show="mailCollectType=='return'">
@@ -193,8 +220,16 @@
 					    		<td style="text-align: center;">{{item.to}}</td>
 					    		<td style="text-align: center;">{{item.receiver}}</td> -->
 					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<td class="mail-complete-{{item.complete}}" style="text-align: center;">{{item.complete}}</td>
+					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td>
 					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+							    <td style="text-align: center; width: 15%;">
+							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
+							    		<button class="btn btn-primary false">退件</button>
+							    		<button class="btn btn-primary true">取消退件</button>
+							    	</div>
+							    </td>
 					    	</tr>
 					    </tbody>
 					</table>

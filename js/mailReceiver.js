@@ -324,7 +324,7 @@ function togetmailbarcode(val) {
 	selectNewMailBarcode = val;
 	var methodFormat;
 	$(".left-mail-field div.add-mail-number-setion").html("");
-	$(".left-mail-field").append("<div>" + selectNewHouseid + "</div><div>" + selectNewMailMethod + "</div><div>" + selectNewMailBarcode + "</div>");
+	//$(".left-mail-field").append("<div>" + selectNewHouseid + "</div><div>" + selectNewMailMethod + "</div><div>" + selectNewMailBarcode + "</div>");
 	switch (selectNewMailMethod) {
 		case 'parcel' :
 			methodFormat = "包裹";		

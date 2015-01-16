@@ -139,3 +139,42 @@ div.receiver-input-section {
 img.btnDelete {
 	height: 50px;
 }
+.mail-complete-true {
+	color: transparent;
+	background-image: url('../img/checked.png');
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.mail-return-true {
+	color: transparent;
+	background-image: url('../img/checked.png');
+	background-size: auto 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+.mail-complete-false, .mail-return-false {
+	color: transparent;
+}
+.mail-return-btn-false.mail-complete-btn-false .false{
+
+}
+.mail-return-btn-false.mail-complete-btn-false .true{
+	border: 1px blue solid;
+	display: none;
+}
+.mail-return-btn-false.mail-complete-btn-true {
+	border: 1px blue solid;
+	display: none;
+}
+.mail-return-btn-true.mail-complete-btn-false .ture{
+
+}
+.mail-return-btn-true.mail-complete-btn-false .false{
+	border: 1px green solid;
+	display: none;
+}
+.mail-return-btn-true.mail-complete-btn-true {
+	border: 1px green solid;
+	display: none;
+}
