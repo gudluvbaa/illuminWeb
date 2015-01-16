@@ -80,6 +80,11 @@ function userSearch(val) {
 	selectUser = val;
 };
 function getUserMail(val){
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});	
     $.ajax({
         type:'GET',
         url: originname+"/mails/household/barcode/" + val + "/notobtain",
@@ -214,7 +219,11 @@ function updateUserCollected(mailArray, receiver, userid, signature_img) {
 		fd.append( 'mailid', mailArray );
 		fd.append( 'receiver', receiver );
 		fd.append( 'image', canvas );
-
+		$.ajaxSetup({
+			beforeSend: function (xhr){
+		        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+		    }
+		});	
 		$.ajax({
 			url: originname+'/mails/obtained',
 			data: fd,
@@ -277,6 +286,11 @@ function selectMailCollect(val){
 	var barcode = val;
 	console.log(barcode+". " + selectUser);
 	var searchMailArray = [];
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});	
 	$.ajax({
         type:'GET',
         url: originname+"/mails/household/barcode/" + selectUser + "/notobtain",
@@ -358,6 +372,11 @@ function userSearchInMailMng(val) {
 };
 
 function getUserMailInMailMng(val){
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});	
     $.ajax({
         type:'GET',
         url: originname+"/mails/household/barcode/" + val + "/notobtain",
@@ -387,6 +406,11 @@ function userSearchInMailListMng(val) {
 	selectUser = val;
 };
 function getSelectUserMails(val){
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});	
 	$.ajax({
 		type:'GET',
         url: originname+"/mails/household/barcode/" + val + "/notobtain",
@@ -491,7 +515,11 @@ function mailUpdateCollectedBtn(hid) {
 		fd.append( 'mailid', collectNumberList );
 		fd.append( 'receiver', hid );
 		fd.append( 'image', canvas );
-
+		$.ajaxSetup({
+			beforeSend: function (xhr){
+		        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+		    }
+		});	
 		$.ajax({
 			url: originname+'/mails/obtained',
 			data: fd,

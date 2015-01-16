@@ -1,6 +1,11 @@
 var originname = "http://218.161.115.218:8080/HouseManager";
 var illuminApp = angular.module("illuminWebApp", [ "ui.bootstrap", 'ngAnimate']);
 
+illuminApp.run(function($http) {
+	$http.defaults.headers.common.Authorization = 'bearer ' + window.localStorage.getItem("Authorization") ;
+});
+
+
 function filterSingleDate(date) {
     var actualDate = new Date();
 	return actualDate < date.processDate;
