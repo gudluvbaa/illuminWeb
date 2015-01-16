@@ -3,12 +3,14 @@ var keyStr = "ABCDEFGHIJKLMNOP" +
            	 "ghijklmnopqrstuv" +
           	 "wxyz0123456789+/" +
              "=";
+var userloginaaccount;
+var userloginpw;         
 function userlogin() {
 	//alert ("user login");
 	
-	var id = $('#userLoginId').val();
-	var pw = $('#userLoginPassword').val();
-	var userID = id + ":" + pw;	
+	userloginaaccount = $('#userLoginId').val();
+	userloginpw = $('#userLoginPassword').val();
+	var userID = userloginaaccount + ":" + userloginpw;	
 	encode64(userID);
 	console.log("userid------> "+ userID);
 }
@@ -58,12 +60,12 @@ function getUserToken (output) {
 	   }
 	});
 	var fd = new FormData();    
-			fd.append( 'password', '1234' );
-			fd.append( 'username', 'user1' );
+			fd.append( 'password', userloginpw );
+			fd.append( 'username', userloginaaccount );
 			fd.append( 'grant_type', 'password' );
 			fd.append( 'scope', 'read write' );
-			fd.append( 'client_secret', '1234' );
-			fd.append( 'client_id', 'user1' );
+			fd.append( 'client_secret', userloginpw );
+			fd.append( 'client_id', userloginaaccount );
 	$.ajax({
         url: originname + "/login/getToken",
 		data: fd,
@@ -78,6 +80,9 @@ function getUserToken (output) {
 			console.log(obj);
 			console.log("access_token: " + obj.access_token);
 			window.localStorage.setItem("Authorization", obj.access_token);
+			loginGetUserList();
+			console.log("hfuhewifhew");
+			console.log(data);
         },
         error: function(error)
         {
@@ -89,6 +94,54 @@ function getUserToken (output) {
 function getAuthorization () {
 	alert(window.localStorage.getItem("Authorization"));
 }
+function loginGetUserList () {
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});	
+    $.ajax({
+        type:'GET',
+        url: originname + "/users",
+        success:function(data){
+        	console.log("success...");
+	        for(var i = 0 ; i < data.length ; i++){
+	        	var currentAccount = data[i].account;
+	        	if (currentAccount === userloginaaccount){
+	        		console.log(data[i].id);
+	        		loginGetUserInfo(data[i].id);
+	        	}
+				
+		    }
+        	
+        },
+        error: function(data){
+        	console.log("error...");
+        }
+    });
+}
+function loginGetUserInfo(cuid){
+	//alert(uid);
+	$("#user_info").html("");
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});	
+    $.ajax({
+        type:'GET',
+        url: originname + "/user/" + cuid,
+        success:function(data){
+        	console.log("success...");
+        	$("#user_info").html("<p>Login in user: " + data.account + "</p>");	
+        },
+        error: function(data){
+        	console.log("error...");
+        	$("#user_info").html("");
+        }
+    });
+}
+
 /*function getAuthorization() {
 	alert(window.localStorage.getItem("Authorization"));
 }*/
