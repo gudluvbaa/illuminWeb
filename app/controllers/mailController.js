@@ -135,7 +135,7 @@
 			.error(function(err) {
 				console.log(err);
              })
-   		};
+   		};   		
 	};
 
     illuminApp.controller("MailController", MailController);

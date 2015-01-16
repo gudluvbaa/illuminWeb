@@ -160,7 +160,7 @@ img.btnDelete {
 	height: 50px;
 }
 
-.mail-complete-true {
+/*.mail-complete-true {
 	color: transparent;
 	background-image: url('../img/checked.png');
 	background-size: auto 100%;
@@ -198,7 +198,7 @@ img.btnDelete {
 .mail-return-btn-true.mail-complete-btn-true {
 	border: 1px green solid;
 	display: none;
-}
+}*/
 .add-collect-fields {
 	margin-top: 10px;
 }
