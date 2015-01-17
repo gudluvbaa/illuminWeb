@@ -69,15 +69,18 @@
    			$timeout(mailTimeout, 60000);
    		};
    		$timeout(mailTimeout, 60000);*/
-   		
+   		$scope.reloadAllMailMgmt = function () {
+			newMailList ();
+			console.log("reload");
+   		};
    		function newMailList () {
    			mailProvider.getMails(function (err, mails) {
 	            if (err) {
 	                $scope.page_load_error = "Unexpected error loading mails: " + e.message;
 	            } else {
 	                $scope.mails = mails;
-	                console.log("ok");
-	                console.log($scope.mails.length);
+	                // console.log("ok");
+	                // console.log($scope.mails.length);
 	            }
 	   		});
    		};
@@ -111,30 +114,30 @@
                	}
        		})
        		.success(function(data) {
-				console.log(data);
+				// console.log(data);
 				alert("退件成功");
 				newMailList();
              })
 			.error(function(err) {
-				console.log(err);
+				// console.log(err);
              })
    		};
    		$scope.cancelReturnMailBtn = function (itemId) {
 			$('.mail-complete-btn-false').prop('disabled', true);
 			$('.mail-complete-btn-false').css('opacity','0.4');
-   			console.log("cancelReturnMailBtn " + itemId);
+   			// console.log("cancelReturnMailBtn " + itemId);
    			$http.put( originname + '/mail/' +  itemId + '/return/cancel', {
             	headers: {
                 	'Content-Type': 'application/json'
                	}
        		})
        		.success(function(data) {
-				console.log(data);
+				// console.log(data);
 				alert("退件取消");
 				newMailList();
              })
 			.error(function(err) {
-				console.log(err);
+				// console.log(err);
              })
    		};   		
 	};
@@ -173,7 +176,7 @@
 	               	}
            		})
            		.success(function(data) {
-					console.log('Update succeeded');
+					// console.log('Update succeeded');
 					//console.log(data);
 					alert("Mails have been collected.");
 					$scope.receiver = {};
@@ -181,7 +184,7 @@
 					updateMailList ();
 	             })
 				.error(function(err) {
-					console.log('Update failed');
+					// console.log('Update failed');
 					//console.log(err);
 	             })
 			};
@@ -189,7 +192,7 @@
 		$scope.deletemail = function(mailid) {
         	//alert("delete mail: " + mailid);
         	$http.delete(originname + '/mail/' + mailid).success(function(data, status, headers, config) {
-        		console.log("success!");
+        		// console.log("success!");
         		alert("Mails have been removed.");
         		updateMailList ();
         	});

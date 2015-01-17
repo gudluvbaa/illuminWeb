@@ -659,6 +659,7 @@ $( document ).ready(function() {
     });
 }*/
 function getReadyRetuenMails() {
+	$("#readyReturnMailList").html("");
 	var readyReturnMailItems = [];
 	$.ajaxSetup({
 		beforeSend: function (xhr){
@@ -830,13 +831,13 @@ function mailReturnSubmit() {
 	var datapair = $sigdiv_windows.jSignature("getData", "svgbase64");
 	var signature_img = new Image();
 	signature_img.src = "data:" + datapair[0] + "," + datapair[1];
-	updateUserCollectedReturn(returntMailIdList, signature_img);
+	updateUserReturnedMail(returntMailIdList, signature_img);
 	$('#mailReturnSumbit').attr('disabled','disabled');
 	// console.log("doneooooooooooo");
 	// console.log(returntMailIdList);
 	// console.log(signature_img);
 }
-function updateUserCollectedReturn (returnMailId, signature_img) {
+function updateUserReturnedMail (returnMailId, signature_img) {
 	var canvas = $(".jSignature").get(0).toDataURL("image/png");
 	for (var i = 0 ; i < returnMailId.length ; i++){
 		var fd = new FormData();    
@@ -849,17 +850,13 @@ function updateUserCollectedReturn (returnMailId, signature_img) {
 		   	contentType: false,
 		   	type: 'POST',
 		   	success: function(data){		    
-				console.log("relation 信件退件成功");
-				//getReadyRetuenMails();
+				//console.log("relation 信件退件成功");
 				
 				$(".mail-return-section").html("");
-				$("#searchReturnMailCode").css("display", "block");
-				$("#searchReturnMailResult").css("display", "block");
-				$("#selectReturnItemsReturnBtn").css("display", "block");
-				$("#returnMailListWrap").html("");
 				$("#readyReturnMailList"+" input[type=checkbox]").prop("checked", false);
 				$("#readyReturnMailList").css("background-color","transparent");
-				
+				alert("信件退件成功");
+				returnToRetuenMailList();
 		   },
 		   error: function(data){		    
 		     	//console.log("relation 信件退件失敗");
@@ -868,6 +865,14 @@ function updateUserCollectedReturn (returnMailId, signature_img) {
 	}
 	
 };
+
+function returnToRetuenMailList () {
+	$("#searchReturnMailCode").css("display", "block");
+	$("#searchReturnMailResult").css("display", "block");
+	$("#selectReturnItemsReturnBtn").css("display", "block");
+	$("#returnMailListWrap").html("");
+	reloadReturnMailMgmt();
+}
 
 function appendSearchReturnMailList (searchReturnMailArray) {
 	$('#searchReturnMailCode').val('');
@@ -902,4 +907,7 @@ function prestagefinduserCol() {
 	// $("#searchMailCode").blur();
 	$("#userCollectSearchBar").focus();
 	
+}
+function reloadReturnMailMgmt() {
+	getReadyRetuenMails();
 }

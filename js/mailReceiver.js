@@ -159,11 +159,11 @@ function MailPostInMailMng(){
 	    var toUser = $(this).find("#toUser").html();  	    	
 	    var formUser = $(this).find("#fromUser").html();  	    	
 	    var psText = $(this).find("#psText").html();  
-	    console.log(mailNumber);
-	    console.log(deliveryMethod);
-	    console.log(toUser);
-	    console.log(formUser);
-	    console.log(psText);
+	    // console.log(mailNumber);
+	    // console.log(deliveryMethod);
+	    // console.log(toUser);
+	    // console.log(formUser);
+	    // console.log(psText);
 	    
 	    //alert("deliveryMethod" + deliveryMethod);
 	    if(mailNumber != undefined && deliveryMethod != undefined && toUser != undefined && formUser != undefined && psText != undefined){    	
@@ -188,9 +188,9 @@ function MailPostInMailMng(){
 		
 	   
 	 });
-	console.log("deliveryMethodList");
-	console.log(deliveryMethodList);
-	console.log(mailNumberList);
+	// console.log("deliveryMethodList");
+	// console.log(deliveryMethodList);
+	// console.log(mailNumberList);
 	
 	if(mailNumberList.length != 0 && deliveryMethodList.length != 0 ){				
 		var fd = new FormData();    
@@ -306,7 +306,7 @@ function toaddmailbarcode(method, methodFormat) {
     $(".left-mail-field div.add-mail-number-setion").append("<div class='selectMailMethod'><input onclick='prestagemailmethod()' type='image' src='./img2/pre2.png' alt='previous' width='auto' height='75'/>"+
     "<span>郵件類別: </span><span>" + methodFormat + "</span></p></div>"+
     "<labe>郵件編號</label><input id='poststamp_number' type='text'/ style='color:#000000' class='form-control' onchange='togetmailbarcode(this.value)' placeholder='請輸入郵件編號...'/>");
-	console.log("step2: " + method);
+	// console.log("step2: " + method);
 	$("#searchMailTypeCode").blur();
 	$("#poststamp_number").focus();
 }
@@ -360,7 +360,7 @@ function countMailAddAmount(){
 		$('#addmailweapbtn').prop('disabled', true);
 		$('#addmailweapbtn').css('opacity','0.4');
 	}
-	console.log("amount======> " + amount);
+	// console.log("amount======> " + amount);
 }
 function mailListPostInMailMng(){
 	$('#addmailweapbtn').prop('disabled', true);
@@ -372,8 +372,8 @@ function mailListPostInMailMng(){
 	$('#addMailList tr').each(function() {
 		var mailNumber = $(this).find("#addstamp_number").html();
 	    var deliveryMethod = $(this).find("#addstamp_mailDeliveryMethod").html(); 
-	    console.log(mailNumber);
-	    console.log(deliveryMethod);
+	    // console.log(mailNumber);
+	    // console.log(deliveryMethod);
 	    mailNumberList.push(mailNumber);
 	    switch(deliveryMethod){
 			case '包裹':
@@ -387,8 +387,8 @@ function mailListPostInMailMng(){
 			break;	
 			
 		}
-		console.log(deliveryMethodList);
-		console.log(mailNumberList);
+		// console.log(deliveryMethodList);
+		// console.log(mailNumberList);
 		
 	});
 	if(mailNumberList.length != 0 && deliveryMethodList.length != 0 ){	
@@ -409,7 +409,7 @@ function mailListPostInMailMng(){
 		  contentType: false,
 		  type: 'POST',
 		  success: function(data){
-		  	console.log(data);
+		  	// console.log(data);
 		    $("#mailReceiverTable tbody tr").remove();
 		    $("#userSearchBar").val('');
 		    alert("信件建檔完畢");

@@ -87,7 +87,7 @@
 				<div class="col-lg-12 mail-collect-confirm" style="display: none;"></div>
 	    	</div>
   		</tab>
-  		<tab heading="退件管理">
+  		<tab heading="退件管理" onclick="reloadReturnMailMgmt()">
 			<div class="mail-list-search col-lg-12">
 				<!-- <input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailInput(this.value)" placeholder="請輸入郵件編號..."  autofocus> -->
 				<input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailInputItem(this.value)" placeholder="請輸入郵件編號..."  autofocus>
@@ -133,14 +133,15 @@
     		<div class="mail-return-btn"><button id="selectReturnItemsReturnBtn" class="btn btn-small btn-danger pull-right" onclick="selectReturnItemsReturnSub()" style="opacity: 0.4" disabled>退件</button></div>
 			<div class="mail-return-section"></div>
   		</tab>
-  		<tab heading="查件">
+  		<tab heading="查件" ng-click="reloadAllMailMgmt()">
   			<div id="mailRecordList" class="col-lg-12">
   				<div class="col-lg-2">
   					<select class="form-control" ng-model="mailCollectType">
 						<option value="all">--</option>
 						<option value="collected">已領件</option>
 						<option value="receive">未領件</option>
-						<option value="return">退件</option>
+						<option value="return">待退件</option>
+						<option value="returned">已退件</option>
 		    		</select>
   				</div>
   				<div class="col-lg-10">
@@ -253,6 +254,34 @@
 					    	</tr>
 					    </tbody>
 					    <tbody ng-show="mailCollectType=='return'">
+					    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:{returnMail: true} | filter:{imageReceiverDetail: null} | filter:mailSearch" >
+					    		<!-- <td class="mail-complete-{{item.complete}}" style="text-align: center;" >{{item.complete}}</td>
+					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td> -->
+					    		<td >
+									<p ng-show="item.complete==false && item.returnMail==false">未領</p>
+									<p ng-show="item.complete==true && item.returnMail==false">已領</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
+								</td>
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td style="text-align: center;">{{item.mailNumber}}</td>
+					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
+					    		<!-- <td style="text-align: center;">{{item.from}}</td>
+					    		<td style="text-align: center;">{{item.to}}</td>
+					    		<td style="text-align: center;">{{item.receiver}}</td> -->
+					    		<td style="text-align: center;"><span>{{item.dateReceived | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceived | date:'HH:mm'}}</span></td>
+					    		<!-- <td style="text-align: center;">{{item.title}}</td> -->
+					    		<td style="text-align: center;">{{item.mailBuilder}}</td>
+							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
+							    <td style="text-align: center; width: 15%;">
+							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">取消退件</button>
+							    	</div>
+							    </td>
+					    	</tr>
+					    </tbody>
+					    <tbody ng-show="mailCollectType=='returned'">
 					    	<tr class="mailListItem" ng-repeat="item in mails | orderBy:'dateReceived':true | filter:{returnMail: true} | filter:mailSearch" >
 					    		<!-- <td class="mail-complete-{{item.complete}}" style="text-align: center;" >{{item.complete}}</td>
 					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td> -->
