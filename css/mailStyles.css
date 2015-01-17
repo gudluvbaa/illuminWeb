@@ -46,7 +46,7 @@ div.receiver-input-section {
 }
 .mail-return-list-table{
 	margin-top: 10px;
-	height: 280px;
+	height: 550px;
 	overflow: auto
 }
 #signature, #returnsignature {
@@ -173,7 +173,7 @@ img.btnDelete {
 	background-size: auto 100%;
 	background-repeat: no-repeat;
 	background-position: center;
-}
+}*/
 .mail-complete-false, .mail-return-false {
 	color: transparent;
 }
@@ -198,7 +198,7 @@ img.btnDelete {
 .mail-return-btn-true.mail-complete-btn-true {
 	border: 1px green solid;
 	display: none;
-}*/
+}
 .add-collect-fields {
 	margin-top: 10px;
 }
@@ -213,4 +213,16 @@ img.btnDelete {
 }
 .mail-collect-confirm-wrap h4 {
 	font-size: 1em;
+}
+#searchReturnMailCode {
+	font-size: 3em;
+	height: 85px;
+}
+.left-return-table table{
+	font-size: 3em;
+}
+.col-lg-6.left-return-table {
+	border: 1px #5e5e5e solid;
+	height: 550px;
+	overflow: auto;
 }

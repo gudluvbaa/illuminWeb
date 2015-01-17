@@ -67,7 +67,7 @@
 	            } else {
 	              //$scope.sortedtoDoLists = todolists;
 	                $scope.toDoLists = todolists;
-	                console.log("ok");
+	                //console.log("ok");
 	                //console.log($scope.toDoLists);
 	            }
 	      });

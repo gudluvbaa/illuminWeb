@@ -89,31 +89,49 @@
   		</tab>
   		<tab heading="退件管理">
 			<div class="mail-list-search col-lg-12">
-				<input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailInput(this.value)" placeholder="請輸入郵件編號..."  autofocus>
+				<!-- <input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailInput(this.value)" placeholder="請輸入郵件編號..."  autofocus> -->
+				<input id="searchReturnMailCode" type="text" name="txt" class="form-control" onchange="searchReturnMailInputItem(this.value)" placeholder="請輸入郵件編號..."  autofocus>
 			</div>
-	    	<div id="searchReturnMailResult" style="display:none">
-				<div class="return-mail-user-info">
+	    	<div id="searchReturnMailResult" class="col-lg-12" style="display:block">
+				<!-- <div class="return-mail-user-info">
 					<label class="control-label">住戶：</label>
 					<label id="returnUserTitle" class="control-label"></label>
+				</div> -->
+				<div class="col-lg-12 add-return-field">
+					<div class="col-lg-6 left-return-field">
+						<div class="mail-return-list-table">
+							<table class="mail-return-list table table-hover-block">
+								<thead>        
+							        <tr>
+							            <th style="text-align: center; width: 20%">郵件編號</th>
+							            <th style="text-align: center; width: 5%">類別</th>
+							            <!-- <th style="text-align: center; width: 15%">寄件者</th>
+							            <th style="text-align: center; width: 10%">收件者</th>
+							            <th style="text-align: center; width: 10%">備註</th>-->
+							            <th style="text-align: center; width: 5%">退件</th>
+							            <th style="text-align: center; width: 5%">status</th>
+							        </tr>
+							    </thead>
+							    <tbody id="readyReturnMailList" class="user-mail-ready-return-list">
+							    </tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-lg-6 left-return-table">
+						<table class="col-lg-12">
+							<thead>
+								<tr>
+									<th>信件編號</th>
+								</tr>
+							</thead>
+							<tbody id="returnMailListWrap">
+							</tbody>
+						</table>
+					</div>
 				</div>
-				<div class="mail-return-list-table">
-					<table class="mail-return-list table table-hover-block">
-						<thead>        
-					        <tr>
-					            <th style="text-align: center; width: 20%">郵件編號</th>
-					            <th style="text-align: center; width: 5%">類別</th>
-					            <th style="text-align: center; width: 15%">寄件者</th>
-					            <th style="text-align: center; width: 10%">收件者</th>
-					            <th style="text-align: center; width: 10%">備註</th>
-					            <th style="text-align: center; width: 5%">退件</th>
-					        </tr>
-					    </thead>
-					    <tbody class="user-mail-return-list">
-					    </tbody>
-					</table>
-				</div>
-				<div class="mail-return-section"></div>
 	    	</div>
+    		<div class="mail-return-btn"><button id="selectReturnItemsReturnBtn" class="btn btn-small btn-danger pull-right" onclick="selectReturnItemsReturnSub()" style="opacity: 0.4" disabled>退件</button></div>
+			<div class="mail-return-section"></div>
   		</tab>
   		<tab heading="查件">
   			<div id="mailRecordList" class="col-lg-12">
@@ -141,7 +159,7 @@
 					            <!-- <th style="text-align: center; width: 15%">交件者</th>
 					            <th style="text-align: center; width: 15%">收件者</th>
 					            <th style="text-align: center; width: 15%">領件者</th> -->
-					            <th style="text-align: center; width: 15%">領件時間</th>
+					            <th style="text-align: center; width: 15%">領件/退件時間</th>
 					            <!-- <th style="text-align: center; width: 15%">標題</th> -->
 					            <th style="text-align: center; width: 15%">經辦人</th>
 					            <th style="text-align: center; width: 15%">領件/退件簽名</th>
@@ -154,9 +172,10 @@
 					    		<!-- <td class="mail-complete-{{item.complete}}" style="text-align: center;" >{{item.complete}}</td>
 					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td> -->
 					    		<td >
-									<p ng-show="item.complete==false && item.returnMail==false">1</p>
-									<p ng-show="item.complete==true && item.returnMail==false">2</p>
-									<p ng-show="item.complete==false && item.returnMail==true">3</p>
+									<p ng-show="item.complete==false && item.returnMail==false">未領</p>
+									<p ng-show="item.complete==true && item.returnMail==false">已領</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
@@ -171,8 +190,8 @@
 					    		<!-- <td style="text-align: center;">{{item.imageReceiverDetail}}</td> -->
 							    <td style="text-align: center; width: 15%;">
 							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
-							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
-							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)" ng-show="item.mailBuilder==''">取消退件</button>
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">取消退件</button>
 							    	</div>
 							    </td>
 					    	</tr>
@@ -182,9 +201,10 @@
 					    		<!-- <td class="mail-complete-{{item.complete}}" style="text-align: center;" >{{item.complete}}</td>
 					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td> -->
 					    		<td >
-									<p ng-show="item.complete==false && item.returnMail==false">1</p>
-									<p ng-show="item.complete==true && item.returnMail==false">2</p>
-									<p ng-show="item.complete==false && item.returnMail==true">3</p>
+									<p ng-show="item.complete==false && item.returnMail==false">未領</p>
+									<p ng-show="item.complete==true && item.returnMail==false">已領</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
@@ -198,8 +218,8 @@
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 							    <td style="text-align: center; width: 15%;">
 							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
-							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
-							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)">取消退件</button>
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">取消退件</button>
 							    	</div>
 							    </td>
 					    	</tr>
@@ -209,9 +229,10 @@
 					    		<!-- <td class="mail-complete-{{item.complete}}" style="text-align: center;" >{{item.complete}}</td>
 					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td> -->
 					    		<td >
-									<p ng-show="item.complete==false && item.returnMail==false">1</p>
-									<p ng-show="item.complete==true && item.returnMail==false">2</p>
-									<p ng-show="item.complete==false && item.returnMail==true">3</p>
+									<p ng-show="item.complete==false && item.returnMail==false">未領</p>
+									<p ng-show="item.complete==true && item.returnMail==false">已領</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
@@ -225,8 +246,8 @@
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 							    <td style="text-align: center; width: 15%;">
 							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
-							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
-							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)">取消退件</button>
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">取消退件</button>
 							    	</div>
 							    </td>
 					    	</tr>
@@ -236,9 +257,10 @@
 					    		<!-- <td class="mail-complete-{{item.complete}}" style="text-align: center;" >{{item.complete}}</td>
 					    		<td class="mail-return-{{item.returnMail}}" style="text-align: center;">{{item.returnMail}}</td> -->
 					    		<td >
-									<p ng-show="item.complete==false && item.returnMail==false">1</p>
-									<p ng-show="item.complete==true && item.returnMail==false">2</p>
-									<p ng-show="item.complete==false && item.returnMail==true">3</p>
+									<p ng-show="item.complete==false && item.returnMail==false">未領</p>
+									<p ng-show="item.complete==true && item.returnMail==false">已領</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
+									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
 					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
@@ -252,8 +274,8 @@
 							    <td style="text-align: center; width: 15%;"><img style="width: auto; height: 50px;" src="{{item.imageReceiverDetail.url}}" /></td>
 							    <td style="text-align: center; width: 15%;">
 							    	<div class="mail-return-btn-{{item.returnMail}} mail-complete-btn-{{item.complete}}">
-							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)">退件</button>
-							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)">取消退件</button>
+							    		<button class="btn btn-danger false" ng-click="returnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">退件</button>
+							    		<button class="btn btn-primary true" ng-click="cancelReturnMailBtn(item.id)" ng-show="item.imageReceiverDetail==null">取消退件</button>
 							    	</div>
 							    </td>
 					    	</tr>

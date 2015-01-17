@@ -12,7 +12,7 @@ function userlogin() {
 	userloginpw = $('#userLoginPassword').val();
 	var userID = userloginaaccount + ":" + userloginpw;	
 	encode64(userID);
-	console.log("userid------> "+ userID);
+	//console.log("userid------> "+ userID);
 }
 
 function encode64(userID) {
@@ -48,7 +48,7 @@ function encode64(userID) {
      } while (i < input.length);
 
      //return output;
-     console.log(output);
+     //console.log(output);
      getUserToken (output)
 }            
 
@@ -75,26 +75,24 @@ function getUserToken (output) {
         success: function(data)
         {
         	console.log("success...");
-			console.log(data);
+			//console.log(data);
 			var obj = jQuery.parseJSON( data );
-			console.log(obj);
-			console.log("access_token: " + obj.access_token);
+			//console.log(obj);
+			//console.log("access_token: " + obj.access_token);
 			window.localStorage.setItem("Authorization", obj.access_token);
 			loginGetUserList();
-			console.log("hfuhewifhew");
-			console.log(data);
+			//console.log(data);
         },
         error: function(error)
         {
         	console.log("error...");
-			console.log(error);
+			//console.log(error);
         }
   	});
 }
-function getAuthorization () {
-	alert(window.localStorage.getItem("Authorization"));
-}
+
 function loginGetUserList () {
+	$("#user_info").html("");
 	$.ajaxSetup({
 		beforeSend: function (xhr){
 	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
@@ -102,25 +100,19 @@ function loginGetUserList () {
 	});	
     $.ajax({
         type:'GET',
-        url: originname + "/users",
+        url: originname + "/user",
         success:function(data){
         	console.log("success...");
-	        for(var i = 0 ; i < data.length ; i++){
-	        	var currentAccount = data[i].account;
-	        	if (currentAccount === userloginaaccount){
-	        		console.log(data[i].id);
-	        		loginGetUserInfo(data[i].id);
-	        	}
-				
-		    }
-        	
+        	$("#user_info").html("<p>Login in user: " + data.account + "</p>");	
         },
         error: function(data){
         	console.log("error...");
+        	$("#user_info").html("");
         }
     });
 }
-function loginGetUserInfo(cuid){
+/*function loginGetUserInfo(cuid){
+	
 	//alert(uid);
 	$("#user_info").html("");
 	$.ajaxSetup({
@@ -133,14 +125,14 @@ function loginGetUserInfo(cuid){
         url: originname + "/user/" + cuid,
         success:function(data){
         	console.log("success...");
-        	$("#user_info").html("<p>Login in user: " + data.account + "</p>");	
+        	
         },
         error: function(data){
         	console.log("error...");
         	$("#user_info").html("");
         }
     });
-}
+}*/
 
 /*function getAuthorization() {
 	alert(window.localStorage.getItem("Authorization"));

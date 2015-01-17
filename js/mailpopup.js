@@ -95,8 +95,8 @@ function getUserMail(val){
 			$("#mailManagerHouseId").html(data.id);//Mail Manager HouseId
 			$("#mailManagerTitle").html(data.floor + " - " + data.number);//Mail Manager Title
         	$("#userAmountMail").html(data.mailDetails.length);
-        	console.log("ajax success");
-        	console.log(data);
+        	// console.log("ajax success");
+        	// console.log(data);
         	$(".user-mail-list").html("");
         	$(".mail-receiver-section").html("");
         	for(var i = 0 ; i < data.mailDetails.length ; i++){
@@ -104,7 +104,7 @@ function getUserMail(val){
         		$(".user-mail-list").append("<tr class='mail "+ data.mailDetails[i].mailNumber +"'><td style='text-align: center; width: 10%'>" + data.mailDetails[i].mailNumber + "</td><td class='sender-type-" + data.mailDetails[i].deliveryMethod +"' style='text-align: center; width: 5%'></td><td style='text-align: center; width: 5%'>" + data.mailDetails[i].from
         		 + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].to + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].title + "</td>"
         		 + "<td style='text-align: center; width: 10%'>" + data.mailDetails[i].complete + "</td><td style='text-align: center; width: 10%'>" + data.mailDetails[i].returnMail + "</td>"
-        		 + "<td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + data.mailDetails[i].id + "'</td></tr>");
+        		 + "<td style='text-align: center; width: 10%'><input class='user-collected' type='checkbox' value='" + data.mailDetails[i].id + "/>'</td></tr>");
         	}
         	$(".mail-receiver-section").append("<button id='mailSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + val + ")'>領取</button><div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");
         	/*$(".mail-receiver-section").append("領件者<input id='mailReceiver' type='text' placeholder='Type name for collection' style='border-radius: 4px;'/><button id='mailSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReceiverSubmit(" + val + ")'>領取</button><div id='content'><div id='signatureparent'><div id='signature'></div>	</div><div id='tools'></div></div>");*/
@@ -180,7 +180,7 @@ function mailReceiverSubmit(userid) {
         	//alert($(this).val());
     	});
     	
-    	console.log(mailArray+", "+ receiver);    
+    	//console.log(mailArray+", "+ receiver);    
     	//alert("submit");
 		var datapair = $sigdiv_windows.jSignature("getData", "svgbase64") 
 		var signature_img = new Image()
@@ -231,7 +231,7 @@ function updateUserCollected(mailArray, receiver, userid, signature_img) {
 		   	contentType: false,
 		   	type: 'POST',
 		  	success: function(data){		    
-				console.log("信件領取成功");
+				//console.log("信件領取成功");
 		    	getUserMail(userid);
 			}
 		});
@@ -264,10 +264,10 @@ function updateUserCollected(mailArray, receiver, userid, signature_img) {
 };
 
 function createMail(uid) {
-	console.log("id: " + uid);
+	//console.log("id: " + uid);
 	var today = new Date();
 	var time = today.getYear() + "-" + today.getMonths() + "-" + today.getDays() + ":" + today.getDays() + "-" + today.getMinutes();
-	console.log("time: "+ time);
+	//console.log("time: "+ time);
 	/*.ajax({
 		url: serverUrl+"/mail",
 		data: "title="+$('#ac_tilte').val()+"&deliveryMethod="+$('#mailDeliveryMethod').val()+"&dateReceiveFormat="+$('#ac_time').val()+"&from="+$('#ac_detail').val()+"&to="+$('#ac_price').val()+"&mailNumber="+$('#mailMailNumber').val(),
@@ -284,7 +284,7 @@ function createMail(uid) {
 
 function selectMailCollect(val){
 	var barcode = val;
-	console.log(barcode+". " + selectUser);
+	//console.log(barcode+". " + selectUser);
 	var searchMailArray = [];
 	$.ajaxSetup({
 		beforeSend: function (xhr){
@@ -295,13 +295,13 @@ function selectMailCollect(val){
         type:'GET',
         url: originname+"/mails/household/barcode/" + selectUser + "/notobtain",
         success:function(data){
-        	console.log("data is okay!");
-        		console.log(data);
+        	//console.log("data is okay!");
+        	//	console.log(data);
         	for(var i = 0 ; i < data.mailDetails.length; i++){
         		if (data.mailDetails[i].mailNumber == barcode ) {
         			searchMailArray.push(data.mailDetails[i]);
         		}
-        		console.log(searchMailArray);
+        	//	console.log(searchMailArray);
         	}
         	appendSearchMailList(searchMailArray);
         },
@@ -345,8 +345,8 @@ function selectMailCollect(val){
 function appendSearchMailList (searchMailArray) {
 	$('#searchMailCode').val('');
 	$(".mail").css("background-color","transparent");
-	console.log("new search mail");
-	console.log(searchMailArray);
+	//console.log("new search mail");
+	//console.log(searchMailArray);
 	for(var i = 0 ; i < searchMailArray.length ; i++){
 		$(".mail."+searchMailArray[i].mailNumber).css("background-color","#d9534f");
 		$(".mail."+searchMailArray[i].mailNumber+" input[type=checkbox]").prop("checked", true);
@@ -373,7 +373,7 @@ function userSearchInMailMng(val) {
 	
     getUserMailInMailMng(val);
 	selectUser = val;
-	console.log("step1");
+	//console.log("step1");
 };
 
 function getUserMailInMailMng(val){
@@ -601,7 +601,10 @@ function mailCancelCollectedBtn() {
 	prestagefinduserCol();
 }
 /************************退件***************************/
-function searchReturnMailInput(val) {
+$( document ).ready(function() {
+    getReadyRetuenMails();
+});
+/*function searchReturnMailInput(val) {
     $("#searchReturnMailResult").css("display", "block");
 	$(".user-mail-return-list").html('');
 	$(".mail-return-section").html('');
@@ -654,51 +657,216 @@ function searchReturnMailInput(val) {
         error: function(data){
         }
     });
+}*/
+function getReadyRetuenMails() {
+	var readyReturnMailItems = [];
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});
+	$.ajax({
+        type:'GET',
+        url: originname+"/mails",
+        success:function(data){
+        	//console.log("success!!!!!!!!!!!!!");
+        	//console.log(data);
+        	for(var i = 0 ; i < data.length; i++){
+        		if (data[i].returnMail === true && data[i].imageReceiverDetail == null) {
+        			//console.log("true");
+        			//console.log(data[i].id);
+        			readyReturnMailItems.push(data[i]);
+        			$("#readyReturnMailList").append("<tr id='retuenMailNo" + data[i].mailNumber +"'><td style='display:none'>" + data[i].id +"</td><td style='text-align: left;'>" + data[i].mailNumber +"</td>"
+        			+ "<td class='sender-type-" + data[i].deliveryMethod +"' style='text-align: center;'></td>"
+        			+ "<td style='text-align: center;'><input class='user-return-checnked' type='checkbox' value='" + data[i].id + "' onchange='selectReturnMailCheck(" + data[i].id + ", \"" +data[i].mailNumber+  "\""+ ")'/></td>"
+        			+ "<td class='retuen-checkbox-" + data[i].id +"' style='text-align: center;'>待退件</td></tr>");
+        			/*if (data[i].imageReceiverDetail != null) {
+        				$(".retuen-checkbox-"+ data[i].id).html("已退件");
+        				//console.log(data[i].mailNumber + "已退件");
+        				
+        			}if (data[i].imageReceiverDetail == null) {
+        				$(".retuen-checkbox-"+ data[i].id ).html("待退件");
+        				// console.log(data[i].mailNumber);
+        				// console.log(data[i].imageReceiverDetail);
+        				//console.log(data[i].imageReceiverDetail+"待退件");
+        			}*/
+        		} else {
+        			//console.log("false");
+        			//console.log(data[i].id);
+        		}
+        		
+        		
+        	}	 	
+        },
+        error: function(data){
+        	//console.log("error!!!!!!!!!!!!!!!");
+        	//console.log(data);
+        }
+    });
 }
-function mailReturnSubmit(uid) {
-	var returnMailId = $('.user-return-collected:checked').val();
-	//alert(returnMailId);
+function searchReturnMailInputItem (val) {
+	//var searchRetuenMailArray = [];
+	$("#readyReturnMailList tr#retuenMailNo"+val).css("background-color","#d9534f");
+	$("#readyReturnMailList tr#retuenMailNo"+val+" input[type=checkbox]").prop("checked", true);
+	$("#searchReturnMailCode").val("");
+	$("#returnMailListWrap").html("");
+
+	$.ajaxSetup({
+		beforeSend: function (xhr){
+	        xhr.setRequestHeader("Authorization",  "bearer " + window.localStorage.getItem("Authorization"));
+	    }
+	});	
+	$.ajax({
+        type:'GET',
+        url: originname+"/mails",
+        success:function(data){
+        	//console.log("data is okay!");
+        		//console.log(data);
+        	for(var i = 0 ; i < data.length; i++){
+        		selectReturnMailCheck(data[i].id, data[i].mailNumber);
+        	}
+        },
+        error: function(data){
+        }
+    });
+}
+function selectReturnMailCheck(id, mailnumber) {
+	if($('#retuenMailNo' + mailnumber + ' .user-return-checnked').prop('checked')) {
+		$('#returnMailListWrap').append("<tr id='returnIdItem"+ id +"'>"
+		+ "<td id='addreturn_id' style='display: none;'>" + id + "</td>"
+		+ "<td id='addreturn_mailno'>" + mailnumber + "</td></tr>");  
+		$("#readyReturnMailList tr#retuenMailNo"+mailnumber).css("background-color","#d9534f");
+		$("#readyReturnMailList tr#retuenMailNo"+mailnumber+" input[type=checkbox]").prop("checked", true);
+		countReturnMails ();
+		//console.log("cleick");
+	} else {
+	    $('#returnIdItem' + id).remove(); 
+	    
+		$("#readyReturnMailList tr#retuenMailNo"+mailnumber).css("background-color","transparent");
+		$("#readyReturnMailList tr#retuenMailNo"+mailnumber+" input[type=checkbox]").prop("checked", false);
+		countReturnMails ();
+		//console.log("removed");
+	}
+}
+
+//function selectReturnMailCheck (id) {
+	//$(".mail-return-btn").html("")
+	//var retuenMailailArray=[];
+	//$('.user-collected:checked').each(function() {
+		//console.log(retuenMailailArray);
+    	//mailArray.push($(this).val());
+    	//alert($(this).val());
+	//});
+	/*if (retuenMailailArray.length > 0){
+		$('.user-collected:checked').each(function() {
+		console.log(retuenMailailArray);
+    	//mailArray.push($(this).val());
+    	//alert($(this).val());
+		});
+		$(".mail-return-btn").append("<button id='selectReturnItems' style='display:none' class='btn btn-small btn-danger' onclick='selectReturnItemsBtn(" + retuenMailailArray + ")'>退件</button>");
+	}*/
+//}
+function countReturnMails () {
+	var returnMailAmount = $('table tbody#returnMailListWrap tr').length;
+	if (returnMailAmount > 0 ) {
+		//console.log("returnMailAmount " + returnMailAmount);
+		$('#selectReturnItemsReturnBtn').prop('disabled', false);
+		$('#selectReturnItemsReturnBtn').css('opacity','1');
+	} else {
+		$('#selectReturnItemsReturnBtn').prop('disabled', true);
+		$('#selectReturnItemsReturnBtn').css('opacity','0.4');
+		//console.log("returnMailAmount " + returnMailAmount);
+	}
+}
+
+var returntMailIdList = [];
+var returntMailNumberList = [];
+function selectReturnItemsReturnSub () {
+	$('#returnMailListWrap tr').each(function() {
+		var returnmailId = $(this).find("#addreturn_id").html();
+		var returnmailNumber = $(this).find("#addreturn_mailno").html();
+		returntMailIdList.push(returnmailId);
+		returntMailNumberList.push(returnmailNumber);
+		//console.log(returntMailIdList, returntMailNumberList);
+	});
+	if(returntMailIdList.length != 0){	
+    	getRetuenSignature ();
+	}else{
+		alert("請輸入郵件");
+	}
+}
+function getRetuenSignature () {
+	console.log("sign!!!");
+	
+	$(".mail-return-section").html("");
+	$("#searchReturnMailCode").css("display", "none");
+	$("#searchReturnMailResult").css("display", "none");
+	$("#selectReturnItemsReturnBtn").css("display", "none");
+	
+	$(".mail-return-section").append("<button id='mailReturnSumbit' style='display:none' class='btn btn-small btn-danger' onclick='mailReturnSubmit()'>退件</button><div id='content'><div id='returnsignatureparent'><div id='returnsignature'></div>	</div><div id='tools'></div></div>");
+	$sigdiv_windows = $("#returnsignature").jSignature({'UndoButton':false, height:330})
+
+	// All the code below is just code driving the demo. 					
+	var  $tools = $('#returntools')
+	, $extraarea = $('#returndisplayarea')
+	, pubsubprefix = 'jSignature.demo.'
+	
+	$sigdiv_windows.bind('change', function(e) {
+		$("#mailReturnSumbit").css("display","block");
+		$("#mailReturnSumbit").css("float","right");
+	});
+	
+	$('<input class="btn btn-small btn-primary" type="button" value="清除" style="float:right">').bind('click', function(e){
+		$sigdiv_windows.jSignature('reset')
+		$("#mailReturnSumbit").css("display","none");
+		$("#mailReturnSumbit").css("float","right");
+	}).appendTo($sigdiv_windows)
+	
+	
+}
+
+function mailReturnSubmit() {
+	console.log(returntMailIdList)
 	var datapair = $sigdiv_windows.jSignature("getData", "svgbase64");
 	var signature_img = new Image();
 	signature_img.src = "data:" + datapair[0] + "," + datapair[1];
-	updateUserCollectedReturn(returnMailId, signature_img, uid);
+	updateUserCollectedReturn(returntMailIdList, signature_img);
 	$('#mailReturnSumbit').attr('disabled','disabled');
+	// console.log("doneooooooooooo");
+	// console.log(returntMailIdList);
+	// console.log(signature_img);
 }
-function updateUserCollectedReturn (returnMailId, signature_img, uid) {
+function updateUserCollectedReturn (returnMailId, signature_img) {
 	var canvas = $(".jSignature").get(0).toDataURL("image/png");
-	var fd = new FormData();    
-	fd.append( 'image', canvas );
+	for (var i = 0 ; i < returnMailId.length ; i++){
+		var fd = new FormData();    
+		fd.append( 'image', canvas );
+		//console.log(canvas);
+		$.ajax({
+			url: originname+'/mail/'+ returnMailId[i] + '/return/sign',
+			data: fd,
+		  	processData: false,
+		   	contentType: false,
+		   	type: 'POST',
+		   	success: function(data){		    
+				console.log("relation 信件退件成功");
+				//getReadyRetuenMails();
+				
+				$(".mail-return-section").html("");
+				$("#searchReturnMailCode").css("display", "block");
+				$("#searchReturnMailResult").css("display", "block");
+				$("#selectReturnItemsReturnBtn").css("display", "block");
+				$("#returnMailListWrap").html("");
+				$("#readyReturnMailList"+" input[type=checkbox]").prop("checked", false);
+				$("#readyReturnMailList").css("background-color","transparent");
+				
+		   },
+		   error: function(data){		    
+		     	//console.log("relation 信件退件失敗");
+		   }
+		});
+	}
 	
-	console.log(canvas);
-	$.ajax({
-		url: originname+'/household/'+ uid + '/mailto/' + returnMailId,
-		data: fd,
-	  	processData: false,
-	   	contentType: false,
-	   	type: 'DELETE',
-	   	success: function(data){		    
-			console.log("relation 信件退件成功");
-			$.ajax({
-			   	url: originname+'/mail/' + returnMailId + '/return',
-			   	data: fd,
-			   	processData: false,
-			   	contentType: false,
-			   	type: 'POST',
-			   	success: function(data){		    
-			   		alert("信件退件成功");
-		   			$("#returnUserTitle").html("");
-		   			$(".user-mail-return-list").remove();
-		   			$(".mail-return-section").remove();
-			   	},
-			   	error: function(data){		    
-			    	alert("信件退件失敗");
-			   	}
-			});
-	   },
-	   error: function(data){		    
-	     	console.log("relation 信件退件失敗");
-	   }
-	});
 };
 
 function appendSearchReturnMailList (searchReturnMailArray) {

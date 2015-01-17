@@ -18,7 +18,7 @@
    			method = $scope.newMail.deliveryMethod;
    			mailNumber = $scope.newMail.mailNumber;
    			title = $scope.newMail.title;
-   			console.log(method + mailNumber+ title);
+   			//console.log(method + mailNumber+ title);
    			if (method != null && mailNumber != null && title != null){
    				$scope.createProcessing = false;
    				console.log(method + ", " + mailNumber+ ", "+ title);
@@ -51,7 +51,8 @@
             } else {
                 $scope.mails = mails;
                 console.log("ok");
-                console.log($scope.mails.length);
+                //console.log($scope.mails);
+                getReadyRetuenMails();
             }
    		});
 	   		
