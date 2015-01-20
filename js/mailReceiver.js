@@ -2,7 +2,7 @@ function Add(){
 	$("#mailReceiverTable tbody").append( 
 		"<tr>"+ 
 		"<td style='width:10%'><input id='stamp_number' type='text'/ style='color:#000000' ></td>"+ 
-		"<td style='width:10%'><select id='stamp_mailDeliveryMethod'/ class='form-control'/ name='deliveryMethod' ><option value='parcel'>包裹</option><option value='certified'>掛號</option><option value='other'>其他</option></select></td>"+
+		"<td style='width:10%'><select id='stamp_mailDeliveryMethod'/ class='form-control'/ name='deliveryMethod' ><option value='parcel'>包裹</option><option value='certified'>掛號</option><option value='fresh'>生鮮</option><option value='court'>法院</option><option value='other'>其他</option></select></td>"+
 		"<td style='width:5%'><input id='stamp_from' type='text'/ style='color:#000000'></td>"+ 
 		"<td style='width:5%'><input id='stamp_to' type='text'/ style='color:#000000'></td>"+ 
 		"<td style='width:10%'><input id='stamp_ps' type='text'/ style='color:#000000'></td>"+ 
@@ -36,6 +36,10 @@ function MailPost(){
 				deliveryMethodList.push('parcel');		
 			case '掛號':
 				deliveryMethodList.push('certified');
+			case '生鮮':
+				deliveryMethodList.push('fresh');
+			case '法院':
+				deliveryMethodList.push('court');
 			case '其他':
 				deliveryMethodList.push('other');
 		}
@@ -102,6 +106,12 @@ function Save(){
 		case 'certified' :
 			tdCategory.html("<div id='deliveryMethod'>掛號</div>");
 			break;
+		case 'fresh' :
+			tdCategory.html("<div id='deliveryMethod'>生鮮</div>");
+			break;
+		case 'court' :
+			tdCategory.html("<div id='deliveryMethod'>法院</div>");
+			break;
 		case 'other' :
 			tdCategory.html("<div id='deliveryMethod'>其他</div>");
 			break;
@@ -132,7 +142,7 @@ function AddInMailMng(){
 	$("#containMail").append( 
 		"<tr>"+ 
 		"<td style='width:10%'><input id='stamp_number' type='text'/ style='color:#000000' ></td>"+ 
-		"<td style='width:10%'><select id='stamp_mailDeliveryMethod'/ class='form-control'/ name='deliveryMethod' ><option value='parcel'>包裹</option><option value='certified'>掛號</option><option value='other'>其他</option></select></td>"+
+		"<td style='width:10%'><select id='stamp_mailDeliveryMethod'/ class='form-control'/ name='deliveryMethod' ><option value='parcel'>包裹</option><option value='certified'>掛號</option><option value='fresh'>生鮮</option><option value='court'>法院</option><option value='other'>其他</option></select></td>"+
 		"<td style='width:5%'><input id='stamp_from' type='text'/ style='color:#000000'></td>"+ 
 		"<td style='width:5%'><input id='stamp_to' type='text'/ style='color:#000000'></td>"+ 
 		"<td style='width:10%'><input id='stamp_ps' type='text'/ style='color:#000000'></td>"+ 
@@ -176,10 +186,15 @@ function MailPostInMailMng(){
 			case '掛號':
 				deliveryMethodList.push('certified');
 			break;	
+			case '生鮮':
+				deliveryMethodList.push('fresh');
+			break;
+			case '法院':
+				deliveryMethodList.push('court');
+			break;
 			case '其他':
 				deliveryMethodList.push('other');
 			break;	
-			
 		}
 		toList.push(toUser);
 		fromList.push(formUser);
@@ -253,6 +268,12 @@ function SaveInMailMng(){
 		case 'certified' :
 			tdCategory.html("<div id='deliveryMethod'>掛號</div>");
 			break;
+		case 'fresh' :
+			tdCategory.html("<div id='deliveryMethod'>生鮮</div>");
+			break;
+		case 'court' :
+			tdCategory.html("<div id='deliveryMethod'>法院</div>");
+			break;
 		case 'other' :
 			tdCategory.html("<div id='deliveryMethod'>其他</div>");
 			break;
@@ -277,7 +298,7 @@ var selectNewMailBarcode;
 function searchMailTypeCodeInput(val) {
 	var method;
 	var methodFormat;
-	if (val === "775975465" || val === "51732505" || val === "198825586" ){
+	if (val === "775975465" || val === "51732505" || val === "198825586" || val === "649230692" || val === "233656899" ){
 		switch (val) {
 			case '775975465' :
 				method = "parcel";	
@@ -289,11 +310,22 @@ function searchMailTypeCodeInput(val) {
 				methodFormat = "掛號";
 				toaddmailbarcode(method, methodFormat);	
 				break;
+			case '649230692' :
+				method = "fresh";	
+				methodFormat = "生鮮";
+				toaddmailbarcode(method, methodFormat);	
+				break;
+			case '233656899' :
+				method = "court";	
+				methodFormat = "法院";
+				toaddmailbarcode(method, methodFormat);	
+				break;
 			case '198825586' :
 				method = "other";	
 				methodFormat = "其他";
 				toaddmailbarcode(method, methodFormat);	
 				break;
+				
 		}
 	} else {
 		alert("請輸入正確郵件類別");
@@ -331,6 +363,12 @@ function togetmailbarcode(val) {
 			break;
 		case 'certified' :
 			methodFormat = "掛號";
+			break;
+		case 'fresh' :
+			methodFormat = "生鮮";
+			break;
+		case 'court' :
+			methodFormat = "法院";
 			break;
 		case 'other' :
 			methodFormat = "其他";
@@ -381,7 +419,13 @@ function mailListPostInMailMng(){
 			break;	
 			case '掛號':
 				deliveryMethodList.push('certified');
+			break;		
+			case '生鮮':
+				deliveryMethodList.push('fresh');
 			break;	
+			case '法院':
+				deliveryMethodList.push('court');
+			break;
 			case '其他':
 				deliveryMethodList.push('other');
 			break;	

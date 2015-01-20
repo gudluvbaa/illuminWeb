@@ -57,7 +57,7 @@ div.receiver-input-section {
 	margin-bottom: 10px;
 }
 /***************from type icon******************/
-.sender-type-locker {
+/*.sender-type-locker {
 	background-image: url('../img/passtoi.png');
 	background-size: auto 100%;
 	background-repeat: no-repeat;
@@ -98,7 +98,7 @@ div.receiver-input-section {
 	background-size: auto 100%;
 	background-repeat: no-repeat;
 	background-position: center;
-}
+}*/
 /*****************************/
 #userSearchBarInput, #userCollectSearchBar {
 	font-size: 3em;

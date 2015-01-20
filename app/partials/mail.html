@@ -178,7 +178,13 @@
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
-					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%">
+					    			<span ng-show="item.deliveryMethod=='parcel'">包裹</span>
+					    			<span ng-show="item.deliveryMethod=='certified'">掛號</span>
+					    			<span ng-show="item.deliveryMethod=='fresh'">生鮮</span>
+					    			<span ng-show="item.deliveryMethod=='court'">法院</span>
+					    			<span ng-show="item.deliveryMethod=='other'">其他</span>
+					    		</td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
 					    		<!-- <td style="text-align: center;">{{item.from}}</td>
@@ -207,7 +213,13 @@
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
-					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%">
+					    			<span ng-show="item.deliveryMethod=='parcel'">包裹</span>
+					    			<span ng-show="item.deliveryMethod=='certified'">掛號</span>
+					    			<span ng-show="item.deliveryMethod=='fresh'">生鮮</span>
+					    			<span ng-show="item.deliveryMethod=='court'">法院</span>
+					    			<span ng-show="item.deliveryMethod=='other'">其他</span>
+					    		</td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
 					    		<!-- <td style="text-align: center;">{{item.from}}</td>
@@ -235,7 +247,13 @@
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
-					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%">
+					    			<span ng-show="item.deliveryMethod=='parcel'">包裹</span>
+					    			<span ng-show="item.deliveryMethod=='certified'">掛號</span>
+					    			<span ng-show="item.deliveryMethod=='fresh'">生鮮</span>
+					    			<span ng-show="item.deliveryMethod=='court'">法院</span>
+					    			<span ng-show="item.deliveryMethod=='other'">其他</span>
+					    		</td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
 					    		<!-- <td style="text-align: center;">{{item.from}}</td>
@@ -263,7 +281,13 @@
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
-					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%">
+					    			<span ng-show="item.deliveryMethod=='parcel'">包裹</span>
+					    			<span ng-show="item.deliveryMethod=='certified'">掛號</span>
+					    			<span ng-show="item.deliveryMethod=='fresh'">生鮮</span>
+					    			<span ng-show="item.deliveryMethod=='court'">法院</span>
+					    			<span ng-show="item.deliveryMethod=='other'">其他</span>
+					    		</td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
 					    		<!-- <td style="text-align: center;">{{item.from}}</td>
@@ -291,7 +315,13 @@
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail!=null">已退</p>
 									<p ng-show="item.complete==false && item.returnMail==true && item.imageReceiverDetail==null">待退</p>
 								</td>
-					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%"></td>
+					    		<td class="sender-type-{{item.deliveryMethod}}" style="text-align: center; width: 5%">
+					    			<span ng-show="item.deliveryMethod=='parcel'">包裹</span>
+					    			<span ng-show="item.deliveryMethod=='certified'">掛號</span>
+					    			<span ng-show="item.deliveryMethod=='fresh'">生鮮</span>
+					    			<span ng-show="item.deliveryMethod=='court'">法院</span>
+					    			<span ng-show="item.deliveryMethod=='other'">其他</span>
+					    		</td>
 					    		<td style="text-align: center;">{{item.mailNumber}}</td>
 					    		<td style="text-align: center;"><span>{{item.dateReceive | date:'yyyy-MM-dd'}}</span><br/><span>{{item.dateReceive | date:'HH:mm'}}</span></td>
 					    		<!-- <td style="text-align: center;">{{item.from}}</td>
